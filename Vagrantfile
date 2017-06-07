@@ -20,5 +20,13 @@ Vagrant.configure("2") do |config|
     vbox.vm.box = "hashicorp/precise64"
     vbox.vm.provider :virtualbox do |vb|
     end
+
+    vbox.vm.provision "my file", type: "shell", inline: <<-SHELL
+      echo 'hello' > hello.txt
+    SHELL
+
+    vbox.vm.provision "shell", inline: <<-SHELL
+      echo 'there' >> hello.txt
+    SHELL
   end
 end
