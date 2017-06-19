@@ -1,2 +1,7 @@
 Gemfile.lock
 .vagrant
+boxes/
+data/
+insecure_private_key
+rgloader/
+setup_version

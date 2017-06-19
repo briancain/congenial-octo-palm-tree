@@ -16,6 +16,12 @@ Vagrant.configure("2") do |config|
     vm.vm.box = "hashicorp/precise64"
   end
 
+  config.vm.define "ubuntu"  do |vm|
+    vm.vm.box = "bento/ubuntu-14.04"
+    vm.vm.provider :virtualbox do |vm|
+    end
+  end
+
   config.vm.define "virtualbox" do |vbox|
     vbox.vm.box = "hashicorp/precise64"
     vbox.vm.provider :virtualbox do |vb|
@@ -23,10 +29,6 @@ Vagrant.configure("2") do |config|
 
     vbox.vm.provision "my file", type: "shell", inline: <<-SHELL
       echo 'hello' > hello.txt
-    SHELL
-
-    vbox.vm.provision "shell", inline: <<-SHELL
-      echo 'there' >> hello.txt
     SHELL
   end
 end
