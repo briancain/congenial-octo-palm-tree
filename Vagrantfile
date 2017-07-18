@@ -119,24 +119,19 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "virtualbox-nfs" do |vbox|
-    vbox.vm.provider :virtualbox
+    vbox.vm.provider :virtualbox do |vb|
+      vb.customize ["modifyvm", :id, "--memory", "2048"]
+    end
+
     vbox.vm.box = "ubuntu/xenial64"
     #vbox.vm.box = "ubuntu/trusty64"
-    #vbox.vm.box = "centos/7"
-    #vbox.vm.box = "debian/jessie64"
+    #vbox.vm.box = "bento/centos-7.2"
+    #vbox.vm.box = "bento/debian-8.2"
     vbox.vm.network "private_network", type: "dhcp"
-    #vbox.vm.network :private_network, ip: "10.0.8.178"
+    vbox.vm.network :private_network, ip: "10.0.8.178"
     vbox.ssh.forward_agent = true
-    #vbox.vm.synced_folder ".", "/vagrant", mount_options: ['rw', 'vers=3', 'fsc' ,'actimeo=2', 'async'], nfs: true,
-      #rsync__exclude: ".git/"
-
-    vbox.vm.synced_folder ".",
-                          "/var/www/foo",
-                          type: "nfs",
-                          :nfs => true,
-                          :mount_options => ['rsize=32768', 'wsize=32678', 'intr', 'soft',
-                             'fg', 'timeo=5', 'nodev', 'noatime', 'nodiratime'],
-                          :bsd__nfs_options => ['rw', 'all_squash', 'async', 'no_subtree_check']
+    vbox.vm.synced_folder ".", "/var/www", type: "nfs",
+      rsync__exclude: ".git/"
 
     vbox.vm.provision "my file", type: "shell", inline: <<-SHELL
       echo 'hello' > hello.txt
