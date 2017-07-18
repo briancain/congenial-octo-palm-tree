@@ -7,21 +7,35 @@
 # you're doing.
 Vagrant.configure("2") do |config|
   #config.vm.box = "ubuntu/trusty64"
-  #config.vm.provider "docker" do |d|
-  #  d.image = "default"
+  #config.vm.define "docker" do |d|
+  #  d.vm.provider "docker" do |dk|
+  #    dk.image = "ubuntu"
+  #    #dk.build_dir = "./"
+  #  end
   #end
   #config.vm.box = "http://puppet-vagrant-boxes.puppetlabs.com/centos-64-x64-vbox4210.box"
   #config.vm.box = "iamseth/rhel-7.3"
   #config.vm.provision "mah docker", type: "docker"  do |d|
-  #  #d.post_install_provision "shell", inline:"echo export http_proxy='http://1.2.3.4' >> /etc/default/docker"
-  #  d.run "redhat",
-  #    cmd: "bash -l",
-  #    args: "-v '/vagrant:/var/www'"
+  #  d.image = "ubuntu"
   #end
 
-  #config.vm.provider "docker" do |d|
-  #  d.build_dir = "."
+  config.vm.define "docker"  do |vm|
+    vm.vm.provider "docker" do |d|
+      d.image = "ubuntu"
+      #d.build_dir = "."
+      d.cmd = ["tail", "-f", "/dev/null"]
+    end
+  end
+
+  #config.vm.define "docker2"  do |vm|
+  #  vm.vm.provider "docker" do |d|
+  #    d.build_dir = "."
+  #    d.force_host_vm = true
+  #  end
+  #  vm.vm.synced_folder ".", "/vagrant", type: "rsync",
+  #    rsync__exclude: ".git/"
   #end
+
 
   #config.vm.define "default", primary: true  do |vm|
   #  vm.vm.box = "centos/7"
@@ -59,16 +73,50 @@ Vagrant.configure("2") do |config|
   #  end
   #end
 
+  #config.ssh.private_key_path = "/Users/brian/code/vagrant-sandbox/foo%bar/id_rsa"
+
   config.vm.define "virtualbox" do |vbox|
     #vbox.vm.box = "ubuntu/trusty64"
     vbox.vm.box = "ubuntu/xenial64"
     vbox.vm.network "private_network", type: "dhcp"
+    #vbox.vm.synced_folder ".", "/vagrant", type: "nfs"
+    #vbox.vm.synced_folder ".", "/vagrant", type: "rsync",
+    #  rsync__exclude: ".git/"
     vbox.vm.provider :virtualbox
 
-    vbox.vm.synced_folder ".", "/vagrant", type: "nfs"
     vbox.vm.provision "my file", type: "shell", inline: <<-SHELL
       echo 'hello' > hello.txt
     SHELL
+  end
+
+  config.vm.define "virtualbox-nfs" do |vbox|
+    #vbox.vm.box = "ubuntu/trusty64"
+    #vbox.vm.box = "ubuntu/xenial64"
+    #vbox.vm.box = "centos/7"
+    vbox.vm.box = "debian/jessie64"
+    vbox.vm.network "private_network", type: "dhcp"
+    vbox.vm.network :private_network, ip: "10.0.8.178"
+    vbox.vm.network :forwarded_port, guest: 80, host: 8080
+    vbox.vm.network :forwarded_port, guest: 35729, host: 35729
+    vbox.ssh.forward_agent = true
+    vbox.vm.synced_folder ".", "/vagrant", mount_options: ['rw', 'vers=3', 'fsc' ,'actimeo=2', 'async'], nfs: true,
+      rsync__exclude: ".git/"
+    vbox.vm.provider :virtualbox
+
+    vbox.vm.provision "my file", type: "shell", inline: <<-SHELL
+      echo 'hello' > hello.txt
+    SHELL
+
+    vbox.vm.provision "ansible" do |a|
+      a.playbook = "playbook.yml"
+    end
+  end
+
+  config.vm.define "ansible" do |ansible|
+    ansible.vm.box = "ubuntu/xenial64"
+    ansible.vm.provision "ansible" do |a|
+      a.playbook = "playbook.yml"
+    end
   end
 
 end
