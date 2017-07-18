@@ -75,6 +75,25 @@ Vagrant.configure("2") do |config|
 
   #config.ssh.private_key_path = "/Users/brian/code/vagrant-sandbox/foo%bar/id_rsa"
 
+  config.vm.define "puppet" do |vbox|
+    vbox.vm.box = "ubuntu/xenial64"
+    vbox.vm.network "private_network", type: "dhcp"
+    vbox.vm.provider :virtualbox
+
+    vbox.vm.provision "shell", inline: <<-SHELL
+    wget https://apt.puppetlabs.com/puppet5-release-xenial.deb
+    sudo dpkg -i puppet5-release-xenial.deb
+    sudo apt update
+    sudo apt-get install puppet-agent
+    SHELL
+
+    vbox.vm.provision :puppet
+
+    vbox.vm.provision "my file", type: "shell", inline: <<-SHELL
+      puppet --version
+    SHELL
+  end
+
   config.vm.define "virtualbox" do |vbox|
     #vbox.vm.box = "ubuntu/trusty64"
     vbox.vm.box = "ubuntu/xenial64"
@@ -84,32 +103,44 @@ Vagrant.configure("2") do |config|
     #  rsync__exclude: ".git/"
     vbox.vm.provider :virtualbox
 
+    vbox.vm.provision "shell", inline: <<-SHELL
+    wget https://apt.puppetlabs.com/puppet5-release-xenial.deb
+    sudo dpkg -i puppet5-release-xenial.deb
+    sudo apt update
+    sudo apt-get install puppet-agent
+    SHELL
+
+    vbox.vm.provision :puppet
+
     vbox.vm.provision "my file", type: "shell", inline: <<-SHELL
       echo 'hello' > hello.txt
+      puppet --version
     SHELL
   end
 
   config.vm.define "virtualbox-nfs" do |vbox|
-    #vbox.vm.box = "ubuntu/trusty64"
-    #vbox.vm.box = "ubuntu/xenial64"
-    #vbox.vm.box = "centos/7"
-    vbox.vm.box = "debian/jessie64"
-    vbox.vm.network "private_network", type: "dhcp"
-    vbox.vm.network :private_network, ip: "10.0.8.178"
-    vbox.vm.network :forwarded_port, guest: 80, host: 8080
-    vbox.vm.network :forwarded_port, guest: 35729, host: 35729
-    vbox.ssh.forward_agent = true
-    vbox.vm.synced_folder ".", "/vagrant", mount_options: ['rw', 'vers=3', 'fsc' ,'actimeo=2', 'async'], nfs: true,
-      rsync__exclude: ".git/"
     vbox.vm.provider :virtualbox
+    vbox.vm.box = "ubuntu/xenial64"
+    #vbox.vm.box = "ubuntu/trusty64"
+    #vbox.vm.box = "centos/7"
+    #vbox.vm.box = "debian/jessie64"
+    vbox.vm.network "private_network", type: "dhcp"
+    #vbox.vm.network :private_network, ip: "10.0.8.178"
+    vbox.ssh.forward_agent = true
+    #vbox.vm.synced_folder ".", "/vagrant", mount_options: ['rw', 'vers=3', 'fsc' ,'actimeo=2', 'async'], nfs: true,
+      #rsync__exclude: ".git/"
+
+    vbox.vm.synced_folder ".",
+                          "/var/www/foo",
+                          type: "nfs",
+                          :nfs => true,
+                          :mount_options => ['rsize=32768', 'wsize=32678', 'intr', 'soft',
+                             'fg', 'timeo=5', 'nodev', 'noatime', 'nodiratime'],
+                          :bsd__nfs_options => ['rw', 'all_squash', 'async', 'no_subtree_check']
 
     vbox.vm.provision "my file", type: "shell", inline: <<-SHELL
       echo 'hello' > hello.txt
     SHELL
-
-    vbox.vm.provision "ansible" do |a|
-      a.playbook = "playbook.yml"
-    end
   end
 
   config.vm.define "ansible" do |ansible|
