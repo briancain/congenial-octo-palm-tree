@@ -64,7 +64,7 @@ Vagrant.configure("2") do |config|
   #end
 
   config.vm.define "chef" do |chef|
-    chef.vm.box = "ubuntu/trusty64"
+    chef.vm.box = "bento/ubuntu-16.04"
     chef.vm.provider :virtualbox
 
     chef.vm.provision :chef_solo do |c|
