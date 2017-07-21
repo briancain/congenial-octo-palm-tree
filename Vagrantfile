@@ -63,15 +63,14 @@ Vagrant.configure("2") do |config|
   #  SHELL
   #end
 
-  #config.vm.define "chef" do |chef|
-  #  chef.vm.box = "ubuntu/trusty64"
-  #  chef.vm.provider :virtualbox
+  config.vm.define "chef" do |chef|
+    chef.vm.box = "ubuntu/trusty64"
+    chef.vm.provider :virtualbox
 
-  #  chef.vm.provision :chef_solo do |c|
-  #    c.add_recipe "test"
-  #    c.recipe_url="http://localghost.domain:8000/test.tar.gz"
-  #  end
-  #end
+    chef.vm.provision :chef_solo do |c|
+      c.add_recipe "test"
+    end
+  end
 
   #config.ssh.private_key_path = "/Users/brian/code/vagrant-sandbox/foo%bar/id_rsa"
 
@@ -127,10 +126,9 @@ Vagrant.configure("2") do |config|
     #vbox.vm.box = "ubuntu/trusty64"
     #vbox.vm.box = "bento/centos-7.2"
     #vbox.vm.box = "bento/debian-8.2"
-    vbox.vm.network "private_network", type: "dhcp"
-    vbox.vm.network :private_network, ip: "10.0.8.178"
+    vbox.vm.network :private_network, ip: "10.0.8.178", type: "dhcp"
     vbox.ssh.forward_agent = true
-    vbox.vm.synced_folder ".", "/var/www", type: "nfs",
+    vbox.vm.synced_folder ".", "/vagrant", type: "nfs",
       rsync__exclude: ".git/"
 
     vbox.vm.provision "my file", type: "shell", inline: <<-SHELL
@@ -143,6 +141,32 @@ Vagrant.configure("2") do |config|
     ansible.vm.provision "ansible" do |a|
       a.playbook = "playbook.yml"
     end
+  end
+
+  config.vm.define "spec-ubuntu" do |ubuntu|
+    ubuntu.vm.box = "spox/ubuntu-16.04"
+    ubuntu.vm.network :private_network, ip: "192.168.33.10"
+  end
+
+  config.vm.define "spec-centos" do |centos|
+    centos.vm.box = "spox/centos-7"
+    centos.vm.network :private_network, ip: "192.168.33.10", type: "dhcp"
+    centos.vm.synced_folder ".", "/vagrant", type: "nfs",
+      rsync__exclude: ".git/"
+  end
+
+  config.vm.define "arch" do |arch|
+    arch.vm.box = "hashicorp-vagrant/archlinux"
+    #arch.vm.network :private_network, ip: "192.168.33.10", type: "dhcp"
+    #arch.vm.synced_folder ".", "/vagrant", type: "nfs",
+    #  rsync__exclude: ".git/"
+  end
+
+  config.vm.define "windows" do |windows|
+    windows.vm.box = "spox/windows-10"
+    #arch.vm.network :private_network, ip: "192.168.33.10", type: "dhcp"
+    #arch.vm.synced_folder ".", "/vagrant", type: "nfs",
+    #  rsync__exclude: ".git/"
   end
 
 end
