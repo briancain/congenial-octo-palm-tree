@@ -164,6 +164,7 @@ Vagrant.configure("2") do |config|
       s.minion_config = "saltstack/etc/minion"
       s.install_type = "git"
       s.verbose = true
+      s.run_highstate = true
     end
   end
 
