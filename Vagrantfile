@@ -27,14 +27,12 @@ Vagrant.configure("2") do |config|
     end
   end
 
-  #config.vm.define "docker2"  do |vm|
-  #  vm.vm.provider "docker" do |d|
-  #    d.build_dir = "."
-  #    d.force_host_vm = true
-  #  end
-  #  vm.vm.synced_folder ".", "/vagrant", type: "rsync",
-  #    rsync__exclude: ".git/"
-  #end
+  config.vm.define "docker2"  do |vm|
+    vm.vm.provider "docker" do |d|
+      d.build_dir = "."
+      d.compose = true
+    end
+  end
 
 
   #config.vm.define "default", primary: true  do |vm|
@@ -63,6 +61,16 @@ Vagrant.configure("2") do |config|
   #  SHELL
   #end
 
+  config.vm.define "basic" do |b|
+    b.vm.box = "bento/ubuntu-16.04"
+    #b.vm.box = "bento/centos-7.3"
+    b.vm.provider :virtualbox
+
+    b.vm.network "private_network", ip: "192.168.42.10", netmask: "255.255.255.0"
+    b.vm.network "private_network", ip: "192.168.42.20", netmask: "255.255.255.0"
+    b.vm.network "private_network", ip: "192.168.42.30", netmask: "255.255.255.0"
+  end
+
   config.vm.define "chef" do |chef|
     chef.vm.box = "bento/ubuntu-16.04"
     chef.vm.provider :virtualbox
@@ -70,9 +78,13 @@ Vagrant.configure("2") do |config|
     chef.vm.provision :chef_solo do |c|
       c.add_recipe "test"
     end
-  end
 
-  #config.ssh.private_key_path = "/Users/brian/code/vagrant-sandbox/foo%bar/id_rsa"
+    #chef.vm.provision :chef_zero do |c|
+    #  c.cookbooks_path = "."
+    #  c.add_recipe "test"
+    #  c.nodes_path = "/not/real"
+    #end
+  end
 
   config.vm.define "puppet" do |vbox|
     vbox.vm.box = "ubuntu/xenial64"
@@ -94,8 +106,8 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "virtualbox" do |vbox|
-    #vbox.vm.box = "ubuntu/trusty64"
-    vbox.vm.box = "ubuntu/xenial64"
+    vbox.vm.box = "ubuntu/trusty64"
+    #vbox.vm.box = "ubuntu/xenial64"
     vbox.vm.network "private_network", type: "dhcp"
     #vbox.vm.synced_folder ".", "/vagrant", type: "nfs"
     #vbox.vm.synced_folder ".", "/vagrant", type: "rsync",
@@ -106,7 +118,7 @@ Vagrant.configure("2") do |config|
     wget https://apt.puppetlabs.com/puppet5-release-xenial.deb
     sudo dpkg -i puppet5-release-xenial.deb
     sudo apt update
-    sudo apt-get install puppet-agent
+    sudo apt-get install puppet-agent -y
     SHELL
 
     vbox.vm.provision :puppet
@@ -143,6 +155,18 @@ Vagrant.configure("2") do |config|
     end
   end
 
+  config.vm.define "salt" do |salt|
+    salt.vm.box = "ubuntu/xenial64"
+
+    salt.vm.provider :virtualbox
+
+    salt.vm.provision :salt do |s|
+      s.minion_config = "saltstack/etc/minion"
+      s.install_type = "git"
+      s.verbose = true
+    end
+  end
+
   config.vm.define "spec-ubuntu" do |ubuntu|
     ubuntu.vm.box = "spox/ubuntu-16.04"
     ubuntu.vm.network :private_network, ip: "192.168.33.10"
@@ -150,13 +174,21 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "spec-centos" do |centos|
     centos.vm.box = "spox/centos-7"
-    centos.vm.network :private_network, ip: "192.168.33.10", type: "dhcp"
-    centos.vm.synced_folder ".", "/vagrant", type: "nfs",
-      rsync__exclude: ".git/"
+    #centos.vm.network :private_network, ip: "192.168.33.10", type: "dhcp"
+    #centos.vm.synced_folder ".", "/vagrant", type: "nfs",
+    #  rsync__exclude: ".git/"
   end
 
   config.vm.define "arch" do |arch|
-    arch.vm.box = "hashicorp-vagrant/archlinux"
+    #arch.vm.box = "hashicorp-vagrant/archlinux"
+    #arch.vm.box = "terrywang/archlinux"
+    arch.vm.box = "wholebits/archlinux"
+    #arch.vm.provider :vmware_fusion do |v|
+    #  v.memory = 2048
+    #  v.cpus = 2
+    #  v.vmx['vhv.enable'] = 'TRUE'
+    #  v.vmx['vhv.allow'] = 'TRUE'
+    #end
     #arch.vm.network :private_network, ip: "192.168.33.10", type: "dhcp"
     #arch.vm.synced_folder ".", "/vagrant", type: "nfs",
     #  rsync__exclude: ".git/"
