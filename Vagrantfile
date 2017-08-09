@@ -165,6 +165,8 @@ Vagrant.configure("2") do |config|
     salt.vm.box = "ubuntu/xenial64"
 
     salt.vm.provider :virtualbox
+    salt.vm.synced_folder ".", "/vagrant", type: "nfs"
+    salt.vm.network :private_network, ip: "192.168.33.10", type: "dhcp"
 
     salt.vm.provision :salt do |s|
       s.minion_config = "saltstack/etc/minion"
