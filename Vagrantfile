@@ -19,6 +19,12 @@ Vagrant.configure("2") do |config|
   #  d.image = "ubuntu"
   #end
 
+  config.vm.define "bork" do |b|
+    b.vm.box = "hashicorp/precise64"
+    b.vm.box_url = "http://localhost:8000/box.json"
+    b.vm.provider :virtualbox
+  end
+
   config.vm.define "docker"  do |vm|
     vm.vm.provider "docker" do |d|
       d.image = "ubuntu"
