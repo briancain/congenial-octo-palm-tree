@@ -1,0 +1,17 @@
+{
+  "name": "hashicorp/precise64",
+  "description": "This box contains Ubuntu 12.04 LTS 64-bit.",
+  "versions": [
+    {
+      "version": "1.1.0",
+      "providers": [
+        {
+          "name": "virtualbox",
+          "url": "https://vagrantcloud.com/hashicorp/boxes/precise64/versions/1.1.0/providers/virtualbox.box",
+          "checksum_type": "sha1",
+          "checksum": "034f4af281e648cd65ca6e8d731128b7d2b3ed40"
+        }
+      ]
+    }
+  ]
+}
