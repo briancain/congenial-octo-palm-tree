@@ -6,42 +6,50 @@
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 Vagrant.configure("2") do |config|
-  #config.vm.box = "ubuntu/trusty64"
-  #config.vm.define "docker" do |d|
-  #  d.vm.provider "docker" do |dk|
-  #    dk.image = "ubuntu"
-  #    #dk.build_dir = "./"
-  #  end
-  #end
-  #config.vm.box = "http://puppet-vagrant-boxes.puppetlabs.com/centos-64-x64-vbox4210.box"
-  #config.vm.box = "iamseth/rhel-7.3"
-  #config.vm.provision "mah docker", type: "docker"  do |d|
-  #  d.image = "ubuntu"
-  #end
 
   config.vm.define "bork" do |b|
     b.vm.box = "bento/ubuntu-16.04"
     #b.vm.box_url = "http://localhost:8000/box.json"
     b.vm.provider :virtualbox
-    #b.vm.network "forwarded_port", guest: 80, host: 8080
-    #b.vm.network "forwarded_port", guest: 90, host: 9090
-    #b.vm.hostname = "bork"
-    #b.vm.synced_folder ".", "/vagrant", type: "nfs"
-    #b.vm.network :private_network, ip: "192.168.44.20", type: "dhcp"
-    b.vm.network :public_network
+    #b.vm.provider :vmware_fusion do |v|
+    #  v.memory = 8048
+    #  v.cpus = 2
+    #  v.vmx['vhv.enable'] = 'TRUE'
+    #  v.vmx['vhv.allow'] = 'TRUE'
+    #end
+
+    b.vm.provision "shell", inline: <<-SHELL
+    echo hello
+    SHELL
+
+    #b.vm.network "forwarded_port", guest: 25, host: 25, host_ip: "127.0.0.1"
   end
 
-  config.vm.define "docker"  do |vm|
-    vm.vm.provider "docker" do |d|
-      d.image = "ubuntu"
-      #d.build_dir = "."
-      d.cmd = ["tail", "-f", "/dev/null"]
+  config.vm.define "bork2" do |b|
+    b.vm.box = "bento/ubuntu-16.04"
+    #b.vm.provider :vmware
+    b.vm.provider :virtualbox
+
+    b.vm.provision "shell", inline: <<-SHELL
+    echo hello
+    SHELL
+  end
+
+  (1..3).each do |i|
+    config.vm.define "docker-#{i}"  do |vm|
+      vm.vm.provider "docker" do |d|
+        d.image = "ubuntu"
+        #d.build_dir = "."
+        d.cmd = ["tail", "-f", "/dev/null"]
+      end
     end
   end
 
   config.vm.define "chef" do |chef|
     chef.vm.box = "bento/ubuntu-16.04"
-    chef.vm.provider :virtualbox
+    #chef.vm.provider :virtualbox
+    #chef.vm.box = "spox/windows-10"
+    chef.vm.provider :vmware
 
     chef.vm.provision :chef_solo do |c|
       c.add_recipe "test"
@@ -57,7 +65,7 @@ Vagrant.configure("2") do |config|
   config.vm.define "puppet" do |vbox|
     vbox.vm.box = "bento/ubuntu-16.04"
     vbox.vm.network "private_network", type: "dhcp"
-    vbox.vm.provider :virtualbox
+    vbox.vm.provider :vmware
 
     vbox.vm.provision "shell", inline: <<-SHELL
     wget https://apt.puppetlabs.com/puppet5-release-xenial.deb
@@ -92,6 +100,17 @@ Vagrant.configure("2") do |config|
     end
   end
 
+  config.vm.define "ubuntu-gui" do |ubuntu|
+    ubuntu.vm.box = "boxcutter/ubuntu1604-desktop"
+
+    ubuntu.vm.provider :vmware_fusion do |v|
+      v.memory = 2048
+      v.cpus = 2
+      v.vmx['vhv.enable'] = 'TRUE'
+      v.vmx['vhv.allow'] = 'TRUE'
+    end
+  end
+
   config.vm.define "salt" do |salt|
     salt.vm.box = "bento/ubuntu-16.04"
 
@@ -121,7 +140,8 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "arch" do |arch|
-    arch.vm.box = "wholebits/archlinux"
+    #arch.vm.box = "wholebits/archlinux"
+    arch.vm.box = "arch"
     arch.vm.provider :vmware_fusion do |v|
       v.memory = 2048
       v.cpus = 2
@@ -130,14 +150,41 @@ Vagrant.configure("2") do |config|
     end
 
     arch.vm.synced_folder "../vagrant",
-      "/opt/vagrant/embedded/gems/gems/vagrant-1.9.7"
+      "/code/vagrant"
+
+    arch.vm.synced_folder "../vagrant-installers",
+      "/code/vagrant-installers"
     #arch.vm.network :private_network, ip: "192.168.33.10", type: "dhcp"
     #arch.vm.synced_folder ".", "/vagrant", type: "nfs",
     #  rsync__exclude: ".git/"
+    arch.vm.provision "shell", inline: <<-SHELL
+    sudo pacman -S vim tree htop base-devel --noconfirm
+    SHELL
+  end
+
+  config.vm.define "arch2" do |arch|
+    #arch.vm.box = "wholebits/archlinux"
+    arch.vm.box = "arch"
+    arch.vm.provider :vmware_fusion do |v|
+      v.memory = 2048
+      v.cpus = 2
+      v.vmx['vhv.enable'] = 'TRUE'
+      v.vmx['vhv.allow'] = 'TRUE'
+    end
+
+    arch.vm.provision "shell", inline: <<-SHELL
+    sudo pacman -Syu --noconfirm
+    SHELL
   end
 
   config.vm.define "windows" do |windows|
-    windows.vm.box = "spox/windows-10"
+    #windows.vm.box = "spox/windows-10"
+    windows.vm.box = "Microsoft/EdgeOnWindows10"
+    windows.vm.provider :virtualbox
+    windows.ssh.username = "IEUser"
+    windows.ssh.password = "Passw0rd!"
+    windows.ssh.insert_key = true
+    windows.vm.synced_folder ".", "/vagrant", disabled: true
 
     #windows.vm.provision :salt do |s|
     #  s.minion_config = "saltstack/etc/minion"
@@ -153,8 +200,13 @@ Vagrant.configure("2") do |config|
     #  source: "./scripts",
     #  destination: "C:\\Users\\vagrant\\scripts\\morefolders"
 
-    windows.vm.synced_folder "../vagrant",
-      "/hashicorp/vagrant/embedded/gems/gems/vagrant-2.0.0"
+    #windows.vm.provider :vmware_fusion do |v|
+    #  v.vmx['vhv.enable'] = 'TRUE'
+    #  v.vmx['vhv.allow'] = 'TRUE'
+    #end
+
+    #windows.vm.synced_folder "../vagrant",
+    #  "/hashicorp/vagrant/embedded/gems/gems/vagrant-2.0.0"
   end
 
   config.vm.define "windows-dev" do |windows|
@@ -169,5 +221,32 @@ Vagrant.configure("2") do |config|
     #arch.vm.network :private_network, ip: "192.168.33.10", type: "dhcp"
     #arch.vm.synced_folder ".", "/vagrant", type: "nfs",
     #  rsync__exclude: ".git/"
+  end
+
+  config.vm.define "openindiana" do |o|
+    o.vm.box = "openindiana/hipster"
+    o.vm.provider :virtualbox
+
+    o.vm.synced_folder ".", "/vagrant", type: "rsync"
+  end
+
+  config.vm.define "ubuntu-unity" do |u|
+    u.vm.box = "boxcutter/ubuntu1604-desktop"
+    u.vm.provider :vmware_fusion do |v|
+      v.memory = 8048
+      v.cpus = 2
+    end
+  end
+
+  config.vm.define "debian" do |d|
+    #d.vm.box = "debian/jessie64"
+    d.vm.box = "bento/debian-8.2"
+    d.vm.provider :virtualbox
+    d.vm.synced_folder "./", "/home/vagrant"
+  end
+
+  config.vm.define "ubuntu17" do |u|
+    u.vm.box = "bento/ubuntu-17.10"
+    u.vm.network "private_network", ip: "192.168.56.2"
   end
 end
