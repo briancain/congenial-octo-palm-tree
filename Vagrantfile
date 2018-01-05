@@ -22,7 +22,6 @@ Vagrant.configure("2") do |config|
     echo hello
     SHELL
 
-    #b.vm.network "forwarded_port", guest: 25, host: 25, host_ip: "127.0.0.1"
   end
 
   config.vm.define "bork2" do |b|
@@ -81,16 +80,17 @@ Vagrant.configure("2") do |config|
     SHELL
   end
 
-  config.vm.define "vbox-nfs" do |vbox|
+  config.vm.define "centos" do |vbox|
     vbox.vm.provider :virtualbox do |vb|
       vb.customize ["modifyvm", :id, "--memory", "2048"]
     end
 
-    vbox.vm.box = "bento/centos-7.2"
-    vbox.vm.network :private_network, ip: "10.0.8.178", type: "dhcp"
+    #vbox.vm.box = "bento/centos-7.2"
+    vbox.vm.box = "centos/7"
+    vbox.vm.network :private_network, ip: "192.191.91.10"
 
-    vbox.vm.synced_folder ".", "/vagrant", type: "nfs",
-      rsync__exclude: ".git/"
+    #vbox.vm.synced_folder ".", "/vagrant", type: "nfs",
+    #  rsync__exclude: ".git/"
   end
 
   config.vm.define "ansible" do |ansible|
@@ -178,13 +178,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "windows" do |windows|
-    #windows.vm.box = "spox/windows-10"
-    windows.vm.box = "Microsoft/EdgeOnWindows10"
-    windows.vm.provider :virtualbox
-    windows.ssh.username = "IEUser"
-    windows.ssh.password = "Passw0rd!"
-    windows.ssh.insert_key = true
-    windows.vm.synced_folder ".", "/vagrant", disabled: true
+    windows.vm.box = "windowsbase"
 
     #windows.vm.provision :salt do |s|
     #  s.minion_config = "saltstack/etc/minion"
@@ -200,13 +194,14 @@ Vagrant.configure("2") do |config|
     #  source: "./scripts",
     #  destination: "C:\\Users\\vagrant\\scripts\\morefolders"
 
-    #windows.vm.provider :vmware_fusion do |v|
-    #  v.vmx['vhv.enable'] = 'TRUE'
-    #  v.vmx['vhv.allow'] = 'TRUE'
-    #end
+    #windows.vm.provider :virtualbox
+    windows.vm.provider :vmware_fusion do |v|
+      v.vmx['vhv.enable'] = 'TRUE'
+      v.vmx['vhv.allow'] = 'TRUE'
+    end
 
     #windows.vm.synced_folder "../vagrant",
-    #  "/hashicorp/vagrant/embedded/gems/gems/vagrant-2.0.0"
+    #  "/hashicorp/vagrant/embedded/gems/gems/vagrant-2.0.1"
   end
 
   config.vm.define "windows-dev" do |windows|
@@ -241,12 +236,21 @@ Vagrant.configure("2") do |config|
   config.vm.define "debian" do |d|
     #d.vm.box = "debian/jessie64"
     d.vm.box = "bento/debian-8.2"
+    #d.vm.box = "debian93"
     d.vm.provider :virtualbox
-    d.vm.synced_folder "./", "/home/vagrant"
+    #d.vm.provision "shell", inline: <<-SHELL
+    #sudo systemctl enable systemd-networkd.service
+    #sudo systemctl start systemd-networkd.service
+    #echo $?
+    #sudo systemctl status systemd-networkd.service
+    #SHELL
+    d.vm.network :private_network, ip: "192.168.33.10"
   end
 
   config.vm.define "ubuntu17" do |u|
     u.vm.box = "bento/ubuntu-17.10"
-    u.vm.network "private_network", ip: "192.168.56.2"
+    u.vm.provider :virtualbox
+    u.vm.network :private_network, ip: "192.168.33.10"
+    u.vm.network "private_network", ip: "fde4:8dba:82e1::c4"
   end
 end
