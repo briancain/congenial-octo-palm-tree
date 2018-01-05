@@ -178,8 +178,8 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "windows" do |windows|
-    #windows.vm.box = "windowsbase"
-    windows.vm.box = "windowswsl"
+    windows.vm.box = "windowsbase"
+    #windows.vm.box = "windowswsl"
 
     #windows.vm.provision :salt do |s|
     #  s.minion_config = "saltstack/etc/minion"
