@@ -10,18 +10,18 @@ Vagrant.configure("2") do |config|
   config.vm.define "bork" do |b|
     b.vm.box = "bento/ubuntu-16.04"
     #b.vm.box_url = "http://localhost:8000/box.json"
-    b.vm.provider :virtualbox
-    #b.vm.provider :vmware_fusion do |v|
-    #  v.memory = 8048
-    #  v.cpus = 2
-    #  v.vmx['vhv.enable'] = 'TRUE'
-    #  v.vmx['vhv.allow'] = 'TRUE'
-    #end
+    b.vm.provider :vmware_fusion do |v|
+      v.memory = 8048
+      v.cpus = 2
+      v.vmx['vhv.enable'] = 'TRUE'
+      v.vmx['vhv.allow'] = 'TRUE'
+    end
 
     b.vm.provision "shell", inline: <<-SHELL
     echo hello
     SHELL
 
+    #b.vm.network "forwarded_port", guest: 8080, host: 8080
   end
 
   config.vm.define "bork2" do |b|
@@ -85,9 +85,9 @@ Vagrant.configure("2") do |config|
       vb.customize ["modifyvm", :id, "--memory", "2048"]
     end
 
-    #vbox.vm.box = "bento/centos-7.2"
-    vbox.vm.box = "centos/7"
-    vbox.vm.network :private_network, ip: "192.191.91.10"
+    vbox.vm.box = "bento/centos-7.2"
+    #vbox.vm.box = "centos/7"
+    #vbox.vm.network :private_network, ip: "192.191.91.10"
 
     #vbox.vm.synced_folder ".", "/vagrant", type: "nfs",
     #  rsync__exclude: ".git/"
