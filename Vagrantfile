@@ -24,16 +24,6 @@ Vagrant.configure("2") do |config|
     #b.vm.network "forwarded_port", guest: 8080, host: 8080
   end
 
-  config.vm.define "bork2" do |b|
-    b.vm.box = "bento/ubuntu-16.04"
-    #b.vm.provider :vmware
-    b.vm.provider :virtualbox
-
-    b.vm.provision "shell", inline: <<-SHELL
-    echo hello
-    SHELL
-  end
-
   (1..3).each do |i|
     config.vm.define "docker-#{i}"  do |vm|
       vm.vm.provider "docker" do |d|
@@ -100,17 +90,6 @@ Vagrant.configure("2") do |config|
     end
   end
 
-  config.vm.define "ubuntu-gui" do |ubuntu|
-    ubuntu.vm.box = "boxcutter/ubuntu1604-desktop"
-
-    ubuntu.vm.provider :vmware_fusion do |v|
-      v.memory = 2048
-      v.cpus = 2
-      v.vmx['vhv.enable'] = 'TRUE'
-      v.vmx['vhv.allow'] = 'TRUE'
-    end
-  end
-
   config.vm.define "salt" do |salt|
     salt.vm.box = "bento/ubuntu-16.04"
 
@@ -125,56 +104,6 @@ Vagrant.configure("2") do |config|
       s.run_highstate = true
       s.salt_call_args = ["--force-color", "--output-diff"]
     end
-  end
-
-  config.vm.define "spec-ubuntu" do |ubuntu|
-    ubuntu.vm.box = "spox/ubuntu-16.04"
-    ubuntu.vm.network :private_network, ip: "192.168.33.10"
-  end
-
-  config.vm.define "spec-centos" do |centos|
-    centos.vm.box = "spox/centos-7"
-    #centos.vm.network :private_network, ip: "192.168.33.10", type: "dhcp"
-    #centos.vm.synced_folder ".", "/vagrant", type: "nfs",
-    #  rsync__exclude: ".git/"
-  end
-
-  config.vm.define "arch" do |arch|
-    #arch.vm.box = "wholebits/archlinux"
-    arch.vm.box = "arch"
-    arch.vm.provider :vmware_fusion do |v|
-      v.memory = 2048
-      v.cpus = 2
-      v.vmx['vhv.enable'] = 'TRUE'
-      v.vmx['vhv.allow'] = 'TRUE'
-    end
-
-    arch.vm.synced_folder "../vagrant",
-      "/code/vagrant"
-
-    arch.vm.synced_folder "../vagrant-installers",
-      "/code/vagrant-installers"
-    #arch.vm.network :private_network, ip: "192.168.33.10", type: "dhcp"
-    #arch.vm.synced_folder ".", "/vagrant", type: "nfs",
-    #  rsync__exclude: ".git/"
-    arch.vm.provision "shell", inline: <<-SHELL
-    sudo pacman -S vim tree htop base-devel --noconfirm
-    SHELL
-  end
-
-  config.vm.define "arch2" do |arch|
-    #arch.vm.box = "wholebits/archlinux"
-    arch.vm.box = "arch"
-    arch.vm.provider :vmware_fusion do |v|
-      v.memory = 2048
-      v.cpus = 2
-      v.vmx['vhv.enable'] = 'TRUE'
-      v.vmx['vhv.allow'] = 'TRUE'
-    end
-
-    arch.vm.provision "shell", inline: <<-SHELL
-    sudo pacman -Syu --noconfirm
-    SHELL
   end
 
   config.vm.define "windows" do |windows|
@@ -217,21 +146,6 @@ Vagrant.configure("2") do |config|
     #arch.vm.network :private_network, ip: "192.168.33.10", type: "dhcp"
     #arch.vm.synced_folder ".", "/vagrant", type: "nfs",
     #  rsync__exclude: ".git/"
-  end
-
-  config.vm.define "openindiana" do |o|
-    o.vm.box = "openindiana/hipster"
-    o.vm.provider :virtualbox
-
-    o.vm.synced_folder ".", "/vagrant", type: "rsync"
-  end
-
-  config.vm.define "ubuntu-unity" do |u|
-    u.vm.box = "boxcutter/ubuntu1604-desktop"
-    u.vm.provider :vmware_fusion do |v|
-      v.memory = 8048
-      v.cpus = 2
-    end
   end
 
   config.vm.define "debian" do |d|
