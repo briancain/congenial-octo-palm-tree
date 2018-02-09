@@ -109,6 +109,7 @@ Vagrant.configure("2") do |config|
   config.vm.define "windows" do |windows|
     windows.vm.box = "windowsbase"
     #windows.vm.box = "windowswsl"
+    #windows.vm.box = "windowshyperv"
 
     #windows.vm.provision :salt do |s|
     #  s.minion_config = "saltstack/etc/minion"
@@ -131,7 +132,7 @@ Vagrant.configure("2") do |config|
     end
 
     #windows.vm.synced_folder "../vagrant",
-    #  "/hashicorp/vagrant/embedded/gems/gems/vagrant-2.0.1"
+    #  "/hashicorp/vagrant/embedded/gems/gems/vagrant-2.0.2"
   end
 
   config.vm.define "windows-dev" do |windows|
@@ -143,27 +144,23 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "macos" do |windows|
     windows.vm.box = "hashicorp-vagrant/osx-10.9"
-    #arch.vm.network :private_network, ip: "192.168.33.10", type: "dhcp"
-    #arch.vm.synced_folder ".", "/vagrant", type: "nfs",
-    #  rsync__exclude: ".git/"
+  end
+
+  config.vm.define "arch" do |arch|
+    arch.vm.box = "hashicorp-vagrant/archlinux"
   end
 
   config.vm.define "debian" do |d|
+    d.vm.box = "debian/stretch64"
     #d.vm.box = "debian/jessie64"
     d.vm.box = "bento/debian-8.2"
     #d.vm.box = "debian93"
     d.vm.provider :virtualbox
-    #d.vm.provision "shell", inline: <<-SHELL
-    #sudo systemctl enable systemd-networkd.service
-    #sudo systemctl start systemd-networkd.service
-    #echo $?
-    #sudo systemctl status systemd-networkd.service
-    #SHELL
-    d.vm.network :private_network, ip: "192.168.33.10"
   end
 
   config.vm.define "ubuntu17" do |u|
     u.vm.box = "bento/ubuntu-17.10"
+    #u.vm.box = "ubuntu/artful64"
     u.vm.provider :virtualbox
     u.vm.network :private_network, ip: "192.168.33.10"
     u.vm.network "private_network", ip: "fde4:8dba:82e1::c4"
