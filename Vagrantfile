@@ -135,13 +135,6 @@ Vagrant.configure("2") do |config|
     #  "/hashicorp/vagrant/embedded/gems/gems/vagrant-2.0.2"
   end
 
-  config.vm.define "windows-dev" do |windows|
-    windows.vm.box = "spox/windows-10"
-    #windows.vm.synced_folder "../vagrant", "/vagrant-dev", rsync__exclude: ".git/"
-    windows.vm.synced_folder "../vagrant",
-      "/hashicorp/vagrant/embedded/gems/gems/vagrant-1.9.8.dev"
-  end
-
   config.vm.define "macos" do |windows|
     windows.vm.box = "hashicorp-vagrant/osx-10.9"
   end
@@ -150,10 +143,15 @@ Vagrant.configure("2") do |config|
     arch.vm.box = "hashicorp-vagrant/archlinux"
   end
 
+  config.vm.define "openbsd" do |bsd|
+    bsd.vm.box = "generic/openbsd6"
+    bsd.vm.network :private_network, type: "dhcp"
+  end
+
   config.vm.define "debian" do |d|
     d.vm.box = "debian/stretch64"
     #d.vm.box = "debian/jessie64"
-    d.vm.box = "bento/debian-8.2"
+    #d.vm.box = "bento/debian-8.2"
     #d.vm.box = "debian93"
     d.vm.provider :virtualbox
   end
