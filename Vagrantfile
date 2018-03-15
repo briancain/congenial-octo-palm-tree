@@ -46,6 +46,8 @@ Vagrant.configure("2") do |config|
     sudo apt update
     sudo apt install virtualbox-5.2 -y
     vboxmanage --version
+    curl -O https://releases.hashicorp.com/vagrant/2.0.3/vagrant_2.0.3_x86_64.deb
+    sudo dpkg -i vagrant_2.0.3_x86_64.deb
     SHELL
 
     #b.vm.synced_folder "../vagrant",
@@ -133,18 +135,18 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "windows" do |windows|
-    #windows.vm.box = "windowsbase"
+    windows.vm.box = "windowsbase"
     #windows.vm.box = "windowswsl"
     #windows.vm.box = "windowshyperv"
-    windows.vm.box = "windows7oldps"
+    #windows.vm.box = "windows7oldps"
     #windows.vm.box = "opentable/win-2008r2-standard-amd64-nocm"
 
-    windows.vm.provision "shell", inline: <<-SHELL
-    Write-Host "Downloading Powershell Upgrade"
-    (New-Object System.Net.WebClient).DownloadFile('https://download.microsoft.com/download/E/7/6/E76850B8-DA6E-4FF5-8CCE-A24FC513FD16/Windows6.1-KB2506143-x64.msu', 'C:\Windows\Temp\ps-upgrade.msu')
-    Write-Host "Installing Powershell Upgrade"
-    Start-Process "C:\Windows\Temp\ps-upgrade.msu" "/quiet /forcerestart" -Wait
-    SHELL
+    #windows.vm.provision "shell", inline: <<-SHELL
+    #Write-Host "Downloading Powershell Upgrade"
+    #(New-Object System.Net.WebClient).DownloadFile('https://download.microsoft.com/download/E/7/6/E76850B8-DA6E-4FF5-8CCE-A24FC513FD16/Windows6.1-KB2506143-x64.msu', 'C:\Windows\Temp\ps-upgrade.msu')
+    #Write-Host "Installing Powershell Upgrade"
+    #Start-Process "C:\Windows\Temp\ps-upgrade.msu" "/quiet /forcerestart" -Wait
+    #SHELL
 
     windows.vm.provision "shell", inline: <<-SHELL
     Write-Host "HypervisorPresent ?"
