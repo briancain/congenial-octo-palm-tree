@@ -6,8 +6,6 @@
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 Vagrant.configure("2") do |config|
-  config.ssh.shell = {"hello"=>"there"}
-
   config.vm.box = "bento/ubuntu-16.04"
 
   config.trigger.before :up, :halt, :destroy,
@@ -16,18 +14,27 @@ Vagrant.configure("2") do |config|
   config.trigger.before :whatup,
     run: {:inline=>"echo 'hi'"}
 
-  config.trigger.before :up, :destroy do |trigger|
+  config.trigger.before :up, :doesntexist, :destroy do |trigger|
     trigger.info = "hello"
     trigger.name = "Greetings"
-    trigger.run = {inline: "echo 'hi'",
-                   shell: "/bin/bash"}
-    trigger.ignore = "bork"
+    trigger.run = {inline: "echo 'hi'"}
+    trigger.ignore = :destroy
   end
 
   config.trigger.after :halt do |trigger|
-    trigger.run = {file: "~/vagrant.sh"}
+    trigger.run = {path: "script.sh"}
+    trigger.only_on = "mymachine"
   end
 
   config.vm.define "mymachine" do |m|
+    m.vm.box = "bento/ubuntu-16.04"
+    m.trigger.after :up, info: "hello", name: "Machine Trigger"
+  end
+
+  config.trigger.before :package do |trigger|
+    trigger.info = "Package stuff"
+    trigger.name = "Package"
+    trigger.on_error = :continue
+    trigger.run = {path: "script.sh"}
   end
 end
