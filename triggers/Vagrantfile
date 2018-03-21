@@ -9,7 +9,8 @@ Vagrant.configure("2") do |config|
   config.vm.box = "bento/ubuntu-16.04"
 
   config.trigger.before :up, :halt, :destroy,
-    name: "Greetings", info: "hello", run: {inline: "echo 'hi'"}
+    name: "Greetings", info: "hello", run: {inline: "echo 'hi'",
+                                            env: {"KEY"=>"VALUE"}}
 
   config.trigger.before :whatup,
     run: {:inline=>"echo 'hi'"}
