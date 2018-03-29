@@ -1,1 +1,1 @@
-echo 'cool script'
+uname -a
