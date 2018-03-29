@@ -12,22 +12,26 @@ Vagrant.configure("2") do |config|
     name: "Greetings", info: "hello", run: {inline: "echo 'hi'",
                                             env: {"KEY"=>"VALUE"}}
 
+  config.trigger.before :up,
+    name: "Ignore Me", info: "Ignore", only_on: ["noguest", /ubuntu/]
+
   config.trigger.before :whatup,
     run: {:inline=>"echo 'hi'"}
 
   config.trigger.before :up, :doesntexist, :destroy do |trigger|
     trigger.info = "hello"
-    trigger.name = "Greetings"
+    trigger.name = "Important Trigger"
     trigger.run = {inline: "echo 'hi'"}
     trigger.ignore = :destroy
   end
 
   config.trigger.after :halt do |trigger|
+    trigger.warn = "I AM A WARNING"
     trigger.run = {path: "script.sh"}
     trigger.only_on = "mymachine"
   end
 
-  config.vm.define "mymachine" do |m|
+  config.vm.define "ubuntu" do |m|
     m.vm.box = "bento/ubuntu-16.04"
     m.trigger.after :up, info: "hello", name: "Machine Trigger"
   end
