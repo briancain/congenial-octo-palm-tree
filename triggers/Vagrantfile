@@ -8,47 +8,44 @@
 Vagrant.configure("2") do |config|
   config.vm.box = "bento/ubuntu-16.04"
 
-  config.trigger.before :up, :halt, :destroy,
-    name: "Greetings", info: "hello", run: {inline: "echo 'Cool script'",
-                                            env: {"KEY"=>"VALUE"}}
+
+  config.trigger.after :up do |trigger|
+    trigger.name = "Greetings"
+    trigger.run_remote = {inline: "Write-Host 'Hello there'"}
+    trigger.only_on = "windows"
+  end
 
   config.trigger.before :up do |trigger|
-    trigger.warn = "I'm going to fail"
-    trigger.run = {inline: "fail"}
-    trigger.on_error = :continue
-  end
-
-  config.trigger.before :up,
-    name: "Ignore Me", info: "Ignore", only_on: ["noguest", /ubuntu/]
-
-  config.trigger.before :up,
-    name: "Info", info: "Getting system info", run: {path: "script.sh"}
-
-  config.trigger.before :whatup,
-    run: {:inline=>"echo 'hi'"}
-
-  config.trigger.before :up, :doesntexist, :destroy do |trigger|
-    trigger.info = "hello"
-    trigger.name = "Important Trigger"
-    trigger.run = {inline: "echo 'hi'"}
-    trigger.ignore = :destroy
-  end
-
-  config.trigger.after :halt do |trigger|
-    trigger.warn = "I AM A WARNING"
+    trigger.name = "System Information"
+    trigger.info = "Getting information about host..."
     trigger.run = {path: "script.sh"}
-    trigger.only_on = "mymachine"
+  end
+
+  config.trigger.before :up do |trigger|
+    trigger.name = "System Information"
+    trigger.info = "Getting information about guest..."
+    trigger.on_error = :continue
+    trigger.run_remote = {path: "script.sh"}
+  end
+
+  config.trigger.after :up do |trigger|
+    trigger.name = "Update System"
+    trigger.info = "Running system update"
+    trigger.run_remote = {inline: "echo 'update'"}
+    trigger.only_on = /ubuntu/
+  end
+
+  config.trigger.before :all do |trigger|
+    trigger.name = "ALL"
+    trigger.info = "BEFORE ALL ACTIONS"
+    trigger.ignore = :up
   end
 
   config.vm.define "ubuntu" do |m|
     m.vm.box = "bento/ubuntu-16.04"
-    m.trigger.after :up, info: "hello", name: "Machine Trigger"
   end
 
-  config.trigger.before :package do |trigger|
-    trigger.info = "Package stuff"
-    trigger.name = "Package"
-    trigger.on_error = :continue
-    trigger.run = {path: "script.sh"}
+  config.vm.define "windows" do |m|
+    m.vm.box = "windowsbase"
   end
 end
