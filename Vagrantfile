@@ -36,6 +36,7 @@ Vagrant.configure("2") do |config|
       v.vmx['vhv.allow'] = 'TRUE'
     end
 
+    version = "2.0.3"
     b.vm.provision "VirtualBox", type: "shell", inline: <<-SHELL
     sudo apt-get update
     DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" upgrade
@@ -44,10 +45,10 @@ Vagrant.configure("2") do |config|
     wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | sudo apt-key add -
     sudo sh -c 'echo "deb http://download.virtualbox.org/virtualbox/debian $(lsb_release -sc) contrib" >> /etc/apt/sources.list'
     sudo apt update
-    sudo apt install virtualbox-5.2 -y
+    sudo apt install virtualbox-5.1 -y
     vboxmanage --version
-    curl -O https://releases.hashicorp.com/vagrant/2.0.3/vagrant_2.0.3_x86_64.deb
-    sudo dpkg -i vagrant_2.0.3_x86_64.deb
+    curl -O https://releases.hashicorp.com/vagrant/#{version}/vagrant_#{version}_x86_64.deb
+    sudo dpkg -i vagrant_#{version}_x86_64.deb
     SHELL
 
     #b.vm.synced_folder "../vagrant",
