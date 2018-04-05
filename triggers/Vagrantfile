@@ -8,41 +8,18 @@
 Vagrant.configure("2") do |config|
   config.vm.box = "bento/ubuntu-16.04"
 
+  config.trigger.before :up,
+    info: "Tinyproxy",
+    run: {inline: "fail"}
 
-  config.trigger.after :up do |trigger|
-    trigger.name = "Greetings"
-    trigger.run_remote = {inline: "Write-Host 'Hello there'"}
-    trigger.only_on = "windows"
-  end
-
-  config.trigger.before :up do |trigger|
-    trigger.name = "System Information"
-    trigger.info = "Getting information about host..."
-    trigger.run = {path: "script.sh"}
-  end
-
-  config.trigger.before :up do |trigger|
-    trigger.name = "System Information"
-    trigger.info = "Getting information about guest..."
-    trigger.on_error = :continue
-    trigger.run_remote = {path: "script.sh"}
-  end
-
-  config.trigger.after :up do |trigger|
-    trigger.name = "Update System"
-    trigger.info = "Running system update"
-    trigger.run_remote = {inline: "echo 'update'"}
-    trigger.only_on = /ubuntu/
-  end
-
-  config.trigger.before :all do |trigger|
-    trigger.name = "ALL"
-    trigger.info = "BEFORE ALL ACTIONS"
-    trigger.ignore = :up
-  end
+  config.trigger.after :destroy,
+    info: "Tinyproxy",
+    on_error: :continue,
+    run: {inline: "brew services stop tinyproxy"}
 
   config.vm.define "ubuntu" do |m|
     m.vm.box = "bento/ubuntu-16.04"
+    m.trigger.before :up, {info: "only 1"}
   end
 
   config.vm.define "windows" do |m|

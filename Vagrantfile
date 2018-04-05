@@ -177,7 +177,7 @@ Vagrant.configure("2") do |config|
     end
 
     #windows.vm.synced_folder "../vagrant",
-    #  "/hashicorp/vagrant/embedded/gems/gems/vagrant-2.0.2"
+    #  "/hashicorp/vagrant/embedded/gems/2.0.3/gems/vagrant-2.0.3"
   end
 
   config.vm.define "macos" do |m|
