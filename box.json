@@ -1,5 +1,5 @@
 {
-  "name": "hashicorp/precise64",
+  "name": "hashicorp/precise64_custom",
   "description": "This box contains Ubuntu 12.04 LTS 64-bit.",
   "versions": [
     {

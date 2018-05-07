@@ -1,1 +1,1 @@
-touch testfile
+echo 'hello there'

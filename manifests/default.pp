@@ -1,1 +1,3 @@
-notify{"hello":}
+file { '/home/vagrant/hello.txt':
+  ensure => present,
+}

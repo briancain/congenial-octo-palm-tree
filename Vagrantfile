@@ -8,15 +8,19 @@
 Vagrant.configure("2") do |config|
   config.vm.define "bork" do |b|
     b.vm.box = "bento/ubuntu-16.04"
+
+    # Start a web server locally to serve up box
+    #b.vm.box = "hashicorp/precise64_custom"
     #b.vm.box_url = "http://localhost:8000/box.json"
 
-    #b.vm.provider :virtualbox
-    b.vm.provider :vmware_fusion do |v|
-      v.memory = 8048
-      v.cpus = 2
-      v.vmx['vhv.enable'] = 'TRUE'
-      v.vmx['vhv.allow'] = 'TRUE'
-    end
+    #b.vm.network "private_network", ip: "192.168.50.4"
+    b.vm.provider :virtualbox
+    #b.vm.provider :vmware_fusion do |v|
+    #  v.memory = 8048
+    #  v.cpus = 2
+    #  v.vmx['vhv.enable'] = 'TRUE'
+    #  v.vmx['vhv.allow'] = 'TRUE'
+    #end
 
     b.vm.provision "shell", inline: <<-SHELL
     echo hello
@@ -36,16 +40,16 @@ Vagrant.configure("2") do |config|
       v.vmx['vhv.allow'] = 'TRUE'
     end
 
-    version = "2.0.3"
+    version = "2.1.0"
     b.vm.provision "VirtualBox", type: "shell", inline: <<-SHELL
     sudo apt-get update
     DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" upgrade
-    sudo apt -y install gcc make linux-headers-$(uname -r) dkms
+    sudo apt-get -y install gcc make linux-headers-$(uname -r) dkms
     wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
     wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | sudo apt-key add -
     sudo sh -c 'echo "deb http://download.virtualbox.org/virtualbox/debian $(lsb_release -sc) contrib" >> /etc/apt/sources.list'
-    sudo apt update
-    sudo apt install virtualbox-5.1 -y
+    sudo apt-get update
+    sudo apt-get install virtualbox-5.2 -y
     vboxmanage --version
     curl -O https://releases.hashicorp.com/vagrant/#{version}/vagrant_#{version}_x86_64.deb
     sudo dpkg -i vagrant_#{version}_x86_64.deb
@@ -66,17 +70,18 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "chef" do |chef|
     chef.vm.box = "bento/ubuntu-16.04"
-    #chef.vm.provider :virtualbox
-    chef.vm.provider :vmware
+    chef.vm.provider :virtualbox
+    #chef.vm.provider :vmware
 
-    chef.vm.provision :chef_solo do |c|
-      c.add_recipe "test"
-    end
+    chef.vm.provision 'chef_solo'
+    #chef.vm.provision :chef_solo do |c|
+    #  c.add_recipe "test"
+    #end
 
     #chef.vm.provision :chef_zero do |c|
     #  c.cookbooks_path = "."
     #  c.add_recipe "test"
-    #  c.nodes_path = "/not/real"
+    #  c.nodes_path = ["~/code/vagrant-sandbox/nodes"]
     #end
   end
 
@@ -94,9 +99,12 @@ Vagrant.configure("2") do |config|
 
     vbox.vm.provision :puppet
 
-    vbox.vm.provision "my file", type: "shell", inline: <<-SHELL
-      puppet --version
-    SHELL
+    vbox.vm.provision "puppet" do |puppet|
+    end
+
+    #vbox.vm.provision "my file", type: "shell", inline: <<-SHELL
+    #  puppet --version
+    #SHELL
   end
 
   config.vm.define "centos" do |vbox|
@@ -123,8 +131,6 @@ Vagrant.configure("2") do |config|
     salt.vm.box = "bento/ubuntu-16.04"
 
     salt.vm.provider :virtualbox
-    salt.vm.synced_folder ".", "/vagrant", type: "nfs"
-    salt.vm.network :private_network, ip: "192.168.44.20", type: "dhcp"
 
     salt.vm.provision :salt do |s|
       s.minion_config = "saltstack/etc/minion"
@@ -136,40 +142,21 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "windows" do |windows|
-    windows.vm.box = "windowsbase"
+    #windows.vm.box = "windowsbase"
+    windows.vm.box = "StefanScherer/windows_2016_docker"
     #windows.vm.box = "windowswsl"
     #windows.vm.box = "windowshyperv"
-    #windows.vm.box = "windows7oldps"
     #windows.vm.box = "opentable/win-2008r2-standard-amd64-nocm"
 
-    #windows.vm.provision "shell", inline: <<-SHELL
-    #Write-Host "Downloading Powershell Upgrade"
-    #(New-Object System.Net.WebClient).DownloadFile('https://download.microsoft.com/download/E/7/6/E76850B8-DA6E-4FF5-8CCE-A24FC513FD16/Windows6.1-KB2506143-x64.msu', 'C:\Windows\Temp\ps-upgrade.msu')
-    #Write-Host "Installing Powershell Upgrade"
-    #Start-Process "C:\Windows\Temp\ps-upgrade.msu" "/quiet /forcerestart" -Wait
-    #SHELL
+    #windows.vm.provision "shell", path: "scripts/info.ps1"
 
-    windows.vm.provision "shell", inline: <<-SHELL
-    Write-Host "HypervisorPresent ?"
-    $(Get-ComputerInfo).HypervisorPresent
-    Write-Host "Hyper-v Enabled ?"
-    $(Get-WindowsOptionalFeature -FeatureName Microsoft-Hyper-V-All -Online).State
-    Get-WindowsOptionalFeature -FeatureName Microsoft-Hyper-V-All -Online
-    Write-Host "Windows Version:"
-    $(gwmi win32_operatingsystem).Version
-    SHELL
+    windows.vm.provision "docker" do |d|
+      d.run "hello-world"
+    end
 
     #windows.vm.provision :salt do |s|
     #  s.minion_config = "saltstack/etc/minion"
-    #  s.install_type = "git"
-    #  s.verbose = true
-    #  s.run_highstate = true
-    #  s.masterless = true
-    #  s.install_args = "v2017.1.0"
-    #  #s.salt_call_args = ["--force-color", "--output-diff"]
-    #end
-
-    #windows.vm.provider :virtualbox
+    #  s.install_type = "gitwindows.vm.provider :virtualbox
     windows.vm.provider :vmware_fusion do |v|
       v.memory = "10000"
       v.vmx['vhv.enable'] = 'TRUE'
@@ -185,7 +172,16 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "arch" do |arch|
-    arch.vm.box = "hashicorp-vagrant/archlinux"
+    arch.vm.provider :virtualbox
+    #arch.vm.box = "hashicorp-vagrant/archlinux"
+    arch.vm.box = "generic/arch"
+    arch.vm.provision "shell", inline: <<-SHELL
+    sudo pacman -Syu --noconfirm
+    uname -a
+    sudo reboot
+    SHELL
+
+    arch.vm.synced_folder ".", "/vagrant", type: "virtualbox"
   end
 
   config.vm.define "openbsd" do |bsd|
