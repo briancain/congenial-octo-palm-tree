@@ -7,8 +7,7 @@
 # you're doing.
 Vagrant.configure("2") do |config|
   config.vm.define "bork" do |b|
-    b.vm.box = "bento/ubuntu-16.04"
-
+    b.vm.box = "bento/ubuntu-17.10"
     # Start a web server locally to serve up box
     #b.vm.box = "hashicorp/precise64_custom"
     #b.vm.box_url = "http://localhost:8000/box.json"
@@ -24,6 +23,7 @@ Vagrant.configure("2") do |config|
 
     b.vm.provision "shell", inline: <<-SHELL
     echo hello
+    sudo apt install tree -y
     SHELL
 
     #b.vm.synced_folder "../vagrant",
@@ -31,7 +31,9 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "vbox" do |b|
-    b.vm.box = "bento/ubuntu-16.04"
+    b.vm.box = "bento/ubuntu-18.04"
+    #b.vm.box = "generic/ubuntu1804"
+    #b.vm.box = "bento/debian-9.4"
 
     b.vm.provider :vmware_fusion do |v|
       v.memory = 8048
@@ -40,7 +42,7 @@ Vagrant.configure("2") do |config|
       v.vmx['vhv.allow'] = 'TRUE'
     end
 
-    version = "2.1.0"
+    version = "2.1.2"
     b.vm.provision "VirtualBox", type: "shell", inline: <<-SHELL
     sudo apt-get update
     DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" upgrade
@@ -56,13 +58,14 @@ Vagrant.configure("2") do |config|
     SHELL
 
     #b.vm.synced_folder "../vagrant",
-    #  "/opt/vagrant/embedded/gems/gems/vagrant-2.0.2"
+    #  "/opt/vagrant/embedded/gems/gems/vagrant-2.1.1"
   end
+
   (1..3).each do |i|
     config.vm.define "docker-#{i}"  do |vm|
       vm.vm.provider "docker" do |d|
-        d.image = "ubuntu"
-        #d.build_dir = "."
+        #d.image = "ubuntu"
+        d.build_dir = "."
         d.cmd = ["tail", "-f", "/dev/null"]
       end
     end
@@ -107,17 +110,9 @@ Vagrant.configure("2") do |config|
     #SHELL
   end
 
-  config.vm.define "centos" do |vbox|
-    vbox.vm.provider :virtualbox do |vb|
-      vb.customize ["modifyvm", :id, "--memory", "2048"]
-    end
-
-    vbox.vm.box = "bento/centos-7.2"
-    #vbox.vm.box = "centos/7"
-    #vbox.vm.network :private_network, ip: "192.191.91.10"
-
-    #vbox.vm.synced_folder ".", "/vagrant", type: "nfs",
-    #  rsync__exclude: ".git/"
+  config.vm.define "centos" do |centos|
+    centos.vm.box = "bento/centos-7.5"
+    centos.vm.network "private_network", type: "dhcp"
   end
 
   config.vm.define "ansible" do |ansible|
@@ -141,18 +136,36 @@ Vagrant.configure("2") do |config|
     end
   end
 
+  config.vm.define "windoze" do |windows|
+    windows.vm.box = "windowsbase"
+    windows.vm.provision "shell", inline: <<-SHELL
+    (gcim Win32_ComputerSystem).HypervisorPresent
+    SHELL
+
+    windows.vm.provider :vmware_fusion do |v|
+      v.memory = "10000"
+      v.vmx['vhv.enable'] = 'TRUE'
+      v.vmx['vhv.allow'] = 'TRUE'
+    end
+  end
+
   config.vm.define "windows" do |windows|
     #windows.vm.box = "windowsbase"
-    windows.vm.box = "StefanScherer/windows_2016_docker"
+    #windows.vm.box = "windows10vbox"
+    #windows.vm.box = "mwrock/Windows2016"
+    #windows.vm.box = "StefanScherer/windows_2016_docker"
     #windows.vm.box = "windowswsl"
-    #windows.vm.box = "windowshyperv"
+    windows.vm.box = "windowshyperv"
     #windows.vm.box = "opentable/win-2008r2-standard-amd64-nocm"
 
-    #windows.vm.provision "shell", path: "scripts/info.ps1"
+    windows.vm.provision "shell", inline: <<-SHELL
+    Write-Host "Compare"
+    (Get-Command Hyper-V\\Compare-VM).Parameters.Keys
+    Write-Host "Import"
+    (Get-Command Hyper-V\\Import-VM).Parameters.Keys
+    SHELL
 
-    windows.vm.provision "docker" do |d|
-      d.run "hello-world"
-    end
+    windows.vm.provision "shell", path: "scripts/info.ps1"
 
     #windows.vm.provision :salt do |s|
     #  s.minion_config = "saltstack/etc/minion"
@@ -163,8 +176,8 @@ Vagrant.configure("2") do |config|
       v.vmx['vhv.allow'] = 'TRUE'
     end
 
-    #windows.vm.synced_folder "../vagrant",
-    #  "/hashicorp/vagrant/embedded/gems/2.0.3/gems/vagrant-2.0.3"
+    windows.vm.synced_folder "../vagrant",
+      "/hashicorp/vagrant/embedded/gems/2.1.1/gems/vagrant-2.1.1"
   end
 
   config.vm.define "macos" do |m|
@@ -175,11 +188,6 @@ Vagrant.configure("2") do |config|
     arch.vm.provider :virtualbox
     #arch.vm.box = "hashicorp-vagrant/archlinux"
     arch.vm.box = "generic/arch"
-    arch.vm.provision "shell", inline: <<-SHELL
-    sudo pacman -Syu --noconfirm
-    uname -a
-    sudo reboot
-    SHELL
 
     arch.vm.synced_folder ".", "/vagrant", type: "virtualbox"
   end
@@ -191,14 +199,13 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "gentoo" do |g|
     g.vm.box = "generic/gentoo"
-    g.vm.network "private_network", ip: "192.168.33.10"
   end
 
   config.vm.define "debian" do |d|
-    d.vm.box = "debian/stretch64"
+    #d.vm.box = "debian/stretch64"
     #d.vm.box = "debian/jessie64"
-    #d.vm.box = "bento/debian-8.2"
-    #d.vm.box = "debian93"
+    d.vm.box = "bento/debian-8.2"
+    #d.vm.box = "bento/debian-9.4"
     d.vm.provider :virtualbox
   end
 
