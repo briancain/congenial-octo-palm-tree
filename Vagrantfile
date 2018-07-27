@@ -6,13 +6,16 @@
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 Vagrant.configure("2") do |config|
+  config.trigger.before :up do |trigger|
+    trigger.run = {path: "test.sh", args: ["-Test", "#{File.dirname(__FILE__) + 'path/to/test.pem'}"]}
+  end
+
   config.vm.define "bork" do |b|
-    b.vm.box = "bento/ubuntu-17.10"
+    b.vm.box = "bento/ubuntu-18.04"
     # Start a web server locally to serve up box
     #b.vm.box = "hashicorp/precise64_custom"
     #b.vm.box_url = "http://localhost:8000/box.json"
 
-    #b.vm.network "private_network", ip: "192.168.50.4"
     b.vm.provider :virtualbox
     #b.vm.provider :vmware_fusion do |v|
     #  v.memory = 8048
@@ -21,17 +24,12 @@ Vagrant.configure("2") do |config|
     #  v.vmx['vhv.allow'] = 'TRUE'
     #end
 
-    b.vm.provision "shell", inline: <<-SHELL
-    echo hello
-    sudo apt install tree -y
-    SHELL
-
     #b.vm.synced_folder "../vagrant",
     #  "/opt/vagrant/embedded/gems/gems/vagrant-2.0.2"
   end
 
   config.vm.define "vbox" do |b|
-    b.vm.box = "bento/ubuntu-18.04"
+    b.vm.box = "bento/ubuntu-16.04"
     #b.vm.box = "generic/ubuntu1804"
     #b.vm.box = "bento/debian-9.4"
 
@@ -55,6 +53,10 @@ Vagrant.configure("2") do |config|
     vboxmanage --version
     curl -O https://releases.hashicorp.com/vagrant/#{version}/vagrant_#{version}_x86_64.deb
     sudo dpkg -i vagrant_#{version}_x86_64.deb
+    mkdir /home/vagrant/vagrantsandbox
+    cd /home/vagrant/vagrantsandbox
+    vagrant init bento/ubuntu-16.04
+    vagrant box add bento/ubuntu-16.04
     SHELL
 
     #b.vm.synced_folder "../vagrant",
@@ -136,34 +138,14 @@ Vagrant.configure("2") do |config|
     end
   end
 
-  config.vm.define "windoze" do |windows|
-    windows.vm.box = "windowsbase"
-    windows.vm.provision "shell", inline: <<-SHELL
-    (gcim Win32_ComputerSystem).HypervisorPresent
-    SHELL
-
-    windows.vm.provider :vmware_fusion do |v|
-      v.memory = "10000"
-      v.vmx['vhv.enable'] = 'TRUE'
-      v.vmx['vhv.allow'] = 'TRUE'
-    end
-  end
-
   config.vm.define "windows" do |windows|
-    #windows.vm.box = "windowsbase"
+    windows.vm.box = "windowsbase"
     #windows.vm.box = "windows10vbox"
     #windows.vm.box = "mwrock/Windows2016"
     #windows.vm.box = "StefanScherer/windows_2016_docker"
     #windows.vm.box = "windowswsl"
-    windows.vm.box = "windowshyperv"
+    #windows.vm.box = "windowshyperv"
     #windows.vm.box = "opentable/win-2008r2-standard-amd64-nocm"
-
-    windows.vm.provision "shell", inline: <<-SHELL
-    Write-Host "Compare"
-    (Get-Command Hyper-V\\Compare-VM).Parameters.Keys
-    Write-Host "Import"
-    (Get-Command Hyper-V\\Import-VM).Parameters.Keys
-    SHELL
 
     windows.vm.provision "shell", path: "scripts/info.ps1"
 
@@ -176,8 +158,8 @@ Vagrant.configure("2") do |config|
       v.vmx['vhv.allow'] = 'TRUE'
     end
 
-    windows.vm.synced_folder "../vagrant",
-      "/hashicorp/vagrant/embedded/gems/2.1.1/gems/vagrant-2.1.1"
+    #windows.vm.synced_folder "../vagrant",
+    #  "/hashicorp/vagrant/embedded/gems/2.1.1/gems/vagrant-2.1.1"
   end
 
   config.vm.define "macos" do |m|
@@ -223,10 +205,5 @@ Vagrant.configure("2") do |config|
     d.vm.provision "docker" do |d|
       d.images = ["ubuntu"]
     end
-  end
-
-  config.vm.define "suse" do |s|
-    s.vm.box = "generic/opensuse42"
-    s.vm.provider :virtualbox
   end
 end
