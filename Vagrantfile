@@ -6,12 +6,9 @@
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 Vagrant.configure("2") do |config|
-  config.trigger.before :up do |trigger|
-    trigger.run = {path: "test.sh", args: ["-Test", "#{File.dirname(__FILE__) + 'path/to/test.pem'}"]}
-  end
-
   config.vm.define "bork" do |b|
     b.vm.box = "bento/ubuntu-18.04"
+    #b.vm.box_version = "201807.12.0"
     # Start a web server locally to serve up box
     #b.vm.box = "hashicorp/precise64_custom"
     #b.vm.box_url = "http://localhost:8000/box.json"
@@ -30,8 +27,6 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "vbox" do |b|
     b.vm.box = "bento/ubuntu-16.04"
-    #b.vm.box = "generic/ubuntu1804"
-    #b.vm.box = "bento/debian-9.4"
 
     b.vm.provider :vmware_fusion do |v|
       v.memory = 8048
@@ -53,18 +48,16 @@ Vagrant.configure("2") do |config|
     vboxmanage --version
     curl -O https://releases.hashicorp.com/vagrant/#{version}/vagrant_#{version}_x86_64.deb
     sudo dpkg -i vagrant_#{version}_x86_64.deb
-    mkdir /home/vagrant/vagrantsandbox
-    cd /home/vagrant/vagrantsandbox
-    vagrant init bento/ubuntu-16.04
-    vagrant box add bento/ubuntu-16.04
     SHELL
 
-    #b.vm.synced_folder "../vagrant",
-    #  "/opt/vagrant/embedded/gems/gems/vagrant-2.1.1"
+    b.vm.synced_folder "../vagrant",
+      "/opt/vagrant/embedded/gems/#{version}/gems/vagrant-#{version}"
   end
 
   (1..3).each do |i|
     config.vm.define "docker-#{i}"  do |vm|
+      vm.vm.synced_folder ".", "/guest/dir1", docker_consistency: "cached"
+      vm.vm.synced_folder "../vagrant", "/dev/vagrant", docker_consistency: "delegated"
       vm.vm.provider "docker" do |d|
         #d.image = "ubuntu"
         d.build_dir = "."
@@ -139,13 +132,9 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "windows" do |windows|
-    windows.vm.box = "windowsbase"
-    #windows.vm.box = "windows10vbox"
-    #windows.vm.box = "mwrock/Windows2016"
-    #windows.vm.box = "StefanScherer/windows_2016_docker"
-    #windows.vm.box = "windowswsl"
-    #windows.vm.box = "windowshyperv"
-    #windows.vm.box = "opentable/win-2008r2-standard-amd64-nocm"
+    #windows.vm.box = "windowsbase"
+    #windows.vm.box = "mwrock/Windows2012R2"
+    windows.vm.box = "opentable/win-2012r2-standard-amd64-nocm"
 
     windows.vm.provision "shell", path: "scripts/info.ps1"
 
@@ -174,19 +163,16 @@ Vagrant.configure("2") do |config|
     arch.vm.synced_folder ".", "/vagrant", type: "virtualbox"
   end
 
-  config.vm.define "openbsd" do |bsd|
-    bsd.vm.box = "generic/openbsd6"
-    bsd.vm.network :private_network, type: "dhcp"
-  end
-
-  config.vm.define "gentoo" do |g|
-    g.vm.box = "generic/gentoo"
+  config.vm.define "openindiana" do |o|
+    o.vm.provider :virtualbox
+    o.vm.box = "openindiana/hipster"
   end
 
   config.vm.define "debian" do |d|
-    #d.vm.box = "debian/stretch64"
-    #d.vm.box = "debian/jessie64"
-    d.vm.box = "bento/debian-8.2"
+    #d.vm.box = "bento/debian-7.8"
+    d.vm.box = "bento/debian-8.6"
+    d.vm.host_name = "debian.local"
+    d.vm.network "private_network", ip: "192.168.116.80"
     #d.vm.box = "bento/debian-9.4"
     d.vm.provider :virtualbox
   end
