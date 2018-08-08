@@ -60,7 +60,7 @@ Vagrant.configure("2") do |config|
       vm.vm.synced_folder "../vagrant", "/dev/vagrant", docker_consistency: "delegated"
       vm.vm.provider "docker" do |d|
         #d.image = "ubuntu"
-        d.build_dir = "."
+        d.build_dir = "docker"
         d.cmd = ["tail", "-f", "/dev/null"]
       end
     end
@@ -183,13 +183,5 @@ Vagrant.configure("2") do |config|
     u.vm.provider :virtualbox
     u.vm.network :private_network, ip: "192.168.33.10"
     u.vm.network "private_network", ip: "fde4:8dba:82e1::c4"
-  end
-
-  config.vm.define "dockerwindows" do |d|
-    d.vm.box = "StefanScherer/windows_2016_docker"
-    d.vm.box_version = "2017.12.14"
-    d.vm.provision "docker" do |d|
-      d.images = ["ubuntu"]
-    end
   end
 end
