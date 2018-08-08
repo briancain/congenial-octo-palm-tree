@@ -132,7 +132,6 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "windows" do |windows|
-    #windows.vm.box = "windowsbase"
     #windows.vm.box = "mwrock/Windows2012R2"
     windows.vm.box = "opentable/win-2012r2-standard-amd64-nocm"
 
@@ -147,8 +146,8 @@ Vagrant.configure("2") do |config|
       v.vmx['vhv.allow'] = 'TRUE'
     end
 
-    #windows.vm.synced_folder "../vagrant",
-    #  "/hashicorp/vagrant/embedded/gems/2.1.1/gems/vagrant-2.1.1"
+    windows.vm.synced_folder "../vagrant",
+      "/hashicorp/vagrant/embedded/gems/2.1.2/gems/vagrant-2.1.2"
   end
 
   config.vm.define "macos" do |m|
