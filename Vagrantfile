@@ -8,7 +8,6 @@
 Vagrant.configure("2") do |config|
   config.vm.define "bork" do |b|
     b.vm.box = "bento/ubuntu-18.04"
-    #b.vm.box_version = "201807.12.0"
     # Start a web server locally to serve up box
     #b.vm.box = "hashicorp/precise64_custom"
     #b.vm.box_url = "http://localhost:8000/box.json"
@@ -146,8 +145,8 @@ Vagrant.configure("2") do |config|
       v.vmx['vhv.allow'] = 'TRUE'
     end
 
-    windows.vm.synced_folder "../vagrant",
-      "/hashicorp/vagrant/embedded/gems/2.1.2/gems/vagrant-2.1.2"
+    #windows.vm.synced_folder "../vagrant",
+    #  "/hashicorp/vagrant/embedded/gems/2.1.2/gems/vagrant-2.1.2"
   end
 
   config.vm.define "macos" do |m|
