@@ -84,8 +84,6 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "puppet" do |vbox|
     vbox.vm.box = "bento/ubuntu-16.04"
-    vbox.vm.network "private_network", type: "dhcp"
-    vbox.vm.provider :vmware
 
     vbox.vm.provision "shell", inline: <<-SHELL
     wget https://apt.puppetlabs.com/puppet5-release-xenial.deb
@@ -94,14 +92,15 @@ Vagrant.configure("2") do |config|
     sudo apt-get install puppet-agent
     SHELL
 
-    vbox.vm.provision :puppet
-
-    vbox.vm.provision "puppet" do |puppet|
+    vbox.vm.provision :puppet do |p|
+      p.module_path = ['modules', 'site']
     end
 
-    #vbox.vm.provision "my file", type: "shell", inline: <<-SHELL
-    #  puppet --version
-    #SHELL
+    vbox.vm.provider :virtualbox
+
+    vbox.vm.provision "shell", inline: <<-SHELL
+      puppet --version
+    SHELL
   end
 
   config.vm.define "centos" do |centos|
@@ -145,8 +144,8 @@ Vagrant.configure("2") do |config|
       v.vmx['vhv.allow'] = 'TRUE'
     end
 
-    #windows.vm.synced_folder "../vagrant",
-    #  "/hashicorp/vagrant/embedded/gems/2.1.2/gems/vagrant-2.1.2"
+    windows.vm.synced_folder "../vagrant",
+      "/hashicorp/vagrant/embedded/gems/2.1.2/gems/vagrant-2.1.2"
   end
 
   config.vm.define "macos" do |m|
