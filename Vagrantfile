@@ -49,8 +49,8 @@ Vagrant.configure("2") do |config|
     sudo dpkg -i vagrant_#{version}_x86_64.deb
     SHELL
 
-    b.vm.synced_folder "../vagrant",
-      "/opt/vagrant/embedded/gems/#{version}/gems/vagrant-#{version}"
+    #b.vm.synced_folder "../vagrant",
+    #  "/opt/vagrant/embedded/gems/#{version}/gems/vagrant-#{version}"
   end
 
   (1..3).each do |i|
@@ -61,6 +61,7 @@ Vagrant.configure("2") do |config|
         #d.image = "ubuntu"
         d.build_dir = "docker"
         d.cmd = ["tail", "-f", "/dev/null"]
+        d.compose = true
       end
     end
   end
