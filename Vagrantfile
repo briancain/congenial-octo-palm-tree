@@ -140,6 +140,7 @@ Vagrant.configure("2") do |config|
     #  s.install_type = "gitwindows.vm.provider :virtualbox
     windows.vm.provider :vmware_fusion do |v|
       v.memory = "10000"
+      v.cpus = 4
       v.vmx['vhv.enable'] = 'TRUE'
       v.vmx['vhv.allow'] = 'TRUE'
     end
