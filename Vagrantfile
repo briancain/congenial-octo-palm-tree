@@ -5,8 +5,8 @@
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
+message="hi there"
 Vagrant.configure("2") do |config|
-  #config.vagrant.plugins = ["vagrant-hostsupdater", "vagrant-env"]
   config.vm.define "bork" do |b|
     b.vm.box = "bento/ubuntu-18.04"
     # Start a web server locally to serve up box
@@ -151,8 +151,8 @@ Vagrant.configure("2") do |config|
       v.vmx["hypervisor.cpuid.0"] = "FALSE"
     end
 
-    #windows.vm.synced_folder "../vagrant",
-    #  "/hashicorp/vagrant/embedded/gems/2.1.2/gems/vagrant-2.1.2"
+    windows.vm.synced_folder "../vagrant",
+      "/hashicorp/vagrant/embedded/gems/2.1.3/gems/vagrant-2.1.3"
   end
 
   config.vm.define "macos" do |m|
