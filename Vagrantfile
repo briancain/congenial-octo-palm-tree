@@ -6,11 +6,14 @@
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 Vagrant.configure("2") do |config|
+  #config.vagrant.plugins = ["vagrant-hostsupdater", "vagrant-env"]
   config.vm.define "bork" do |b|
     b.vm.box = "bento/ubuntu-18.04"
     # Start a web server locally to serve up box
     #b.vm.box = "hashicorp/precise64_custom"
     #b.vm.box_url = "http://localhost:8000/box.json"
+
+    #b.vm.network "private_network", type: "dhcp"
 
     b.vm.provider :virtualbox
     #b.vm.provider :vmware_fusion do |v|
@@ -34,7 +37,7 @@ Vagrant.configure("2") do |config|
       v.vmx['vhv.allow'] = 'TRUE'
     end
 
-    version = "2.1.2"
+    version = "2.1.3"
     b.vm.provision "VirtualBox", type: "shell", inline: <<-SHELL
     sudo apt-get update
     DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" upgrade
@@ -49,14 +52,14 @@ Vagrant.configure("2") do |config|
     sudo dpkg -i vagrant_#{version}_x86_64.deb
     SHELL
 
-    #b.vm.synced_folder "../vagrant",
-    #  "/opt/vagrant/embedded/gems/#{version}/gems/vagrant-#{version}"
+   # b.vm.synced_folder "../vagrant",
+   #   "/opt/vagrant/embedded/gems/#{version}/gems/vagrant-#{version}"
   end
 
   (1..3).each do |i|
     config.vm.define "docker-#{i}"  do |vm|
-      vm.vm.synced_folder ".", "/guest/dir1", docker_consistency: "cached"
-      vm.vm.synced_folder "../vagrant", "/dev/vagrant", docker_consistency: "delegated"
+      vm.vm.synced_folder "/Users/brian/code/vagrant-sandbox", "/guest/dir1"
+      vm.vm.synced_folder "../vagrant", "/dev/vagrant"
       vm.vm.provider "docker" do |d|
         #d.image = "ubuntu"
         d.build_dir = "docker"
@@ -105,6 +108,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "centos" do |centos|
+    centos.vm.provider :virtualbox
     centos.vm.box = "bento/centos-7.5"
     centos.vm.network "private_network", type: "dhcp"
   end
@@ -131,7 +135,8 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "windows" do |windows|
-    windows.vm.box = "StefanScherer/windows_10"
+    #windows.vm.box = "StefanScherer/windows_10"
+    windows.vm.box = "windows2016"
 
     windows.vm.provision "shell", path: "scripts/info.ps1"
 
@@ -143,6 +148,7 @@ Vagrant.configure("2") do |config|
       v.cpus = 4
       v.vmx['vhv.enable'] = 'TRUE'
       v.vmx['vhv.allow'] = 'TRUE'
+      v.vmx["hypervisor.cpuid.0"] = "FALSE"
     end
 
     #windows.vm.synced_folder "../vagrant",
@@ -173,13 +179,5 @@ Vagrant.configure("2") do |config|
     d.vm.network "private_network", ip: "192.168.116.80"
     #d.vm.box = "bento/debian-9.4"
     d.vm.provider :virtualbox
-  end
-
-  config.vm.define "ubuntu17" do |u|
-    u.vm.box = "bento/ubuntu-17.10"
-    #u.vm.box = "ubuntu/artful64"
-    u.vm.provider :virtualbox
-    u.vm.network :private_network, ip: "192.168.33.10"
-    u.vm.network "private_network", ip: "fde4:8dba:82e1::c4"
   end
 end
