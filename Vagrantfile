@@ -134,6 +134,10 @@ Vagrant.configure("2") do |config|
       s.run_highstate = true
       s.salt_call_args = ["--force-color", "--output-diff"]
     end
+
+    salt.vm.provision "shell", inline:<<-SHELL
+    salt-call --version
+    SHELL
   end
 
   config.vm.define "windows" do |windows|
