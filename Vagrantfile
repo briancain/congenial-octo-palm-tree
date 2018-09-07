@@ -39,7 +39,7 @@ Vagrant.configure("2") do |config|
       v.vmx['vhv.allow'] = 'TRUE'
     end
 
-    version = "2.1.3"
+    version = "2.1.4"
     b.vm.provision "VirtualBox", type: "shell", inline: <<-SHELL
     sudo apt-get update
     DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" upgrade
@@ -154,7 +154,7 @@ Vagrant.configure("2") do |config|
     end
 
     windows.vm.synced_folder "../vagrant",
-      "/hashicorp/vagrant/embedded/gems/2.1.3/gems/vagrant-2.1.3"
+      "/hashicorp/vagrant/embedded/gems/2.1.4/gems/vagrant-2.1.4"
   end
 
   config.vm.define "macos" do |m|
