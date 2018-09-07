@@ -14,7 +14,10 @@ Vagrant.configure("2") do |config|
 
     #b.vm.network "private_network", type: "dhcp"
 
-    b.vm.provider :virtualbox
+    #b.vm.provider :virtualbox
+    b.vm.provider :virtualbox do |v|
+      v.linked_clone = true
+    end
     #b.vm.provider :vmware_fusion do |v|
     #  v.memory = 8048
     #  v.cpus = 2
