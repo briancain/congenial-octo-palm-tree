@@ -8,11 +8,18 @@
 Vagrant.configure("2") do |config|
   config.vm.define "bork" do |b|
     b.vm.box = "bento/ubuntu-18.04"
+
     # Start a web server locally to serve up box
     #b.vm.box = "hashicorp/precise64_custom"
     #b.vm.box_url = "http://localhost:8000/box.json"
 
-    #b.vm.network "private_network", type: "dhcp"
+    b.vm.network "private_network", type: "dhcp"
+
+    #b.vm.provision "shell", inline:<<-SHELL
+    #SHELL
+
+    #b.vm.synced_folder "scripts", "/vagrant", type: "rsync",
+    #  rsync__args: ["-avz", "--copy-links"]
 
     #b.vm.provider :virtualbox
     b.vm.provider :virtualbox do |v|
@@ -52,10 +59,11 @@ Vagrant.configure("2") do |config|
     vboxmanage --version
     curl -O https://releases.hashicorp.com/vagrant/#{version}/vagrant_#{version}_x86_64.deb
     sudo dpkg -i vagrant_#{version}_x86_64.deb
+    vagrant --version
     SHELL
 
-   # b.vm.synced_folder "../vagrant",
-   #   "/opt/vagrant/embedded/gems/#{version}/gems/vagrant-#{version}"
+   #b.vm.synced_folder "../vagrant",
+   #  "/opt/vagrant/embedded/gems/#{version}/gems/vagrant-#{version}"
   end
 
   (1..3).each do |i|
