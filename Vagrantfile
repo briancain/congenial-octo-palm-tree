@@ -163,6 +163,7 @@ Vagrant.configure("2") do |config|
       v.cpus = 4
       v.vmx['vhv.enable'] = 'TRUE'
       v.vmx['vhv.allow'] = 'TRUE'
+      v.vmx["hypervisor.cpuid.0"] = "FALSE"
     end
 
     #windows.vm.synced_folder "../vagrant",
