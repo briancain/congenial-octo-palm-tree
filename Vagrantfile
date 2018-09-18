@@ -132,6 +132,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "salt" do |salt|
     salt.vm.box = "bento/ubuntu-16.04"
+    #salt.vm.box = "boxcutter/win10"
 
     salt.vm.provider :virtualbox
 
@@ -141,6 +142,10 @@ Vagrant.configure("2") do |config|
       s.verbose = true
       s.run_highstate = true
       s.salt_call_args = ["--force-color", "--output-diff"]
+
+      s.pillar({
+          "demo" => "HELLO"
+        })
     end
 
     salt.vm.provision "shell", inline:<<-SHELL
