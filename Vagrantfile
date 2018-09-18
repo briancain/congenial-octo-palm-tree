@@ -13,7 +13,7 @@ Vagrant.configure("2") do |config|
     #b.vm.box = "hashicorp/precise64_custom"
     #b.vm.box_url = "http://localhost:8000/box.json"
 
-    b.vm.network "private_network", type: "dhcp"
+    #b.vm.network "private_network", type: "dhcp"
 
     #b.vm.provision "shell", inline:<<-SHELL
     #SHELL
@@ -21,10 +21,10 @@ Vagrant.configure("2") do |config|
     #b.vm.synced_folder "scripts", "/vagrant", type: "rsync",
     #  rsync__args: ["-avz", "--copy-links"]
 
-    #b.vm.provider :virtualbox
-    b.vm.provider :virtualbox do |v|
-      v.linked_clone = true
-    end
+    b.vm.provider :virtualbox
+    #b.vm.provider :virtualbox do |v|
+    #  v.linked_clone = true
+    #end
     #b.vm.provider :vmware_fusion do |v|
     #  v.memory = 8048
     #  v.cpus = 2
@@ -37,7 +37,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "vbox" do |b|
-    b.vm.box = "bento/ubuntu-16.04"
+    b.vm.box = "bento/ubuntu-18.04"
 
     b.vm.provider :vmware_fusion do |v|
       v.memory = 8048
@@ -46,7 +46,7 @@ Vagrant.configure("2") do |config|
       v.vmx['vhv.allow'] = 'TRUE'
     end
 
-    version = "2.1.4"
+    version = "2.1.5"
     b.vm.provision "VirtualBox", type: "shell", inline: <<-SHELL
     sudo apt-get update
     DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" upgrade
@@ -160,9 +160,10 @@ Vagrant.configure("2") do |config|
 
     windows.vm.provision "shell", path: "scripts/info.ps1"
 
-    #windows.vm.provision :salt do |s|
-    #  s.minion_config = "saltstack/etc/minion"
-    #  s.install_type = "gitwindows.vm.provider :virtualbox
+    #windows.vm.provision :puppet do |p|
+    #  p.module_path = ['modules', 'site']
+    #end
+
     windows.vm.provider :vmware_fusion do |v|
       v.memory = "10000"
       v.cpus = 4
