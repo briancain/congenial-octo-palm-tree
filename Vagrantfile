@@ -74,7 +74,6 @@ Vagrant.configure("2") do |config|
         #d.image = "ubuntu"
         d.build_dir = "docker"
         d.cmd = ["tail", "-f", "/dev/null"]
-        d.compose = true
       end
     end
   end
@@ -186,11 +185,6 @@ Vagrant.configure("2") do |config|
     arch.vm.box = "generic/arch"
 
     arch.vm.synced_folder ".", "/vagrant", type: "virtualbox"
-  end
-
-  config.vm.define "openindiana" do |o|
-    o.vm.provider :virtualbox
-    o.vm.box = "openindiana/hipster"
   end
 
   config.vm.define "debian" do |d|
