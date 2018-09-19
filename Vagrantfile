@@ -73,6 +73,7 @@ Vagrant.configure("2") do |config|
       vm.vm.provider "docker" do |d|
         #d.image = "ubuntu"
         d.build_dir = "docker"
+        #d.git_repo = "https://github.com/briancain/nginx-docker-test.git"
         d.cmd = ["tail", "-f", "/dev/null"]
       end
     end
