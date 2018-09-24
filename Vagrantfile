@@ -8,12 +8,13 @@
 Vagrant.configure("2") do |config|
   config.vm.define "bork" do |b|
     b.vm.box = "bento/ubuntu-18.04"
+    b.ssh.forward_agent = true
 
     # Start a web server locally to serve up box
     #b.vm.box = "hashicorp/precise64_custom"
     #b.vm.box_url = "http://localhost:8000/box.json"
 
-    #b.vm.network "private_network", type: "dhcp"
+    b.vm.network "private_network", type: "dhcp"
 
     #b.vm.provision "shell", inline:<<-SHELL
     #SHELL
@@ -21,10 +22,10 @@ Vagrant.configure("2") do |config|
     #b.vm.synced_folder "scripts", "/vagrant", type: "rsync",
     #  rsync__args: ["-avz", "--copy-links"]
 
-    b.vm.provider :virtualbox
-    #b.vm.provider :virtualbox do |v|
-    #  v.linked_clone = true
-    #end
+    #b.vm.provider :virtualbox
+    b.vm.provider :virtualbox do |v|
+      v.linked_clone = true
+    end
     #b.vm.provider :vmware_fusion do |v|
     #  v.memory = 8048
     #  v.cpus = 2
