@@ -120,6 +120,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "centos" do |centos|
     centos.vm.provider :virtualbox
+    centos.vm.hostname = "centos.local"
     centos.vm.box = "bento/centos-7.5"
     centos.vm.network "private_network", type: "dhcp"
   end
@@ -184,6 +185,20 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "macos" do |m|
     m.vm.box = "hashicorp-vagrant/osx-10.9"
+  end
+
+  config.vm.define "coreos" do |c|
+    c.vm.box = "coreos"
+    c.vm.provider :virtualbox
+    c.vm.network "private_network", type: "dhcp"
+  end
+
+  config.vm.define "fedora" do |c|
+    c.vm.box = "fedora-rawhide"
+    c.vm.provider :virtualbox
+    c.vm.hostname = "fedora.local"
+    c.vm.network "private_network", ip: "192.168.116.80"
+    c.vm.synced_folder ".", "/vagrant", disabled: true
   end
 
   config.vm.define "arch" do |arch|
