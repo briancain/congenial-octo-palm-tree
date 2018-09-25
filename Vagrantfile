@@ -187,12 +187,6 @@ Vagrant.configure("2") do |config|
     m.vm.box = "hashicorp-vagrant/osx-10.9"
   end
 
-  config.vm.define "coreos" do |c|
-    c.vm.box = "coreos"
-    c.vm.provider :virtualbox
-    c.vm.network "private_network", type: "dhcp"
-  end
-
   config.vm.define "fedora" do |c|
     c.vm.box = "fedora-rawhide"
     c.vm.provider :virtualbox
