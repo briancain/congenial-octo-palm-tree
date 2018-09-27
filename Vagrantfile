@@ -204,10 +204,10 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "debian" do |d|
     #d.vm.box = "bento/debian-7.8"
-    d.vm.box = "bento/debian-8.6"
-    d.vm.host_name = "debian.local"
-    d.vm.network "private_network", ip: "192.168.116.80"
-    #d.vm.box = "bento/debian-9.4"
+    #d.vm.box = "bento/debian-8.6"
+    #d.vm.box = "debian/contrib-jessie64"
+    #d.vm.box = "bento/ubuntu-18.04"
+    d.vm.box = "bento/debian-9.4"
     d.vm.provider :virtualbox
     d.vm.network "private_network", type: "dhcp"
   end
