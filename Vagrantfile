@@ -8,7 +8,6 @@
 Vagrant.configure("2") do |config|
   config.vm.define "bork" do |b|
     b.vm.box = "bento/ubuntu-18.04"
-    b.ssh.forward_agent = true
 
     # Start a web server locally to serve up box
     #b.vm.box = "hashicorp/precise64_custom"
