@@ -68,7 +68,6 @@ Vagrant.configure("2") do |config|
 
   (1..3).each do |i|
     config.vm.define "docker-#{i}"  do |vm|
-      vm.vm.synced_folder "/Users/brian/code/vagrant-sandbox", "/guest/dir1"
       vm.vm.synced_folder "../vagrant", "/dev/vagrant"
       vm.vm.provider "docker" do |d|
         #d.image = "ubuntu"
