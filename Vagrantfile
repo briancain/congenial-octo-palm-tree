@@ -39,7 +39,7 @@ Vagrant.configure("2") do |config|
   config.vm.define "vbox" do |b|
     b.vm.box = "bento/ubuntu-18.04"
 
-    b.vm.provider :vmware_fusion do |v|
+    b.vm.provider :vmware_desktop do |v|
       v.memory = 8048
       v.cpus = 2
       v.vmx['vhv.enable'] = 'TRUE'
