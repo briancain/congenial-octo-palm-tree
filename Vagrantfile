@@ -195,7 +195,6 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "arch" do |arch|
     arch.vm.provider :virtualbox
-    #arch.vm.box = "hashicorp-vagrant/archlinux"
     arch.vm.box = "generic/arch"
 
     arch.vm.synced_folder ".", "/vagrant", type: "virtualbox"
