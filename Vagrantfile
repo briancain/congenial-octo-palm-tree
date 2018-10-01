@@ -186,11 +186,8 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "fedora" do |c|
-    c.vm.box = "fedora-rawhide"
+    c.vm.box = "generic/fedora28"
     c.vm.provider :virtualbox
-    c.vm.hostname = "fedora.local"
-    c.vm.network "private_network", ip: "192.168.116.80"
-    c.vm.synced_folder ".", "/vagrant", disabled: true
   end
 
   config.vm.define "arch" do |arch|
