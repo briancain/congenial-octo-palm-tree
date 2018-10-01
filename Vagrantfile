@@ -25,7 +25,7 @@ Vagrant.configure("2") do |config|
     b.vm.provider :virtualbox do |v|
       v.linked_clone = true
     end
-    #b.vm.provider :vmware_fusion do |v|
+    #b.vm.provider :vmware_desktop do |v|
     #  v.memory = 8048
     #  v.cpus = 2
     #  v.vmx['vhv.enable'] = 'TRUE'
@@ -155,8 +155,8 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "windows" do |windows|
     #windows.vm.box = "StefanScherer/windows_10"
-    windows.vm.box = "windows2016"
-    #windows.vm.box = "boxcutter/win10"
+    #windows.vm.box = "windows2016"
+    windows.vm.box = "windows10"
 
     windows.vm.provision "shell", path: "scripts/info.ps1"
 
@@ -164,8 +164,9 @@ Vagrant.configure("2") do |config|
     #  p.module_path = ['modules', 'site']
     #end
 
-    windows.vm.provider :vmware_fusion do |v|
-      v.memory = "10000"
+    windows.vm.provider :vmware_desktop do |v|
+      v.gui = true
+      v.memory = "15000"
       v.cpus = 4
       v.vmx['vhv.enable'] = 'TRUE'
       v.vmx['vhv.allow'] = 'TRUE'
