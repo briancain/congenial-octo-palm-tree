@@ -163,6 +163,8 @@ Vagrant.configure("2") do |config|
     #  p.module_path = ['modules', 'site']
     #end
 
+    windows.vm.provision "shell", path: "scripts/setup.ps1"
+
     windows.vm.provider :vmware_desktop do |v|
       v.gui = true
       v.memory = "15000"
