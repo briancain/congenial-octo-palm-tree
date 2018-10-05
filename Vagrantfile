@@ -155,7 +155,8 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "windows" do |windows|
     #windows.vm.box = "StefanScherer/windows_10"
-    windows.vm.box = "windows2016"
+    #windows.vm.box = "windows2016"
+    windows.vm.box = "windows_10"
 
     windows.vm.provision "shell", path: "scripts/info.ps1"
 
