@@ -155,15 +155,10 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "windows" do |windows|
     #windows.vm.box = "StefanScherer/windows_10"
-    #windows.vm.box = "windows2016"
-    windows.vm.box = "windows_10"
+    windows.vm.box = "windows2016"
+    #windows.vm.box = "windows_10"
 
     windows.vm.provision "shell", path: "scripts/info.ps1"
-
-    #windows.vm.provision :puppet do |p|
-    #  p.module_path = ['modules', 'site']
-    #end
-
     windows.vm.provision "shell", path: "scripts/setup.ps1"
 
     windows.vm.provider :vmware_desktop do |v|
@@ -182,6 +177,11 @@ Vagrant.configure("2") do |config|
     version = "2.1.5"
     #windows.vm.synced_folder "../vagrant",
     #  "/hashicorp/vagrant/embedded/gems/#{version}/gems/vagrant-#{version}"
+
+    #windows.vm.provision :puppet do |p|
+    #  p.module_path = ['modules', 'site']
+    #end
+
   end
 
   config.vm.define "macos" do |m|
