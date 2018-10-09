@@ -31,9 +31,6 @@ Vagrant.configure("2") do |config|
     #  v.vmx['vhv.enable'] = 'TRUE'
     #  v.vmx['vhv.allow'] = 'TRUE'
     #end
-
-    #b.vm.synced_folder "../vagrant",
-    #  "/opt/vagrant/embedded/gems/gems/vagrant-2.0.2"
   end
 
   config.vm.define "vbox" do |b|
@@ -118,9 +115,8 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "centos" do |centos|
     centos.vm.provider :virtualbox
-    centos.vm.hostname = "centos.local"
     centos.vm.box = "bento/centos-7.5"
-    centos.vm.network "private_network", type: "dhcp"
+    #centos.vm.box = "centos/7"
   end
 
   config.vm.define "ansible" do |ansible|
