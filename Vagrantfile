@@ -154,9 +154,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "windows" do |windows|
-    #windows.vm.box = "StefanScherer/windows_10"
-    windows.vm.box = "windows2016"
-    #windows.vm.box = "windows_10"
+    windows.vm.box = "windows2016" # virtualbox
 
     windows.vm.provision "shell", path: "scripts/info.ps1"
     windows.vm.provision "shell", path: "scripts/setup.ps1"
@@ -182,6 +180,31 @@ Vagrant.configure("2") do |config|
     #  p.module_path = ['modules', 'site']
     #end
 
+  end
+
+  config.vm.define "windows-hyperv" do |windows|
+    windows.vm.box = "windows_10" # hyper-v
+
+    windows.vm.provision "shell", path: "scripts/info.ps1"
+    windows.vm.provision "shell", path: "scripts/setuphyperv.ps1"
+
+    windows.vm.provider :vmware_desktop do |v|
+      v.gui = true
+      v.memory = "15000"
+      v.cpus = 4
+      v.vmx['vhv.enable'] = 'TRUE'
+      v.vmx['vhv.allow'] = 'TRUE'
+      v.vmx["hypervisor.cpuid.0"] = "FALSE"
+    end
+
+    windows.trigger.after :destroy do |trigger|
+      trigger.warn = "MAKE SURE TO COMMENT OUT SYNCED FOLDER"
+    end
+
+    version = "2.1.5"
+
+    #windows.vm.synced_folder "../vagrant",
+    #  "/hashicorp/vagrant/embedded/gems/#{version}/gems/vagrant-#{version}"
   end
 
   config.vm.define "macos" do |m|
