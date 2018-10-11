@@ -92,23 +92,23 @@ Vagrant.configure("2") do |config|
     #end
   end
 
-  config.vm.define "puppet" do |vbox|
-    vbox.vm.box = "bento/ubuntu-16.04"
+  config.vm.define "puppet" do |p|
+    p.vm.box = "bento/ubuntu-16.04"
 
-    vbox.vm.provision "shell", inline: <<-SHELL
+    p.vm.provision "shell", inline: <<-SHELL
     wget https://apt.puppetlabs.com/puppet5-release-xenial.deb
     sudo dpkg -i puppet5-release-xenial.deb
     sudo apt update
     sudo apt-get install puppet-agent
     SHELL
 
-    vbox.vm.provision :puppet do |p|
+    p.vm.provision :puppet do |p|
       p.module_path = ['modules', 'site']
     end
 
-    vbox.vm.provider :virtualbox
+    p.vm.provider :virtualbox
 
-    vbox.vm.provision "shell", inline: <<-SHELL
+    p.vm.provision "shell", inline: <<-SHELL
       puppet --version
     SHELL
   end
