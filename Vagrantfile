@@ -33,6 +33,12 @@ Vagrant.configure("2") do |config|
     #end
   end
 
+  config.vm.define "hashicorp" do |h|
+    h.vm.box = "hashicorp/precise64"
+    h.vm.hostname = "test.test"
+    h.vm.provider :virtualbox
+  end
+
   config.vm.define "vbox" do |b|
     b.vm.box = "bento/ubuntu-18.04"
 
