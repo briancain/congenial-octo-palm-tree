@@ -8,6 +8,7 @@
 Vagrant.configure("2") do |config|
   config.vm.define "bork" do |b|
     b.vm.box = "bento/ubuntu-18.04"
+    b.vm.hostname = "test.test"
 
     # Start a web server locally to serve up box
     #b.vm.box = "hashicorp/precise64_custom"
@@ -33,10 +34,18 @@ Vagrant.configure("2") do |config|
     #end
   end
 
+  # vagrant@precise64:~$ dhclient --version
+  # isc-dhclient-4.1-ESV-R4
   config.vm.define "hashicorp" do |h|
     h.vm.box = "hashicorp/precise64"
     h.vm.hostname = "test.test"
     h.vm.provider :virtualbox
+    h.vm.provision "shell", inline:<<-SHELL
+    echo 'hello there'
+    touch file.txt
+    ls -lah
+    hostname -f
+    SHELL
   end
 
   config.vm.define "vbox" do |b|
@@ -228,11 +237,12 @@ Vagrant.configure("2") do |config|
   config.vm.define "debian" do |d|
     #d.vm.box = "bento/debian-7.8"
     #d.vm.box = "bento/debian-8.6"
-    #d.vm.box = "debian/contrib-jessie64"
+    d.vm.box = "debian/jessie64"
     #d.vm.box = "bento/ubuntu-18.04"
-    d.vm.box = "bento/debian-9.4"
+    #d.vm.box = "bento/debian-9.4"
     d.vm.provider :virtualbox
-    d.vm.network "private_network", type: "dhcp"
+    d.vm.hostname = "test.test"
+    #d.vm.network "private_network", type: "dhcp"
   end
 
   config.vm.define "dockervm" do |d|
