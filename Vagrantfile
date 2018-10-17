@@ -58,7 +58,7 @@ Vagrant.configure("2") do |config|
       v.vmx['vhv.allow'] = 'TRUE'
     end
 
-    version = "2.1.5"
+    version = "2.2.0"
     b.vm.provision "VirtualBox", type: "shell", inline: <<-SHELL
     sudo apt-get update
     DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" upgrade
@@ -183,7 +183,7 @@ Vagrant.configure("2") do |config|
       trigger.warn = "MAKE SURE TO COMMENT OUT SYNCED FOLDER"
     end
 
-    version = "2.1.5"
+    version = "2.2.0"
     #windows.vm.synced_folder "../vagrant",
     #  "/hashicorp/vagrant/embedded/gems/#{version}/gems/vagrant-#{version}"
 
@@ -212,7 +212,7 @@ Vagrant.configure("2") do |config|
       trigger.warn = "MAKE SURE TO COMMENT OUT SYNCED FOLDER"
     end
 
-    version = "2.1.5"
+    version = "2.2.0"
 
     #windows.vm.synced_folder "../vagrant",
     #  "/hashicorp/vagrant/embedded/gems/#{version}/gems/vagrant-#{version}"
