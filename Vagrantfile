@@ -14,7 +14,7 @@ Vagrant.configure("2") do |config|
     #b.vm.box = "hashicorp/precise64_custom"
     #b.vm.box_url = "http://localhost:8000/box.json"
 
-    #b.vm.network "private_network", type: "dhcp"
+    #b.vm.network :private_network, type: :dhcp
 
     #b.vm.provision "shell", inline:<<-SHELL
     #SHELL
