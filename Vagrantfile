@@ -19,7 +19,7 @@ Vagrant.configure("2") do |config|
     #b.vm.provision "shell", inline:<<-SHELL
     #SHELL
 
-    #b.vm.synced_folder "scripts", "/vagrant", type: "rsync",
+    #b.vm.synced_folder "scripts", "/vagrant", type: "rsync"
     #  rsync__args: ["-avz", "--copy-links"]
 
     #b.vm.provider :virtualbox
