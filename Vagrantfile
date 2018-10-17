@@ -250,7 +250,6 @@ Vagrant.configure("2") do |config|
     d.vm.provider :virtualbox
 
     d.vm.provision "shell", inline:<<-SHELL
-    /sbin/ip -o -0 addr | grep -v LOOPBACK | awk '{print $2}' | sed 's/://'
     sudo apt-get update
     sudo apt-get install \
         apt-transport-https \
@@ -265,7 +264,6 @@ Vagrant.configure("2") do |config|
        stable"
     sudo apt-get update
     sudo apt-get install docker-ce -y
-    /sbin/ip -o -0 addr | grep -v LOOPBACK | awk '{print $2}' | sed 's/://'
     SHELL
   end
 end
