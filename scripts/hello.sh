@@ -1,1 +1,1 @@
-echo 'goodbye there'
+echo 'hello there'
