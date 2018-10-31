@@ -74,6 +74,8 @@ Vagrant.configure("2") do |config|
     vagrant --version
     SHELL
 
+   b.vm.synced_folder "linux-sandox", "/home/vagrant/test"
+
    #b.vm.synced_folder "../vagrant",
    #  "/opt/vagrant/embedded/gems/#{version}/gems/vagrant-#{version}"
   end
@@ -182,6 +184,8 @@ Vagrant.configure("2") do |config|
     windows.trigger.after :destroy do |trigger|
       trigger.warn = "MAKE SURE TO COMMENT OUT SYNCED FOLDER"
     end
+
+    windows.vm.synced_folder "windows-sandbox", "/Users/vagrant/test"
 
     version = "2.2.0"
     #windows.vm.synced_folder "../vagrant",
