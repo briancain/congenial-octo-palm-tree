@@ -8,7 +8,6 @@
 Vagrant.configure("2") do |config|
   config.vm.define "bork" do |b|
     b.vm.box = "bento/ubuntu-18.04"
-    b.vm.hostname = "test.test"
 
     # Start a web server locally to serve up box
     #b.vm.box = "hashicorp/precise64_custom"
@@ -19,13 +18,14 @@ Vagrant.configure("2") do |config|
     #b.vm.provision "shell", inline:<<-SHELL
     #SHELL
 
+    #b.vm.synced_folder "scripts", "/vagrant"
     #b.vm.synced_folder "scripts", "/vagrant", type: "rsync"
     #  rsync__args: ["-avz", "--copy-links"]
 
-    #b.vm.provider :virtualbox
-    b.vm.provider :virtualbox do |v|
-      v.linked_clone = true
-    end
+    b.vm.provider :virtualbox
+    #b.vm.provider :virtualbox do |v|
+    #  v.linked_clone = true
+    #end
     #b.vm.provider :vmware_desktop do |v|
     #  v.memory = 8048
     #  v.cpus = 2
@@ -201,12 +201,14 @@ Vagrant.configure("2") do |config|
 
     windows.vm.provider :vmware_desktop do |v|
       v.gui = true
-      v.memory = "15000"
-      v.cpus = 4
+      v.memory = "10000"
+      v.cpus = 2
       v.vmx['vhv.enable'] = 'TRUE'
       v.vmx['vhv.allow'] = 'TRUE'
       v.vmx["hypervisor.cpuid.0"] = "FALSE"
     end
+
+    windows.vm.synced_folder "windows-sandbox", "/Users/vagrant/test"
 
     windows.trigger.after :destroy do |trigger|
       trigger.warn = "MAKE SURE TO COMMENT OUT SYNCED FOLDER"
@@ -214,12 +216,20 @@ Vagrant.configure("2") do |config|
 
     version = "2.2.0"
 
-    #windows.vm.synced_folder "../vagrant",
-    #  "/hashicorp/vagrant/embedded/gems/#{version}/gems/vagrant-#{version}"
+    windows.vm.synced_folder "../vagrant",
+      "/hashicorp/vagrant/embedded/gems/#{version}/gems/vagrant-#{version}"
   end
 
   config.vm.define "macos" do |m|
-    m.vm.box = "hashicorp-vagrant/osx-10.9"
+    m.vm.box = "macOS/high-sierra"
+    m.vm.provider :vmware_desktop do |v|
+      v.gui = true
+      v.memory = "4096"
+      v.cpus = 2
+      v.vmx['vhv.enable'] = 'TRUE'
+      v.vmx['vhv.allow'] = 'TRUE'
+      v.vmx["hypervisor.cpuid.0"] = "FALSE"
+    end
   end
 
   config.vm.define "fedora" do |c|
@@ -236,13 +246,14 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "debian" do |d|
     #d.vm.box = "bento/debian-7.8"
-    #d.vm.box = "bento/debian-8.6"
-    d.vm.box = "debian/jessie64"
+    d.vm.box = "bento/debian-8.6"
+    #d.vm.box = "debian/jessie64"
     #d.vm.box = "bento/ubuntu-18.04"
     #d.vm.box = "bento/debian-9.4"
     d.vm.provider :virtualbox
     d.vm.hostname = "test.test"
-    #d.vm.network "private_network", type: "dhcp"
+    d.vm.synced_folder ".", "/vagrant", disabled: true
+    d.vm.network "private_network", type: "dhcp"
   end
 
   config.vm.define "dockervm" do |d|
