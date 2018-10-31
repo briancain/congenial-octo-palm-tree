@@ -249,11 +249,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "debian" do |d|
-    #d.vm.box = "bento/debian-7.8"
-    d.vm.box = "bento/debian-8.6"
-    #d.vm.box = "debian/jessie64"
-    #d.vm.box = "bento/ubuntu-18.04"
-    #d.vm.box = "bento/debian-9.4"
+    d.vm.box = "bento/debian-9.4"
     d.vm.provider :virtualbox
     d.vm.hostname = "test.test"
     d.vm.synced_folder ".", "/vagrant", disabled: true
