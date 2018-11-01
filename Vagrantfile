@@ -213,6 +213,10 @@ Vagrant.configure("2") do |config|
     end
 
     windows.vm.synced_folder "windows-sandbox", "/Users/vagrant/test"
+    windows.vm.provision "shell", inline:<<-SHELL
+    cp /Users/vagrant/test/Vagrantfile /Users/vagrant/sandbox/Vagrantfile
+    SHELL
+
 
     windows.trigger.after :destroy do |trigger|
       trigger.warn = "MAKE SURE TO COMMENT OUT SYNCED FOLDER"
