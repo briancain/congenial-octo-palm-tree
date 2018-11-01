@@ -151,7 +151,7 @@ Vagrant.configure("2") do |config|
 
     salt.vm.provision :salt do |s|
       s.minion_config = "saltstack/etc/minion"
-      s.install_type = "git"
+      s.install_type = "stable"
       s.verbose = true
       s.run_highstate = true
       s.salt_call_args = ["--force-color", "--output-diff"]
