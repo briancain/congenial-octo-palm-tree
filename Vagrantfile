@@ -74,7 +74,7 @@ Vagrant.configure("2") do |config|
     vagrant --version
     SHELL
 
-   b.vm.synced_folder "linux-sandox", "/home/vagrant/test"
+   b.vm.synced_folder "linux-sandbox", "/home/vagrant/test"
 
    #b.vm.synced_folder "../vagrant",
    #  "/opt/vagrant/embedded/gems/#{version}/gems/vagrant-#{version}"
