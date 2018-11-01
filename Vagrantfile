@@ -206,7 +206,7 @@ Vagrant.configure("2") do |config|
     windows.vm.provider :vmware_desktop do |v|
       v.gui = true
       v.memory = "10000"
-      v.cpus = 2
+      v.cpus = 4
       v.vmx['vhv.enable'] = 'TRUE'
       v.vmx['vhv.allow'] = 'TRUE'
       v.vmx["hypervisor.cpuid.0"] = "FALSE"
