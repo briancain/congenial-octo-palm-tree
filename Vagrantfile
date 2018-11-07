@@ -187,6 +187,8 @@ Vagrant.configure("2") do |config|
 
     windows.vm.synced_folder "windows-sandbox", "/Users/vagrant/test"
 
+    windows.vm.provision "shell", path: "scripts/admin.ps1"
+
     version = "2.2.0"
     #windows.vm.synced_folder "../vagrant",
     #  "/hashicorp/vagrant/embedded/gems/#{version}/gems/vagrant-#{version}"
@@ -194,7 +196,6 @@ Vagrant.configure("2") do |config|
     #windows.vm.provision :puppet do |p|
     #  p.module_path = ['modules', 'site']
     #end
-
   end
 
   config.vm.define "windows-hyperv" do |windows|
