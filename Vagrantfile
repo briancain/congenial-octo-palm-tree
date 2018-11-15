@@ -59,6 +59,7 @@ Vagrant.configure("2") do |config|
     end
 
     version = "2.2.0"
+
     b.vm.provision "VirtualBox", type: "shell", inline: <<-SHELL
     sudo apt-get update
     DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" upgrade
@@ -69,15 +70,16 @@ Vagrant.configure("2") do |config|
     sudo apt-get update
     sudo apt-get install virtualbox-5.2 -y
     vboxmanage --version
+    SHELL
+
+    b.vm.provision "Vagrant", type: "shell", inline: <<-SHELL
     curl -O https://releases.hashicorp.com/vagrant/#{version}/vagrant_#{version}_x86_64.deb
     sudo dpkg -i vagrant_#{version}_x86_64.deb
     vagrant --version
     SHELL
 
-   b.vm.synced_folder "linux-sandbox", "/home/vagrant/test"
-
-   #b.vm.synced_folder "../vagrant",
-   #  "/opt/vagrant/embedded/gems/#{version}/gems/vagrant-#{version}"
+    #b.vm.synced_folder "../vagrant",
+    #  "/opt/vagrant/embedded/gems/#{version}/gems/vagrant-#{version}"
   end
 
   (1..3).each do |i|
