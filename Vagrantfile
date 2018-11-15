@@ -256,11 +256,13 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "debian" do |d|
-    d.vm.box = "bento/debian-9.4"
+    #d.vm.box = "bento/debian-9.4"
+    d.vm.box = "debian/stretch64"
     d.vm.provider :virtualbox
     d.vm.hostname = "test.test"
     d.vm.synced_folder ".", "/vagrant", disabled: true
-    d.vm.network "private_network", type: "dhcp"
+    #d.vm.network "private_network", ip: "10.10.0.191"
+    d.vm.network "private_network", ip: "192.168.33.99", nic_type: "virtio"
   end
 
   config.vm.define "dockervm" do |d|
