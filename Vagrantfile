@@ -147,7 +147,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "salt" do |salt|
     salt.vm.box = "bento/ubuntu-16.04"
-    #salt.vm.box = "boxcutter/win10"
+    #salt.vm.box = "windows_10"
 
     salt.vm.provider :virtualbox
 
@@ -183,21 +183,21 @@ Vagrant.configure("2") do |config|
       v.vmx["hypervisor.cpuid.0"] = "FALSE"
     end
 
+    #windows.vm.provision :puppet do |p|
+    #  p.module_path = ['modules', 'site']
+    #end
+
     windows.trigger.after :destroy do |trigger|
       trigger.warn = "MAKE SURE TO COMMENT OUT SYNCED FOLDER"
     end
 
-    windows.vm.synced_folder "windows-sandbox", "/Users/vagrant/test"
+    #windows.vm.synced_folder "windows-sandbox", "/Users/vagrant/test"
 
-    windows.vm.provision "shell", path: "scripts/admin.ps1"
+    #windows.vm.provision "shell", path: "scripts/admin.ps1"
 
     version = "2.2.0"
     #windows.vm.synced_folder "../vagrant",
     #  "/hashicorp/vagrant/embedded/gems/#{version}/gems/vagrant-#{version}"
-
-    #windows.vm.provision :puppet do |p|
-    #  p.module_path = ['modules', 'site']
-    #end
   end
 
   config.vm.define "windows-hyperv" do |windows|
