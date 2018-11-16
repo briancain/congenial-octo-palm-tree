@@ -58,7 +58,7 @@ Vagrant.configure("2") do |config|
       v.vmx['vhv.allow'] = 'TRUE'
     end
 
-    version = "2.2.0"
+    version = "2.2.1"
 
     b.vm.provision "VirtualBox", type: "shell", inline: <<-SHELL
     sudo apt-get update
@@ -195,7 +195,7 @@ Vagrant.configure("2") do |config|
 
     #windows.vm.provision "shell", path: "scripts/admin.ps1"
 
-    version = "2.2.0"
+    version = "2.2.1"
     #windows.vm.synced_folder "../vagrant",
     #  "/hashicorp/vagrant/embedded/gems/#{version}/gems/vagrant-#{version}"
   end
@@ -225,7 +225,7 @@ Vagrant.configure("2") do |config|
       trigger.warn = "MAKE SURE TO COMMENT OUT SYNCED FOLDER"
     end
 
-    version = "2.2.0"
+    version = "2.2.1"
 
     #windows.vm.synced_folder "../vagrant",
     #  "/hashicorp/vagrant/embedded/gems/#{version}/gems/vagrant-#{version}"
