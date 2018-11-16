@@ -8,6 +8,9 @@
 Vagrant.configure("2") do |config|
   config.vm.define "bork" do |b|
     b.vm.box = "bento/ubuntu-18.04"
+    b.vm.provision "file",
+      source: "linux-sandbox/Vagrantfile",
+      destination: "/home/vagrant/test/Vagrantfile"
 
     # Start a web server locally to serve up box
     #b.vm.box = "hashicorp/precise64_custom"
@@ -57,6 +60,10 @@ Vagrant.configure("2") do |config|
       v.vmx['vhv.enable'] = 'TRUE'
       v.vmx['vhv.allow'] = 'TRUE'
     end
+
+    b.vm.provision "file",
+      source: "linux-sandbox/Vagrantfile",
+      destination: "/home/vagrant/test/Vagrantfile"
 
     version = "2.2.1"
 
@@ -180,7 +187,9 @@ Vagrant.configure("2") do |config|
       trigger.warn = "MAKE SURE TO COMMENT OUT SYNCED FOLDER"
     end
 
-    #windows.vm.synced_folder "windows-sandbox", "/Users/vagrant/test"
+    windows.vm.provision "file",
+      source: "windows-sandbox/Vagrantfile",
+      destination: "/Users/vagrant/test/Vagrantfile"
 
     #windows.vm.provision "shell", path: "scripts/admin.ps1"
 
@@ -209,6 +218,9 @@ Vagrant.configure("2") do |config|
     cp /Users/vagrant/test/Vagrantfile /Users/vagrant/sandbox/Vagrantfile
     SHELL
 
+    windows.vm.provision "file",
+      source: "windows-sandbox/Vagrantfile",
+      destination: "/Users/vagrant/test/Vagrantfile"
 
     windows.trigger.after :destroy do |trigger|
       trigger.warn = "MAKE SURE TO COMMENT OUT SYNCED FOLDER"
