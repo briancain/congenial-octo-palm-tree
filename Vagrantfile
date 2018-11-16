@@ -171,8 +171,8 @@ Vagrant.configure("2") do |config|
   config.vm.define "windows" do |windows|
     windows.vm.box = "windows2016" # virtualbox
 
-    windows.vm.provision "shell", path: "scripts/info.ps1"
-    windows.vm.provision "shell", path: "scripts/setup.ps1"
+    windows.vm.provision "shell", path: "scripts/windows/info.ps1"
+    windows.vm.provision "shell", path: "scripts/windows/setup.ps1"
 
     windows.vm.provider :vmware_desktop do |v|
       v.gui = true
@@ -203,8 +203,8 @@ Vagrant.configure("2") do |config|
   config.vm.define "windows-hyperv" do |windows|
     windows.vm.box = "windows_10" # hyper-v
 
-    windows.vm.provision "shell", path: "scripts/info.ps1"
-    windows.vm.provision "shell", path: "scripts/setuphyperv.ps1"
+    windows.vm.provision "shell", path: "scripts/windows/info.ps1"
+    windows.vm.provision "shell", path: "scripts/windows/setuphyperv.ps1"
 
     windows.vm.provider :vmware_desktop do |v|
       v.gui = true
