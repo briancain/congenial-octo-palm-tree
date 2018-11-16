@@ -191,7 +191,8 @@ Vagrant.configure("2") do |config|
       source: "windows-sandbox/Vagrantfile",
       destination: "/Users/vagrant/test/Vagrantfile"
 
-    #windows.vm.provision "shell", path: "scripts/admin.ps1"
+    # run me with the `provision` command
+    windows.vm.provision "shell", path: "scripts/windows/admin.ps1", run: "never"
 
     version = "2.2.1"
     #windows.vm.synced_folder "../vagrant",
