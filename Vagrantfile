@@ -6,6 +6,16 @@
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 Vagrant.configure("2") do |config|
+  #config.trigger.before :up, :destroy, :status, type: "command" do |t|
+  #  t.info = "magic"
+  #end
+
+  #config.trigger.before :up do |t|
+  #  t.info = "another one"
+  #end
+
+  #config.trigger.before :up, :destroy, type: "action", info: "Hello"
+
   config.vm.define "bork" do |b|
     b.vm.box = "bento/ubuntu-18.04"
     b.vm.provision "file",
@@ -137,7 +147,7 @@ Vagrant.configure("2") do |config|
   config.vm.define "ansible" do |ansible|
     ansible.vm.box = "bento/ubuntu-16.04"
     ansible.vm.provision "ansible" do |a|
-      a.playbook = "playbook.yml"
+      a.playbook = "ansible/playbook.yml"
     end
   end
 
