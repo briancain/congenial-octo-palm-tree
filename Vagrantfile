@@ -60,23 +60,12 @@ Vagrant.configure("2") do |config|
 
     version = "2.2.1"
 
-    b.vm.provision "VirtualBox", type: "shell", inline: <<-SHELL
-    sudo apt-get update
-    DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" upgrade
-    sudo apt-get -y install gcc make linux-headers-$(uname -r) dkms
-    wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
-    wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | sudo apt-key add -
-    sudo sh -c 'echo "deb http://download.virtualbox.org/virtualbox/debian $(lsb_release -sc) contrib" >> /etc/apt/sources.list'
-    sudo apt-get update
-    sudo apt-get install virtualbox-5.2 -y
-    vboxmanage --version
-    SHELL
+    b.vm.provision "VirtualBox", type: "shell",
+      path: "scripts/linux/install-vbox.sh"
 
-    b.vm.provision "Vagrant", type: "shell", inline: <<-SHELL
-    curl -O https://releases.hashicorp.com/vagrant/#{version}/vagrant_#{version}_x86_64.deb
-    sudo dpkg -i vagrant_#{version}_x86_64.deb
-    vagrant --version
-    SHELL
+    b.vm.provision "Vagrant", type: "shell",
+      path: "scripts/linux/install-vagrant.sh",
+      args: version
 
     #b.vm.synced_folder "../vagrant",
     #  "/opt/vagrant/embedded/gems/#{version}/gems/vagrant-#{version}"
@@ -171,8 +160,8 @@ Vagrant.configure("2") do |config|
   config.vm.define "windows" do |windows|
     windows.vm.box = "windows2016" # virtualbox
 
-    windows.vm.provision "shell", path: "scripts/windows/info.ps1"
-    windows.vm.provision "shell", path: "scripts/windows/setup.ps1"
+    windows.vm.provision "Info", type: "shell", path: "scripts/windows/info.ps1"
+    windows.vm.provision "Setup", type: "shell", path: "scripts/windows/setup.ps1"
 
     windows.vm.provider :vmware_desktop do |v|
       v.gui = true
@@ -203,8 +192,8 @@ Vagrant.configure("2") do |config|
   config.vm.define "windows-hyperv" do |windows|
     windows.vm.box = "windows_10" # hyper-v
 
-    windows.vm.provision "shell", path: "scripts/windows/info.ps1"
-    windows.vm.provision "shell", path: "scripts/windows/setuphyperv.ps1"
+    windows.vm.provision "Info", type: "shell", path: "scripts/windows/info.ps1"
+    windows.vm.provision "Setup", type: "shell", path: "scripts/windows/setuphyperv.ps1"
 
     windows.vm.provider :vmware_desktop do |v|
       v.gui = true
@@ -269,21 +258,6 @@ Vagrant.configure("2") do |config|
     d.vm.box = "bento/ubuntu-18.04"
     d.vm.provider :virtualbox
 
-    d.vm.provision "shell", inline:<<-SHELL
-    sudo apt-get update
-    sudo apt-get install \
-        apt-transport-https \
-        ca-certificates \
-        curl \
-        software-properties-common
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-    sudo apt-key fingerprint 0EBFCD88
-    sudo add-apt-repository \
-       "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-       $(lsb_release -cs) \
-       stable"
-    sudo apt-get update
-    sudo apt-get install docker-ce -y
-    SHELL
+    d.vm.provision "Install", type: "shell", path: "scripts/linux/install-docker.sh"
   end
 end
