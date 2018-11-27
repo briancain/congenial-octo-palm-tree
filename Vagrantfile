@@ -77,15 +77,13 @@ Vagrant.configure("2") do |config|
 
     version = "2.2.1"
 
-    b.vm.provision "VirtualBox", type: "shell",
-      path: "scripts/linux/install-vbox.sh"
+    b.vm.provision "VirtualBox", type: "shell", path: "scripts/linux/install-vbox.sh"
 
     b.vm.provision "Vagrant", type: "shell",
       path: "scripts/linux/install-vagrant.sh",
       args: version
 
-    #b.vm.synced_folder "../vagrant",
-    #  "/opt/vagrant/embedded/gems/#{version}/gems/vagrant-#{version}"
+    #b.vm.synced_folder "../vagrant", #  "/opt/vagrant/embedded/gems/#{version}/gems/vagrant-#{version}"
   end
 
   (1..3).each do |i|
