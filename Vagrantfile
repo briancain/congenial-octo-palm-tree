@@ -75,7 +75,7 @@ Vagrant.configure("2") do |config|
       source: "linux-sandbox/Vagrantfile",
       destination: "/home/vagrant/test/Vagrantfile"
 
-    version = "2.2.1"
+    version = "2.2.2"
 
     b.vm.provision "VirtualBox", type: "shell", path: "scripts/linux/install-vbox.sh"
 
@@ -235,7 +235,7 @@ Vagrant.configure("2") do |config|
       trigger.warn = "MAKE SURE TO COMMENT OUT SYNCED FOLDER"
     end
 
-    version = "2.2.1"
+    version = "2.2.2"
 
     #windows.vm.synced_folder "../vagrant",
     #  "/hashicorp/vagrant/embedded/gems/#{version}/gems/vagrant-#{version}"
