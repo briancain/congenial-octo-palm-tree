@@ -222,11 +222,6 @@ Vagrant.configure("2") do |config|
       v.vmx["hypervisor.cpuid.0"] = "FALSE"
     end
 
-    windows.vm.synced_folder "windows-sandbox", "/Users/vagrant/test"
-    windows.vm.provision "shell", inline:<<-SHELL
-    cp /Users/vagrant/test/Vagrantfile /Users/vagrant/sandbox/Vagrantfile
-    SHELL
-
     windows.vm.provision "file",
       source: "windows-sandbox/Vagrantfile",
       destination: "/Users/vagrant/test/Vagrantfile"
