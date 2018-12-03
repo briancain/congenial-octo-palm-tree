@@ -150,7 +150,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "salt" do |salt|
-    salt.vm.box = "bento/ubuntu-16.04"
+    salt.vm.box = "bento/ubuntu-18.04"
     #salt.vm.box = "windows_10"
 
     salt.vm.provider :virtualbox
