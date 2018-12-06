@@ -276,4 +276,10 @@ Vagrant.configure("2") do |config|
 
     d.vm.provision "Install", type: "shell", path: "scripts/linux/install-docker.sh"
   end
+
+  config.vm.define "freebsd" do |f|
+    f.vm.box = "generic/freebsd11"
+    f.vm.provider :virtualbox
+    f.vm.network "private_network", ip: "192.168.33.99", gateway: "1.2.3.4"
+  end
 end
