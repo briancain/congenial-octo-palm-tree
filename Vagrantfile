@@ -35,10 +35,9 @@ Vagrant.configure("2") do |config|
     #b.vm.synced_folder "scripts", "/vagrant", type: "rsync"
     #  rsync__args: ["-avz", "--copy-links"]
 
-    b.vm.provider :virtualbox
-    #b.vm.provider :virtualbox do |v|
-    #  v.linked_clone = true
-    #end
+    b.vm.provider :virtualbox do |v|
+      #v.linked_clone = true
+    end
     #b.vm.provider :vmware_desktop do |v|
     #  v.memory = 8048
     #  v.cpus = 2
