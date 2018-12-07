@@ -1,4 +1,4 @@
 #!/bin/bash
 
-sudo apt-get install gcc
-vagrant plugin install pry-byebug -y
+sudo apt-get install gcc -y
+vagrant plugin install pry-byebug
