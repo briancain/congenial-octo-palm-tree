@@ -10,9 +10,9 @@ Vagrant.configure("2") do |config|
   #  t.info = "magic"
   #end
 
-  #config.trigger.before :up do |t|
-  #  t.info = "another one"
-  #end
+  config.trigger.before :status, type: "command" do |t|
+    t.info = "hello"
+  end
 
   #config.trigger.before :up, :destroy, type: "action", info: "Hello"
 
