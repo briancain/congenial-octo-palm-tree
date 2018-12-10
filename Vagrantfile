@@ -12,6 +12,7 @@ Vagrant.configure("2") do |config|
 
   config.trigger.before :status, type: "command" do |t|
     t.info = "hello"
+    t.run = {inline: "/bin/bash -c 'echo \"secret feature!!!\"'"}
   end
 
   #config.trigger.before :up, :destroy, type: "action", info: "Hello"
