@@ -203,9 +203,8 @@ Vagrant.configure("2") do |config|
     # run me with the `provision` command
     windows.vm.provision "shell", path: "scripts/windows/admin.ps1", run: "never"
 
-    version = "2.2.1"
-    #windows.vm.synced_folder "../vagrant",
-    #  "/hashicorp/vagrant/embedded/gems/#{version}/gems/vagrant-#{version}"
+    version = "2.2.2"
+    #windows.vm.synced_folder "../vagrant", "/hashicorp/vagrant/embedded/gems/#{version}/gems/vagrant-#{version}"
   end
 
   config.vm.define "windows-hyperv" do |windows|
@@ -232,9 +231,7 @@ Vagrant.configure("2") do |config|
     end
 
     version = "2.2.2"
-
-    #windows.vm.synced_folder "../vagrant",
-    #  "/hashicorp/vagrant/embedded/gems/#{version}/gems/vagrant-#{version}"
+    #windows.vm.synced_folder "../vagrant", "/hashicorp/vagrant/embedded/gems/#{version}/gems/vagrant-#{version}"
   end
 
   config.vm.define "macos" do |m|
