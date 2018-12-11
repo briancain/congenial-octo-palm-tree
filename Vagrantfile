@@ -149,6 +149,7 @@ Vagrant.configure("2") do |config|
     ansible.vm.provision "ansible" do |a|
       a.playbook = "ansible/playbook.yml"
     end
+    ansible.vm.provider :virtualbox
   end
 
   config.vm.define "salt" do |salt|
