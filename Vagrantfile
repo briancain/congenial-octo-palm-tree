@@ -10,12 +10,12 @@ Vagrant.configure("2") do |config|
   #  t.info = "magic"
   #end
 
-  config.trigger.before :status, type: "command" do |t|
+  config.trigger.before :up, type: :command do |t|
     t.info = "hello"
     t.run = {inline: "/bin/bash -c 'echo \"secret feature!!!\"'"}
   end
 
-  #config.trigger.before :up, :destroy, type: "action", info: "Hello"
+  config.trigger.before :up, info: "Classic"
 
   config.vm.define "bork" do |b|
     b.vm.box = "bento/ubuntu-18.04"
