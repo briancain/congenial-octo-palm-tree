@@ -242,6 +242,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "macos" do |m|
+    # only works on macOS
     m.vm.box = "macOS/high-sierra"
     m.vm.provider :vmware_desktop do |v|
       v.gui = true
