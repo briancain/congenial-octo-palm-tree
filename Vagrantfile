@@ -6,9 +6,9 @@
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 Vagrant.configure("2") do |config|
-  #config.trigger.before :up, :destroy, :status, type: "command" do |t|
-  #  t.info = "magic"
-  #end
+  config.trigger.before :up, :destroy, :status, type: "command" do |t|
+    t.info = "magic"
+  end
 
   config.trigger.before :up, type: :command do |t|
     t.info = "hello"
@@ -17,6 +17,18 @@ Vagrant.configure("2") do |config|
 
   config.trigger.after :up, type: :command do |t|
     t.run = {inline: "echo 'we are done with the up'"}
+  end
+
+  config.trigger.before :"Vagrant::Action::Builtin::ConfigValidate", type: :action do |t|
+    t.info = "Magic trigger before validating configs!!"
+  end
+
+  config.trigger.before :"Vagrant::Action::Builtin::Provision", type: :action do |t|
+    t.info = "Provision stuff!!!"
+  end
+
+  config.trigger.after :"Vagrant::Action::Builtin::Provision", type: :action do |t|
+    t.info = "It's over"
   end
 
   config.trigger.before :up, info: "Classic"
