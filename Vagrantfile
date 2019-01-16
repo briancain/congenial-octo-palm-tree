@@ -23,11 +23,11 @@ Vagrant.configure("2") do |config|
     t.info = "Magic trigger before validating configs!!"
   end
 
-  config.trigger.before :"Vagrant::Action::Builtin::Provision", type: :action do |t|
+  config.trigger.before :provisioner_run, type: :action do |t|
     t.info = "Provision stuff!!!"
   end
 
-  config.trigger.after :"Vagrant::Action::Builtin::Provision", type: :action do |t|
+  config.trigger.after :provisioner_run, type: :action do |t|
     t.info = "It's over"
   end
 
