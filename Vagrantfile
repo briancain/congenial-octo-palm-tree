@@ -36,7 +36,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "bork" do |b|
     b.vm.box = "bento/ubuntu-18.04"
-    b.vm.provision "file",
+    b.vm.provision "Sandbox", type: "file",
       source: "linux-sandbox/Vagrantfile",
       destination: "/home/vagrant/test/Vagrantfile"
 
