@@ -306,8 +306,8 @@ Vagrant.configure("2") do |config|
 
     d.vm.provision "docker" do |d|
       d.run "ubuntu",
-        cmd: "bash -l",
-        args: "-p 8000:80"
+        cmd: "tail -f /dev/null",
+        args: "-p 8080:80"
     end
   end
 
