@@ -303,6 +303,12 @@ Vagrant.configure("2") do |config|
     d.vm.provider :virtualbox
 
     d.vm.provision "Install", type: "shell", path: "scripts/linux/install-docker.sh"
+
+    d.vm.provision "docker" do |d|
+      d.run "ubuntu",
+        cmd: "bash -l",
+        args: "-p 8000:80"
+    end
   end
 
   config.vm.define "freebsd" do |f|
