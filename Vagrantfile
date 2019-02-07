@@ -6,33 +6,9 @@
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 Vagrant.configure("2") do |config|
-  config.trigger.before :up, :destroy, :status, type: "command" do |t|
-    t.info = "magic"
+  config.trigger.after :destroy, type: :command do |t|
+    t.warn = "Destroy!!"
   end
-
-  config.trigger.before :up, type: :command do |t|
-    t.info = "hello"
-    t.run = {inline: "/bin/bash -c 'echo \"secret feature!!!\"'"}
-  end
-
-  config.trigger.after :up, type: :command do |t|
-    t.run = {inline: "echo 'we are done with the up'"}
-  end
-
-  config.trigger.before :"Vagrant::Action::Builtin::ConfigValidate", type: :action do |t|
-    t.info = "Magic trigger before validating configs!!"
-  end
-
-  config.trigger.before :provisioner_run, type: :action do |t|
-    t.info = "Provision stuff!!!"
-  end
-
-  config.trigger.after :provisioner_run, type: :action do |t|
-    t.info = "It's over"
-  end
-
-  config.trigger.before :up, info: "Classic"
-  config.trigger.before :status, type: :command, info: "NEW"
 
   config.vm.define "bork" do |b|
     b.vm.box = "bento/ubuntu-18.04"
