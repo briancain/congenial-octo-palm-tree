@@ -6,10 +6,6 @@
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 Vagrant.configure("2") do |config|
-  config.trigger.after :destroy, type: :command do |t|
-    t.warn = "Destroy!!"
-  end
-
   config.vm.define "bork" do |b|
     b.vm.box = "bento/ubuntu-18.04"
     b.vm.provision "Sandbox", type: "file",
