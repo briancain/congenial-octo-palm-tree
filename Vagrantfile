@@ -60,6 +60,12 @@ Vagrant.configure("2") do |config|
       v.vmx['vhv.allow'] = 'TRUE'
     end
 
+    b.vm.provider :virtualbox do |v|
+      v.memory = 8048
+      v.cpus = 2
+      v.customize ["modifyvm", :id, "--nested-hw-virt", "on"]
+    end
+
     b.vm.provision "file",
       source: "linux-sandbox/Vagrantfile",
       destination: "/home/vagrant/test/Vagrantfile"
