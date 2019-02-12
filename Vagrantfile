@@ -80,9 +80,9 @@ Vagrant.configure("2") do |config|
   end
 
   (1..3).each do |i|
-    config.vm.define "docker-#{i}"  do |vm|
-      vm.vm.synced_folder "../vagrant", "/dev/vagrant"
-      vm.vm.provider "docker" do |d|
+    config.vm.define "docker-#{i}"  do |docker|
+      docker.vm.synced_folder "../vagrant", "/dev/vagrant"
+      docker.vm.provider "docker" do |d|
         #d.image = "ubuntu"
         d.build_dir = "docker"
         #d.git_repo = "https://github.com/briancain/nginx-docker-test.git"
