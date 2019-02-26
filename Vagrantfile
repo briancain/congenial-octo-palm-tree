@@ -88,6 +88,8 @@ Vagrant.configure("2") do |config|
   (1..3).each do |i|
     config.vm.define "docker-#{i}"  do |docker|
       docker.vm.synced_folder "../vagrant", "/dev/vagrant"
+      docker.vm.network "private_network", ip: "172.20.128.2", subnet: "172.20.0.0/16"
+      #docker.vm.network "private_network", type: "dhcp"
       docker.vm.provider "docker" do |d|
         #d.image = "ubuntu"
         d.build_dir = "docker"
