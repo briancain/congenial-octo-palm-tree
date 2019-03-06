@@ -19,7 +19,7 @@ Vagrant.configure("2") do |config|
 
     #b.vm.network :private_network, type: :dhcp
 
-    #b.vm.provision "shell", inline:<<-SHELL
+    #b.vm.provision :shell, inline:<<-SHELL
     #SHELL
 
     #b.vm.synced_folder "scripts", "/vagrant"
