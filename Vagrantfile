@@ -83,7 +83,7 @@ Vagrant.configure("2") do |config|
 
     b.vm.provision "Debug", type: "shell", path: "scripts/linux/setup-debug-env.sh", run: "never"
 
-    #b.vm.synced_folder "../vagrant", "/opt/vagrant/embedded/gems/#{version}/gems/vagrant-#{version}"
+    #b.vm.synced_folder "#{ENV['GOPATH']}/src/github.com/hashicorp/vagrant", "/opt/vagrant/embedded/gems/#{version}/gems/vagrant-#{version}"
   end
 
   (1..3).each do |i|
@@ -209,7 +209,7 @@ Vagrant.configure("2") do |config|
     windows.vm.provision "shell", path: "scripts/windows/admin.ps1", run: "never"
 
     version = "2.2.4"
-    #windows.vm.synced_folder "../vagrant", "/hashicorp/vagrant/embedded/gems/#{version}/gems/vagrant-#{version}"
+    #windows.vm.synced_folder "#{ENV['GOPATH']}/src/github.com/hashicorp/vagrant", "/hashicorp/vagrant/embedded/gems/#{version}/gems/vagrant-#{version}"
   end
 
   config.vm.define "windows-hyperv" do |windows|
@@ -236,7 +236,7 @@ Vagrant.configure("2") do |config|
     end
 
     version = "2.2.4"
-    #windows.vm.synced_folder "../vagrant", "/hashicorp/vagrant/embedded/gems/#{version}/gems/vagrant-#{version}"
+    windows.vm.synced_folder "#{ENV['GOPATH']}/src/github.com/hashicorp/vagrant", "/hashicorp/vagrant/embedded/gems/#{version}/gems/vagrant-#{version}"
   end
 
   config.vm.define "macos" do |m|
