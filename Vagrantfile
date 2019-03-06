@@ -141,7 +141,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "centos" do |centos|
     centos.vm.provider :virtualbox
-    centos.vm.box = "bento/centos-7.5"
+    centos.vm.box = "bento/centos-7"
     #centos.vm.box = "centos/7"
   end
 
@@ -294,7 +294,9 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "freebsd" do |f|
-    f.vm.box = "generic/freebsd11"
+    #f.vm.box = "generic/freebsd11"
+    f.vm.box = "bento/freebsd-11"
     f.vm.provider :virtualbox
+    f.vm.synced_folder ".", "/vagrant"
   end
 end
