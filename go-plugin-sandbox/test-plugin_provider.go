@@ -56,7 +56,7 @@ func (c MyProvider) MachineIdChanged(m *vagrant.Machine) error {
 }
 
 func (c MyProvider) Name() string {
-	return "go_dummy"
+	return "test_desktop"
 }
 
 func (c MyProvider) RunAction(actionName string, data interface{}, m *vagrant.Machine) (interface{}, error) {
