@@ -39,14 +39,6 @@ func (c MyProvider) Action(actionName string, m *vagrant.Machine) ([]string, err
 	return []string{}, nil
 }
 
-func (c MyProvider) Capability(capName string, args []string, m *vagrant.Machine) (string, error) {
-	return "", nil
-}
-
-func (c MyProvider) HasCapability(capName string, m *vagrant.Machine) (bool, error) {
-	return false, nil
-}
-
 func (c MyProvider) IsInstalled(m *vagrant.Machine) (bool, error) {
 	m.UI.Say("I'm saying some words from the plugin to STDOUT!!!!! \\o/")
 	m.UI.Error("Is this colored at all??????")
@@ -64,10 +56,10 @@ func (c MyProvider) MachineIdChanged(m *vagrant.Machine) error {
 }
 
 func (c MyProvider) Name() string {
-	return "test_desktop"
+	return "go_dummy"
 }
 
-func (c MyProvider) RunAction(actionName string, data string, m *vagrant.Machine) (string, error) {
+func (c MyProvider) RunAction(actionName string, data interface{}, m *vagrant.Machine) (interface{}, error) {
 	return "", nil
 }
 
@@ -78,9 +70,12 @@ func (c MyProvider) SshInfo(m *vagrant.Machine) (*vagrant.SshInfo, error) {
 func (c MyProvider) State(m *vagrant.Machine) (*vagrant.MachineState, error) {
 	m.UI.Say("I'm saying some words from the plugin to STDOUT!!!!! \\o/")
 	m.UI.Error("Is this colored at all --- ?")
-	foobar := m.ProviderConfig["foobar"].(string)
-	m.UI.Say("My foobar value is: " + foobar)
-
+	if m.ProviderConfig != nil {
+		if _, ok := m.ProviderConfig["foobar"]; ok {
+			foobar := m.ProviderConfig["foobar"].(string)
+			m.UI.Say("My foobar value is: " + foobar)
+		}
+	}
 	vm := m.Config["vm"].(map[string]interface{})
 	box := vm["box"].(string)
 	println("testing machine config access. currently configured box: " + box)
@@ -95,14 +90,10 @@ func (c MyProvider) Info() *vagrant.ProviderInfo {
 
 func main() {
 	plugin.Serve(&plugin.ServeConfig{
-		HandshakeConfig: plugin.HandshakeConfig{
-			ProtocolVersion:  1,
-			MagicCookieKey:   "BASIC_PLUGIN",
-			MagicCookieValue: "hello",
-		},
+		HandshakeConfig: vagrantplugin.Handshake,
 		VersionedPlugins: map[int]plugin.PluginSet{
 			2: {
-				"provider": &vagrantplugin.GRPCProviderPlugin{
+				"provider": &vagrantplugin.ProviderPlugin{
 					Impl: &MyProvider{},
 				},
 			},

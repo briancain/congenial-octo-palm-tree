@@ -6,7 +6,7 @@
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 Vagrant.configure("2") do |config|
-  config.vm.provider(:test_desktop){|v| v.foobar = 'hi'}
+  config.vm.provider(:go_dummy){|v| v.foobar = 'hi'}
 
   config.vm.define "ubuntu" do |b|
     b.vm.box = "bento/ubuntu-18.04"
