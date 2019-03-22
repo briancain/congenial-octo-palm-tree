@@ -89,7 +89,8 @@ Vagrant.configure("2") do |config|
   (1..3).each do |i|
     config.vm.define "docker-#{i}"  do |docker|
       docker.vm.synced_folder "../vagrant", "/dev/vagrant"
-      docker.vm.network :private_network, type: "dhcp"
+      #docker.vm.network :public_network, type: "dhcp"
+      docker.vm.network :private_network, type: "dhcp", docker_connect__alias: "hullo", docker_network__internal: true
       docker.vm.network :private_network, ip: "172.20.128.#{i+1}", subnet: "172.20.0.0/16"
       docker.vm.network :private_network, type: "dhcp", ipv6: "true", subnet: "2a02:6b8:b010:9020:1::/80"
       docker.vm.provider "docker" do |d|
