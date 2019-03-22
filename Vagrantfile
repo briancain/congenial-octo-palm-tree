@@ -295,10 +295,26 @@ Vagrant.configure("2") do |config|
     end
   end
 
+  # Update /etc/pkg/FreeBSD.conf to be latest instead of quarterly
+  # sudo pkg update
+  # sudo pkg upgrade
+  # then
+  # sudo pkg install virtualbox-ose-additions
+  # sudo pkg install virtualbox-ose-kmod  https://forums.freebsd.org/threads/new-freebsd-user-virtualbox-shared-folders.66278/
+  #
+  # edit /boot/loader.conf with:
+  #   vboxvfs_load="YES"
+  # reboot
+  #
+  # mount!!!
+  #
   config.vm.define "freebsd" do |f|
-    #f.vm.box = "generic/freebsd11"
-    f.vm.box = "bento/freebsd-11"
+    f.vm.box = "generic/freebsd11"
+    #f.vm.box = "generic/netbsd8"
+    #f.vm.box = "generic/dragonflybsd5"
+    f.vm.ignore_box_vagrantfile = true # for generic boxes
+    #f.vm.box = "bento/freebsd-11"
     f.vm.provider :virtualbox
-    f.vm.synced_folder ".", "/vagrant"
+    f.vm.synced_folder ".", "/vagrant", disabled: false
   end
 end
