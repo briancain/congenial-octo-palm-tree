@@ -269,14 +269,15 @@ Vagrant.configure("2") do |config|
     arch.vm.provider :virtualbox
     arch.vm.box = "generic/arch"
 
-    arch.vm.synced_folder ".", "/vagrant", type: "virtualbox"
+    #arch.vm.synced_folder ".", "/vagrant", type: "virtualbox"
   end
 
   config.vm.define "debian" do |d|
     #d.vm.box = "bento/debian-9.4"
-    d.vm.box = "debian/stretch64"
+    #d.vm.box = "debian/stretch64"
+    d.vm.box = "generic/debian9"
     d.vm.provider :virtualbox
-    d.vm.synced_folder ".", "/vagrant", disabled: true # disabled because stretch64 uses rsync
+    #d.vm.synced_folder ".", "/vagrant", disabled: true # disabled because stretch64 uses rsync
     #d.vm.network "private_network", ip: "10.10.0.191"
     #d.vm.network "private_network", ip: "192.168.33.99"
   end
