@@ -317,4 +317,11 @@ Vagrant.configure("2") do |config|
     f.vm.provider :virtualbox
     f.vm.synced_folder ".", "/vagrant", disabled: false
   end
+
+  config.vm.define "coreos" do |c|
+    update_channel = "alpha"
+    c.vm.box = "coreos-#{update_channel}"
+    c.vm.box_url = "https://#{update_channel}.release.core-os.net/amd64-usr/current/coreos_production_vagrant_virtualbox.json"
+    c.vm.provider :virtualbox
+  end
 end
