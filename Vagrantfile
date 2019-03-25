@@ -318,10 +318,16 @@ Vagrant.configure("2") do |config|
     f.vm.synced_folder ".", "/vagrant", disabled: false
   end
 
+  # Need `vagrant-ignition` plugin to work
   config.vm.define "coreos" do |c|
     update_channel = "alpha"
     c.vm.box = "coreos-#{update_channel}"
     c.vm.box_url = "https://#{update_channel}.release.core-os.net/amd64-usr/current/coreos_production_vagrant_virtualbox.json"
     c.vm.provider :virtualbox
+    c.vm.network :private_network, type: "dhcp"
+    c.ssh.insert_key = false
+    c.ssh.forward_agent = true
+    c.vm.hostname = "coreos.#{update_channel}.local"
+    c.ignition.enabled = true
   end
 end
