@@ -1,0 +1,66 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "bento/ubuntu-18.04"                          	# this box have 2nd nic on eth1, we will set IFACE=eth1
+
+  config.vm.provider "virtualbox" do |v|
+    v.memory = 768
+    v.cpus = 1
+  end
+
+  #We will iterate over network, and define dc count
+  #ip and dc
+  [ "192.168.56", "192.168.66" ].to_enum.with_index(1).each do |ip, dc|
+
+    #server
+    config.vm.define "server-dc#{dc}" do |s|
+
+      #ip of server on first DC
+      WAN_JOIN ||= "#{ip}.20"
+
+      s.vm.hostname = "server-dc#{dc}"
+      s.vm.network "private_network", ip: "#{ip}.20", netmask:"255.255.0.0"
+
+      s.vm.network "forwarded_port", guest: 4646, host: 4646 if dc == 1 #nomad
+      s.vm.network "forwarded_port", guest: 8200, host: 8200 if dc == 1 #vault
+      s.vm.network "forwarded_port", guest: 8500, host: 8500 if dc == 1 #consul
+
+      #consul
+      s.vm.provision "shell", env: { "DC" => "dc#{dc}" , "WAN_JOIN" => WAN_JOIN , "IFACE" => "eth1" },
+        path: "https://raw.githubusercontent.com/kikitux/curl-bash/master/consul-1server/consul.sh"
+
+      #nomad
+      s.vm.provision "shell", env: { "DC" => "dc#{dc}" , "WAN_JOIN" => WAN_JOIN , "IFACE" => "eth1" },
+        path: "https://raw.githubusercontent.com/kikitux/curl-bash/master/nomad-1server/nomad.sh"
+      
+      #only on dc1
+      if dc == 1
+        #vault-dev 
+        s.vm.provision "shell", env: { "IFACE" => "eth1" },
+          path: "https://raw.githubusercontent.com/kikitux/curl-bash/master/vault-dev/vault.sh"
+      end
+
+    end
+    #end server
+
+    #client
+    (1..1).each do |i|  
+      config.vm.define "client#{i}-dc#{dc}" do |c|
+
+        c.vm.hostname = "client#{i}-dc#{dc}"
+        c.vm.network "private_network", ip: "#{ip}.#{30+i}", netmask:"255.255.0.0"
+
+        c.vm.provision "shell", env: { "DC" => "dc#{dc}" , "LAN_JOIN" => "#{ip}.#{20}" , "IFACE" => "eth1" },
+          path: "https://raw.githubusercontent.com/kikitux/curl-bash/master/consul-client/consul.sh"
+
+        c.vm.provision "shell", env: { "DC" => "dc#{dc}" , "LAN_JOIN" => "#{ip}.#{20}" , "IFACE" => "eth1" },
+          path: "https://raw.githubusercontent.com/kikitux/curl-bash/master/nomad-client/nomad.sh"
+      end
+    end
+    #end client
+
+  end
+  #end ip dc
+
+end
