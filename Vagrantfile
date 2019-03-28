@@ -177,82 +177,6 @@ Vagrant.configure("2") do |config|
     SHELL
   end
 
-  config.vm.define "windows" do |windows|
-    windows.vm.box = "windows_2016"
-    #windows.vm.box = "windows_10" # hyper-v
-    #windows.vm.box = "windows_2019"
-
-    windows.vm.provision "Info", type: "shell", path: "scripts/windows/info.ps1"
-    windows.vm.provision "Setup", type: "shell", path: "scripts/windows/setup.ps1"
-
-    windows.vm.provider :vmware_desktop do |v|
-      v.gui = true
-      v.memory = "15000"
-      v.cpus = 4
-      v.vmx['vhv.enable'] = 'TRUE'
-      v.vmx['vhv.allow'] = 'TRUE'
-      v.vmx["hypervisor.cpuid.0"] = "FALSE"
-    end
-
-    #windows.vm.provision :puppet do |p|
-    #  p.module_path = ['modules', 'site']
-    #end
-
-    windows.trigger.after :destroy do |trigger|
-      trigger.warn = "MAKE SURE TO COMMENT OUT SYNCED FOLDER"
-    end
-
-    windows.vm.provision "file",
-      source: "windows-sandbox/Vagrantfile",
-      destination: "/Users/vagrant/test/Vagrantfile"
-
-    # run me with the `provision` command
-    windows.vm.provision "shell", path: "scripts/windows/admin.ps1", run: "never"
-
-    version = "2.2.4"
-    #windows.vm.synced_folder "#{ENV['GOPATH']}/src/github.com/hashicorp/vagrant", "/hashicorp/vagrant/embedded/gems/#{version}/gems/vagrant-#{version}"
-  end
-
-  config.vm.define "windows-hyperv" do |windows|
-    windows.vm.box = "windows_10" # hyper-v
-
-    windows.vm.provision "Info", type: "shell", path: "scripts/windows/info.ps1"
-    windows.vm.provision "Setup", type: "shell", path: "scripts/windows/setuphyperv.ps1"
-
-    windows.vm.provider :vmware_desktop do |v|
-      v.gui = true
-      v.memory = "10000"
-      v.cpus = 4
-      v.vmx['vhv.enable'] = 'TRUE'
-      v.vmx['vhv.allow'] = 'TRUE'
-      v.vmx["hypervisor.cpuid.0"] = "FALSE"
-    end
-
-    windows.vm.provision "file",
-      source: "windows-sandbox/Vagrantfile",
-      destination: "/Users/vagrant/test/Vagrantfile"
-
-    windows.trigger.after :destroy do |trigger|
-      trigger.warn = "MAKE SURE TO COMMENT OUT SYNCED FOLDER"
-    end
-
-    version = "2.2.4"
-    windows.vm.synced_folder "#{ENV['GOPATH']}/src/github.com/hashicorp/vagrant", "/hashicorp/vagrant/embedded/gems/#{version}/gems/vagrant-#{version}"
-  end
-
-  config.vm.define "macos" do |m|
-    # only works on macOS
-    m.vm.box = "macOS/high-sierra"
-    m.vm.provider :vmware_desktop do |v|
-      v.gui = true
-      v.memory = "4096"
-      v.cpus = 2
-      v.vmx['vhv.enable'] = 'TRUE'
-      v.vmx['vhv.allow'] = 'TRUE'
-      v.vmx["hypervisor.cpuid.0"] = "FALSE"
-    end
-  end
-
   config.vm.define "fedora" do |c|
     c.vm.box = "generic/fedora28"
     c.vm.provider :virtualbox
@@ -329,5 +253,68 @@ Vagrant.configure("2") do |config|
     c.ssh.forward_agent = true
     c.vm.hostname = "coreos.#{update_channel}.local"
     c.ignition.enabled = true
+  end
+
+  config.vm.define "windows" do |windows|
+    windows.vm.box = "windows_2016"
+    #windows.vm.box = "windows_10" # hyper-v
+    #windows.vm.box = "windows_2019"
+
+    windows.vm.provision "Info", type: "shell", path: "scripts/windows/info.ps1"
+    windows.vm.provision "Setup", type: "shell", path: "scripts/windows/setup.ps1"
+
+    windows.vm.provider :vmware_desktop do |v|
+      v.gui = true
+      v.memory = "15000"
+      v.cpus = 4
+      v.vmx['vhv.enable'] = 'TRUE'
+      v.vmx['vhv.allow'] = 'TRUE'
+      v.vmx["hypervisor.cpuid.0"] = "FALSE"
+    end
+
+    #windows.vm.provision :puppet do |p|
+    #  p.module_path = ['modules', 'site']
+    #end
+
+    windows.trigger.after :destroy do |trigger|
+      trigger.warn = "MAKE SURE TO COMMENT OUT SYNCED FOLDER"
+    end
+
+    windows.vm.provision "file",
+      source: "windows-sandbox/Vagrantfile",
+      destination: "/Users/vagrant/test/Vagrantfile"
+
+    # run me with the `provision` command
+    windows.vm.provision "shell", path: "scripts/windows/admin.ps1", run: "never"
+
+    version = "2.2.4"
+    #windows.vm.synced_folder "#{ENV['GOPATH']}/src/github.com/hashicorp/vagrant", "/hashicorp/vagrant/embedded/gems/#{version}/gems/vagrant-#{version}"
+  end
+
+  config.vm.define "windows-hyperv" do |windows|
+    windows.vm.box = "windows_10" # hyper-v
+
+    windows.vm.provision "Info", type: "shell", path: "scripts/windows/info.ps1"
+    windows.vm.provision "Setup", type: "shell", path: "scripts/windows/setuphyperv.ps1"
+
+    windows.vm.provider :vmware_desktop do |v|
+      v.gui = true
+      v.memory = "10000"
+      v.cpus = 4
+      v.vmx['vhv.enable'] = 'TRUE'
+      v.vmx['vhv.allow'] = 'TRUE'
+      v.vmx["hypervisor.cpuid.0"] = "FALSE"
+    end
+
+    windows.vm.provision "file",
+      source: "windows-sandbox/Vagrantfile",
+      destination: "/Users/vagrant/test/Vagrantfile"
+
+    windows.trigger.after :destroy do |trigger|
+      trigger.warn = "MAKE SURE TO COMMENT OUT SYNCED FOLDER"
+    end
+
+    version = "2.2.4"
+    windows.vm.synced_folder "#{ENV['GOPATH']}/src/github.com/hashicorp/vagrant", "/hashicorp/vagrant/embedded/gems/#{version}/gems/vagrant-#{version}"
   end
 end
