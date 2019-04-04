@@ -90,12 +90,11 @@ Vagrant.configure("2") do |config|
     config.vm.define "docker-#{i}"  do |docker|
       docker.vm.synced_folder "../vagrant", "/dev/vagrant"
       #docker.vm.network :public_network, type: "dhcp"
-      docker.vm.network :private_network, type: "dhcp", docker_connect__alias: "hullo", docker_network__internal: true
       docker.vm.network :private_network, ip: "172.20.128.#{i+1}", netmask: "16", fake: "fake"
       docker.vm.network :private_network, type: "dhcp", subnet: "2a02:6b8:b010:9020:1::/80"
       docker.vm.provider "docker" do |d|
-        d.image = "ubuntu"
-        #d.build_dir = "docker"
+        #d.image = "ubuntu"
+        d.build_dir = "docker"
         #d.git_repo = "https://github.com/briancain/nginx-docker-test.git"
         d.cmd = ["tail", "-f", "/dev/null"]
       end
