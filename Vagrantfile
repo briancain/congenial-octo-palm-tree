@@ -251,7 +251,7 @@ Vagrant.configure("2") do |config|
     c.ssh.insert_key = false
     c.ssh.forward_agent = true
     c.vm.hostname = "coreos.#{update_channel}.local"
-    c.ignition.enabled = true
+    #c.ignition.enabled = true
   end
 
   config.vm.define "windows" do |windows|
