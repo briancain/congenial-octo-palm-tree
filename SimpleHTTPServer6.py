@@ -2,6 +2,10 @@ import BaseHTTPServer
 import SimpleHTTPServer
 import socket
 
+###################################
+# Usage:
+#  python -m SimpleHTTPServer6 PORT
+###################################
 
 class HTTPServer6(BaseHTTPServer.HTTPServer):
     address_family = socket.AF_INET6
