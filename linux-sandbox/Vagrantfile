@@ -20,4 +20,13 @@ Vagrant.configure("2") do |config|
     w.vm.box = "mwrock/Windows2016"
     w.vm.synced_folder ".", "/vagrant", disabled: true
   end
+
+  (1..3).each do |i|
+    config.vm.define "docker-#{i}"  do |docker|
+      docker.vm.provider "docker" do |d|
+        d.git_repo = "https://github.com/briancain/nginx-docker-test.git"
+        d.cmd = ["tail", "-f", "/dev/null"]
+      end
+    end
+  end
 end
