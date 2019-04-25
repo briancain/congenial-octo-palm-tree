@@ -275,10 +275,6 @@ Vagrant.configure("2") do |config|
     #  p.module_path = ['modules', 'site']
     #end
 
-    windows.trigger.after :destroy do |trigger|
-      trigger.warn = "MAKE SURE TO COMMENT OUT SYNCED FOLDER"
-    end
-
     windows.vm.provision "file",
       source: "windows-sandbox/Vagrantfile",
       destination: "/Users/vagrant/test/Vagrantfile"
@@ -308,10 +304,6 @@ Vagrant.configure("2") do |config|
     windows.vm.provision "file",
       source: "windows-sandbox/Vagrantfile",
       destination: "/Users/vagrant/test/Vagrantfile"
-
-    windows.trigger.after :destroy do |trigger|
-      trigger.warn = "MAKE SURE TO COMMENT OUT SYNCED FOLDER"
-    end
 
     version = "2.2.4"
     #windows.vm.synced_folder "#{ENV['GOPATH']}/src/github.com/hashicorp/vagrant", "/hashicorp/vagrant/embedded/gems/#{version}/gems/vagrant-#{version}"
