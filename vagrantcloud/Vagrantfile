@@ -1,0 +1,27 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "bento/ubuntu-18.04"
+
+  config.vm.define "vagrantcloud" do |v|
+    v.vm.synced_folder "../../vagrantcloud", "/dev/vagrantcloud"
+
+    v.vm.network :forwarded_port, guest: 5000, host: 5000
+
+    v.vm.provision "Update Repos", type: "shell", inline: "sudo apt-get update"
+    v.vm.provision "Install Deps", type: "shell", path: "scripts/install-deps.sh"
+
+    v.vm.provision "Setup Vagrant Cloud", type: "shell", path: "scripts/setup-vc.sh"
+
+    v.vm.provision "Start up heroku", type: "shell", run: "never", inline:<<-SHELL
+    cd /dev/vagrantcloud
+    heroku local
+    SHELL
+  end
+end
