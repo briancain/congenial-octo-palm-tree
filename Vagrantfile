@@ -106,10 +106,15 @@ Vagrant.configure("2") do |config|
     chef.vm.provider :virtualbox
     #chef.vm.provider :vmware
 
-    chef.vm.provision 'chef_solo'
-    #chef.vm.provision :chef_solo do |c|
-    #  c.add_recipe "test"
-    #end
+    chef.vm.provision :chef_solo do |c|
+      c.add_recipe "test"
+      c.version = "14.12.9"
+    end
+
+    chef.vm.provision "shell", inline:<<-SHELL
+    chef-solo --version
+    knife --version
+    SHELL
 
     #chef.vm.provision :chef_zero do |c|
     #  c.cookbooks_path = "."
@@ -255,9 +260,9 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "windows" do |windows|
-    windows.vm.box = "windows_2016"
+    #windows.vm.box = "windows_2016"
     #windows.vm.box = "windows_10" # hyper-v
-    #windows.vm.box = "windows_2019"
+    windows.vm.box = "windows_2019"
 
     windows.vm.provision "Info", type: "shell", path: "scripts/windows/info.ps1"
     windows.vm.provision "Setup", type: "shell", path: "scripts/windows/setup.ps1"
