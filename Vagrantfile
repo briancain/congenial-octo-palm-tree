@@ -259,9 +259,11 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "windows" do |windows|
-    #windows.vm.box = "windows_2016"
-    #windows.vm.box = "windows_10" # hyper-v
-    windows.vm.box = "windows_2019"
+    #windows.vm.box = "windows_10"
+    windows.vm.box = "windows_2016"
+    #windows.vm.box = "windows_2019"
+
+    windows.winrm.username = 'vagrant\vagrant'
 
     windows.vm.provision "Info", type: "shell", path: "scripts/windows/info.ps1"
     windows.vm.provision "Setup", type: "shell", path: "scripts/windows/setup.ps1"
