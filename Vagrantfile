@@ -102,8 +102,8 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "chef" do |chef|
-    #chef.vm.box = "bento/ubuntu-18.04"
-    chef.vm.box = "windows_10"
+    chef.vm.box = "bento/ubuntu-18.04"
+    #chef.vm.box = "windows_10"
     #chef.vm.provider :virtualbox
     chef.vm.provider :vmware_desktop do |v|
       v.gui = true
