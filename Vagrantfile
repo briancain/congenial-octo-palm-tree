@@ -241,8 +241,15 @@ Vagrant.configure("2") do |config|
     #f.vm.box = "generic/dragonflybsd5"
     #f.vm.ignore_box_vagrantfile = true # for generic boxes
     f.vm.box = "bento/freebsd-11"
+    #f.vm.box = "freebsd/FreeBSD-12.0-RELEASE"
     f.vm.provider :virtualbox
-    f.vm.synced_folder ".", "/vagrant", disabled: false
+    #f.vm.synced_folder ".", "/vagrant", disabled: false
+    #f.vm.provider :vmware_desktop do |v|
+    #  v.memory = 8048
+    #  v.cpus = 2
+    #  v.vmx['vhv.enable'] = 'TRUE'
+    #  v.vmx['vhv.allow'] = 'TRUE'
+    #end
   end
 
   # Need `vagrant-ignition` plugin to work
