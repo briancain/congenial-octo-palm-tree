@@ -102,13 +102,20 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "chef" do |chef|
-    chef.vm.box = "bento/ubuntu-16.04"
-    chef.vm.provider :virtualbox
-    #chef.vm.provider :vmware
+    #chef.vm.box = "bento/ubuntu-18.04"
+    chef.vm.box = "windows_10"
+    #chef.vm.provider :virtualbox
+    chef.vm.provider :vmware_desktop do |v|
+      v.gui = true
+      v.memory = "10000"
+      v.cpus = 4
+    end
 
     chef.vm.provision :chef_solo do |c|
       c.add_recipe "test"
-      c.version = "14.12.9"
+      c.custom_config_path = "chef/CustomConfiguration.chef"
+      #c.version = "15.0.293"
+      #c.version = "14.12.9"
     end
 
     chef.vm.provision "shell", inline:<<-SHELL
