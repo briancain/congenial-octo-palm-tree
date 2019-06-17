@@ -106,7 +106,7 @@ Vagrant.configure("2") do |config|
     #chef.vm.box = "windows_10"
     #chef.vm.provider :virtualbox
     chef.vm.provider :vmware_desktop do |v|
-      v.gui = true
+      v.gui = false
       v.memory = "10000"
       v.cpus = 4
     end
