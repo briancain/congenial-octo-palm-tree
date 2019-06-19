@@ -11,6 +11,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "vagrantcloud" do |v|
     v.vm.synced_folder "../../vagrantcloud", "/dev/vagrantcloud"
+    v.vm.synced_folder "#{ENV['GOPATH']}/src/github.com/hashicorp/archivist", "/dev/archivist"
 
     v.vm.network :forwarded_port, guest: 5000, host: 5000
 
@@ -19,7 +20,11 @@ Vagrant.configure("2") do |config|
 
     v.vm.provision "Setup Vagrant Cloud", type: "shell", path: "scripts/setup-vc.sh"
 
-    v.vm.provision "Start up heroku", type: "shell", run: "never", inline:<<-SHELL
+    v.vm.provision "Startup", type: "shell", run: "never", inline:<<-SHELL
+    echo "Starting up Archivist..."
+    cd /dev/archivist
+    ./bin/archivist dev.hcl &
+    echo "Starting up Vagrant Cloud..."
     cd /dev/vagrantcloud
     heroku local
     SHELL
