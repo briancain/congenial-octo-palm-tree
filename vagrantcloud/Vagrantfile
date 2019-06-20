@@ -19,6 +19,10 @@ Vagrant.configure("2") do |config|
     v.vm.provision "Install Deps", type: "shell", path: "scripts/install-deps.sh"
 
     v.vm.provision "Setup Vagrant Cloud", type: "shell", path: "scripts/setup-vc.sh"
+    v.vm.provision "Setup Debug", type: "shell", inline:<<-SHELL
+    sudo apt-get install gcc -y
+    gem install pry-byebug
+    SHELL
 
     v.vm.provision "Startup", type: "shell", run: "never", inline:<<-SHELL
     echo "Starting up Archivist..."
