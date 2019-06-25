@@ -32,5 +32,11 @@ Vagrant.configure("2") do |config|
     cd /dev/vagrantcloud
     heroku local
     SHELL
+
+    v.vm.provision "Rails", type: "shell", run: "never", inline:<<-SHELL
+    echo "Starting up Rails dev..."
+    cd /dev/vagrantcloud
+    bundle exec rails s --binding=0.0.0.0 --port=5000
+    SHELL
   end
 end
