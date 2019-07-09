@@ -42,7 +42,8 @@ Vagrant.configure("2") do |config|
   # vagrant@precise64:~$ dhclient --version
   # isc-dhclient-4.1-ESV-R4
   config.vm.define "hashicorp" do |h|
-    h.vm.box = "hashicorp/precise64"
+    #h.vm.box = "hashicorp/precise64"
+    h.vm.box = "hashicorp/bionic64"
     h.vm.hostname = "test.test"
     h.vm.provider :virtualbox
     h.vm.provision "shell", inline:<<-SHELL
