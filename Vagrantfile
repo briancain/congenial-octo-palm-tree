@@ -25,7 +25,9 @@ Vagrant.configure("2") do |config|
     #SHELL
 
     #b.vm.synced_folder "scripts", "/vagrant"
-    #b.vm.synced_folder "scripts", "/vagrant", type: "rsync"
+    #b.vm.synced_folder "scripts", "/vagrant", type: "rsync",
+       #rsync__exclude: ["build/*", "build/", "*.so*", "*.o*"]
+
     #  rsync__args: ["-avz", "--copy-links"]
 
     b.vm.provider :virtualbox do |vb|
