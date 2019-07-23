@@ -26,7 +26,7 @@ Vagrant.configure("2") do |config|
 
     #b.vm.synced_folder "scripts", "/vagrant"
     #b.vm.synced_folder "scripts", "/vagrant", type: "rsync",
-       #rsync__exclude: ["build/*", "build/", "*.so*", "*.o*"]
+    #   rsync__exclude: ["data/"]
 
     #  rsync__args: ["-avz", "--copy-links"]
 
@@ -87,6 +87,8 @@ Vagrant.configure("2") do |config|
       args: version
 
     b.vm.provision "Debug", type: "shell", path: "scripts/linux/setup-debug-env.sh", run: "never"
+
+    #b.vm.synced_folder "../vagrant-share", "/home/vagrant/.vagrant.d/gems/2.4.6/gems/vagrant-share-1.1.9"
 
     #b.vm.synced_folder "#{ENV['GOPATH']}/src/github.com/hashicorp/vagrant", "/opt/vagrant/embedded/gems/#{version}/gems/vagrant-#{version}"
   end
