@@ -220,7 +220,7 @@ Vagrant.configure("2") do |config|
 
     a.vm.synced_folder ".", "/vagrant", type: "nfs"
     #a.vm.network "private_network", ip: "192.168.50.10"
-    a.vm.network "private_network", type: "dhcp"
+    #a.vm.network "private_network", type: "dhcp"
 
     a.vm.provision :shell, inline:<<-SHELL
     echo "HELLO"
