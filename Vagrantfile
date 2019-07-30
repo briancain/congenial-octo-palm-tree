@@ -218,7 +218,7 @@ Vagrant.configure("2") do |config|
     a.vm.box = "generic/alpine38"
     a.vm.hostname = "alpine.local"
 
-    a.vm.synced_folder ".", "/vagrant", type: "nfs"
+    #a.vm.synced_folder ".", "/vagrant", type: "rsync"
     #a.vm.network "private_network", ip: "192.168.50.10"
     #a.vm.network "private_network", type: "dhcp"
 
