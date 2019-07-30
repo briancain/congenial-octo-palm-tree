@@ -213,6 +213,21 @@ Vagrant.configure("2") do |config|
     #arch.vm.synced_folder ".", "/vagrant", type: "virtualbox"
   end
 
+  config.vm.define "alpine" do |a|
+    a.vm.provider :virtualbox
+    a.vm.box = "generic/alpine38"
+    a.vm.hostname = "alpine.local"
+
+    a.vm.synced_folder ".", "/vagrant", type: "nfs"
+    #a.vm.network "private_network", ip: "192.168.50.10"
+    a.vm.network "private_network", type: "dhcp"
+
+    a.vm.provision :shell, inline:<<-SHELL
+    echo "HELLO"
+    hostname -f
+    SHELL
+  end
+
   config.vm.define "debian" do |d|
     #d.vm.box = "bento/debian-9.4"
     #d.vm.box = "debian/stretch64"
