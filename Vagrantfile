@@ -216,7 +216,8 @@ Vagrant.configure("2") do |config|
   config.vm.define "alpine" do |a|
     a.vm.provider :virtualbox
     a.vm.box = "generic/alpine38"
-    a.vm.hostname = "alpine.local"
+    #a.vm.box = "generic/alpine310"
+    a.vm.hostname = "alpine.example.org"
 
     #a.vm.synced_folder ".", "/vagrant", type: "rsync"
     #a.vm.network "private_network", ip: "192.168.50.10"
