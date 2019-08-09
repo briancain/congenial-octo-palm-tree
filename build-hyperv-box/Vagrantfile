@@ -19,7 +19,7 @@ Vagrant.configure("2") do |config|
     SHELL
 
 
-    w.vm.provision :shell, inline:<<-SHELL
+    w.vm.provision :shell, env: {"VAGRANT_CLOUD_TOKEN"=>ENV['VAGRANT_CLOUD_TOKEN']}, inline:<<-SHELL
     cd /Users/vagrant/vagrant-boxes/ubuntu
     packer build --only=hyperv-iso ubuntu-18.04-amd64.json
     SHELL
