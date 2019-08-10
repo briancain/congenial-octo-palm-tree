@@ -7,15 +7,28 @@
 # you're doing.
 Vagrant.configure("2") do |config|
   config.vm.define "hyperv" do |w|
-    w.vm.box = "windows_2016_hyperv"
-    w.vm.synced_folder "../../vagrant-boxes", "/Users/vagrant/vagrant-boxes"
+    #w.vm.box = "windows_2016_hyperv"
+    w.vm.box = "windows_10"
+    w.vm.provision "file",
+            source: "../../vagrant-boxes",
+            destination: "/Users/vagrant/vagrant-boxes"
+
+    w.vm.provider :vmware_desktop do |v|
+      v.gui = true
+      v.memory = "10000"
+      v.cpus = 4
+      v.vmx['vhv.enable'] = 'TRUE'
+      v.vmx['vhv.allow'] = 'TRUE'
+      v.vmx["hypervisor.cpuid.0"] = "FALSE"
+    end
 
     w.vm.provision "Chocolatey", type: :shell, inline:<<-SHELL
     Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
     SHELL
 
-    w.vm.provision :shell, inline:<<-SHELL
+    w.vm.provision :shell, reboot: true, inline:<<-SHELL
     choco install packer -y
+    DISM /Online /Enable-Feature /All /NoRestart /FeatureName:Microsoft-Hyper-V
     SHELL
 
 
