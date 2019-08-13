@@ -8,10 +8,13 @@
 Vagrant.configure("2") do |config|
   config.vm.define "hyperv" do |w|
     #w.vm.box = "windows_2016_hyperv"
-    w.vm.box = "windows_10"
+    #w.vm.box = "windows_10"
+    w.vm.box = "StefanScherer/windows_10"
     w.vm.provision "file",
             source: "../../vagrant-boxes",
             destination: "/Users/vagrant/vagrant-boxes"
+            #source: "../../packer-templates/bento",
+            #destination: "/Users/vagrant/bento"
 
     w.vm.provider :vmware_desktop do |v|
       v.gui = true
@@ -32,8 +35,12 @@ Vagrant.configure("2") do |config|
     SHELL
 
 
+    #packer build --only=hyperv-iso ubuntu-16.04-amd64.json
+    #cd /Users/vagrant/bento/packer_templates/centos
+    #packer build --only=hyperv-iso centos-7.6-x86_64.json
     w.vm.provision "Packer", type: :shell, env: {"VAGRANT_CLOUD_TOKEN"=>ENV['VAGRANT_CLOUD_TOKEN']}, inline:<<-SHELL
-    cd /Users/vagrant/vagrant-boxes/ubuntu
+    Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
+    cd /Users/vagrant/bento/packer_templates/ubuntu
     packer build --only=hyperv-iso ubuntu-18.04-amd64.json
     SHELL
   end
