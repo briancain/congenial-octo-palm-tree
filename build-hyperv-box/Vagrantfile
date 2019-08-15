@@ -38,7 +38,7 @@ Vagrant.configure("2") do |config|
     #packer build --only=hyperv-iso ubuntu-16.04-amd64.json
     #cd /Users/vagrant/bento/packer_templates/centos
     #packer build --only=hyperv-iso centos-7.6-x86_64.json
-    w.vm.provision "Packer", type: :shell, env: {"VAGRANT_CLOUD_TOKEN"=>ENV['VAGRANT_CLOUD_TOKEN']}, inline:<<-SHELL
+    w.vm.provision "Packer", type: :shell, env: {"VAGRANT_CI_DEV"=>ENV['VAGRANT_CI_DEV'],"VAGRANT_CLOUD_TOKEN"=>ENV['VAGRANT_CLOUD_TOKEN'],"CIRCLE_BUILD_NUM"=>ENV['CIRCLE_BUILD_NUM']}, inline:<<-SHELL
     Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
     cd /Users/vagrant/bento/packer_templates/ubuntu
     packer build --only=hyperv-iso ubuntu-18.04-amd64.json
