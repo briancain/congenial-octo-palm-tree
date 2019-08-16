@@ -333,7 +333,7 @@ Vagrant.configure("2") do |config|
     windows.vm.box = "windows_10" # hyper-v
 
     windows.vm.provision "Info", type: "shell", path: "scripts/windows/info.ps1"
-    windows.vm.provision "Setup", type: "shell", path: "scripts/windows/setuphyperv.ps1"
+    windows.vm.provision "Setup", type: "shell", reboot: true, path: "scripts/windows/setuphyperv.ps1"
 
     windows.vm.provider :vmware_desktop do |v|
       v.gui = true
