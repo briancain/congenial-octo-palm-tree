@@ -1,0 +1,12 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.provider :vmware_desktop do |v|
+    v.cpus = 2
+  end
+
+  config.vm.provider :virtualbox do |vb|
+    vb.linked_clone = true
+  end
+end
