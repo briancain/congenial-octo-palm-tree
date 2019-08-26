@@ -5,19 +5,28 @@ Vagrant.configure("2") do |config|
   config.vm.box = "hashicorp/bionic64"
   config.vm.provider :virtualbox
 
-  config.vm.provision "C", after: "B", type: "shell", inline:<<-SHELL
-  echo 'C'
+  #config.vm.provision "C", after: "B", type: "shell", inline:<<-SHELL
+  #echo 'C'
+  #SHELL
+  #config.vm.provision "B", type: "shell", inline:<<-SHELL
+  #echo 'B'
+  #SHELL
+  #config.vm.provision "D", type: "shell", inline:<<-SHELL
+  #echo 'D'
+  #SHELL
+  #config.vm.provision "A", before: "B", type: "shell", inline:<<-SHELL
+  #echo 'A'
+  #SHELL
+  config.vm.provision "shell", inline:<<-SHELL
+  echo 'ROOT'
   SHELL
-  config.vm.provision "B", type: "shell", inline:<<-SHELL
-  echo 'B'
+  config.vm.provision "shell", inline:<<-SHELL
+  echo 'ROOT'
   SHELL
-  config.vm.provision "D", type: "shell", inline:<<-SHELL
-  echo 'D'
+  config.vm.provision "Separate Before", before: :each, type: "shell", inline:<<-SHELL
+  echo '++++++++++++++++++++++++++++++'
   SHELL
-  config.vm.provision "A", before: "B", type: "shell", inline:<<-SHELL
-  echo 'A'
-  SHELL
-  config.vm.provision "Separate", after: :each, type: "shell", inline:<<-SHELL
+  config.vm.provision "Separate After", after: :each, type: "shell", inline:<<-SHELL
   echo '=============================='
   SHELL
   config.vm.provision "Hello", before: :all, type: "shell", inline:<<-SHELL
