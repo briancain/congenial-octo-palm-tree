@@ -6,8 +6,8 @@ Vagrant.configure("2") do |config|
     v.cpus = 2
   end
 
-  config.vm.provision "THE END", after: :all, inline:<<-SHELL
-  echo 'the end!!111'
+  config.vm.provision "Random", type: "shell", inline:<<-SHELL
+  echo '42'
   SHELL
 
   config.vm.provider :virtualbox do |vb|

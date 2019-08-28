@@ -17,21 +17,25 @@ Vagrant.configure("2") do |config|
   config.vm.provision "A", before: "B", type: "shell", inline:<<-SHELL
   echo 'A'
   SHELL
-  (0...4).each do
-    config.vm.provision "shell", inline:<<-SHELL
-    echo 'ROOT'
-    SHELL
-  end
-  config.vm.provision "Separate After", after: :each, type: "shell", inline:<<-SHELL
-  echo '=============================='
-  SHELL
-  config.vm.provision "Separate Before", before: :each, type: "shell", inline:<<-SHELL
-  echo '++++++++++++++++++++++++++++++'
-  SHELL
+  #(0...4).each do
+  #  config.vm.provision "shell", inline:<<-SHELL
+  #  echo 'ROOT'
+  #  SHELL
+  #end
+  #config.vm.provision "Separate After", after: :each, type: "shell", inline:<<-SHELL
+  #echo '=============================='
+  #SHELL
+  #config.vm.provision "Separate Before", before: :each, type: "shell", inline:<<-SHELL
+  #echo '++++++++++++++++++++++++++++++'
+  #SHELL
   config.vm.provision "Hello", before: :all, type: "shell", inline:<<-SHELL
   echo 'HERE WE GO!!'
   SHELL
   config.vm.provision "Goodbye", after: :all, type: "shell", inline:<<-SHELL
   echo 'The end'
+  SHELL
+
+  config.vm.provision "Before Random", before: "Random", type: "shell", inline:<<-SHELL
+  echo 'The random number is....'
   SHELL
 end
