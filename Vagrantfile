@@ -297,7 +297,8 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "windows" do |windows|
     #windows.vm.box = "windows_10"
-    windows.vm.box = "windows_2016"
+    #windows.vm.box = "windows_2016" # custom
+    windows.vm.box = "StefanScherer/windows_2016"
     #windows.vm.box = "windows_2019"
 
     windows.winrm.username = 'vagrant\vagrant'
@@ -330,7 +331,8 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "windows-hyperv" do |windows|
-    windows.vm.box = "windows_10" # hyper-v
+    #windows.vm.box = "windows_10" # hyper-v custom packer
+    windows.vm.box = "StefanScherer/windows_10" # hyper-v
 
     windows.vm.provision "Info", type: "shell", path: "scripts/windows/info.ps1"
     windows.vm.provision "Setup", type: "shell", reboot: true, path: "scripts/windows/setuphyperv.ps1"
