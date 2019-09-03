@@ -22,12 +22,12 @@ Vagrant.configure("2") do |config|
   #  echo 'ROOT'
   #  SHELL
   #end
-  #config.vm.provision "Separate After", after: :each, type: "shell", inline:<<-SHELL
-  #echo '=============================='
-  #SHELL
-  #config.vm.provision "Separate Before", before: :each, type: "shell", inline:<<-SHELL
-  #echo '++++++++++++++++++++++++++++++'
-  #SHELL
+  config.vm.provision "Separate After", after: :each, type: "shell", inline:<<-SHELL
+  echo '=============================='
+  SHELL
+  config.vm.provision "Separate Before", before: :each, type: "shell", inline:<<-SHELL
+  echo '++++++++++++++++++++++++++++++'
+  SHELL
   config.vm.provision "Hello", before: :all, type: "shell", inline:<<-SHELL
   echo 'HERE WE GO!!'
   SHELL
