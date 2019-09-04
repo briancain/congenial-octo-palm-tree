@@ -245,6 +245,13 @@ Vagrant.configure("2") do |config|
 
     d.vm.provision "Install", type: "shell", path: "scripts/linux/install-docker.sh"
 
+    version = "2.2.5"
+    d.vm.provision "Vagrant", type: "shell",
+      path: "scripts/linux/install-vagrant.sh",
+      args: version
+
+    #d.vm.synced_folder "#{ENV['GOPATH']}/src/github.com/hashicorp/vagrant", "/opt/vagrant/embedded/gems/#{version}/gems/vagrant-#{version}"
+
     d.vm.provision "docker" do |d|
       d.run "ubuntu",
         cmd: "tail -f /dev/null",
