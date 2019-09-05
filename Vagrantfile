@@ -252,6 +252,8 @@ Vagrant.configure("2") do |config|
 
     #d.vm.synced_folder "#{ENV['GOPATH']}/src/github.com/hashicorp/vagrant", "/opt/vagrant/embedded/gems/#{version}/gems/vagrant-#{version}"
 
+    d.vm.provision "Debug", type: "shell", path: "scripts/linux/setup-debug-env.sh", run: "never"
+
     d.vm.provision "docker" do |d|
       d.run "ubuntu",
         cmd: "tail -f /dev/null",
