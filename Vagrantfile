@@ -304,6 +304,13 @@ Vagrant.configure("2") do |config|
     #c.ignition.enabled = true
   end
 
+  config.vm.define "opensuse" do |o|
+    o.vm.box = "bento/opensuse-leap-42"
+    o.vm.synced_folder ".", "/vagrant", disabled: true
+    o.vm.network :private_network, type: :dhcp
+    o.vm.network :private_network, ip: "fde4:8dba:82e1::c4"
+  end
+
   config.vm.define "windows" do |windows|
     #windows.vm.box = "windows_10"
     #windows.vm.box = "windows_2016" # custom
