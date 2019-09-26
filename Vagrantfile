@@ -26,7 +26,9 @@ Vagrant.configure("2") do |config|
 
     #b.vm.synced_folder "scripts", "/vagrant"
     #b.vm.synced_folder "scripts", "/vagrant", type: "rsync",
-    #   rsync__exclude: ["data/"]
+    #  rsync__exclude: ["data/"]
+
+    #b.vm.synced_folder ".", "/dev-vagrant", type: "rsync"
 
     #  rsync__args: ["-avz", "--copy-links"]
 
