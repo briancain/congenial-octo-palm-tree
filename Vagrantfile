@@ -217,7 +217,6 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "alpine" do |a|
     a.vm.provider :virtualbox
-    #a.vm.box = "generic/alpine38"
     a.vm.box = "generic/alpine310"
     a.vm.hostname = "alpine.example.org"
 
