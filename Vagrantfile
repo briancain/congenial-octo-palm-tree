@@ -90,6 +90,8 @@ Vagrant.configure("2") do |config|
 
     b.vm.provision "Debug", type: "shell", path: "scripts/linux/setup-debug-env.sh", run: "never"
 
+    b.vm.provision "Docker", type: "shell", path: "scripts/linux/install-docker.sh", run: "never"
+
     #b.vm.synced_folder "../vagrant-share", "/home/vagrant/.vagrant.d/gems/2.4.6/gems/vagrant-share-1.1.9"
 
     #b.vm.synced_folder "#{ENV['GOPATH']}/src/github.com/hashicorp/vagrant", "/opt/vagrant/embedded/gems/#{version}/gems/vagrant-#{version}"
