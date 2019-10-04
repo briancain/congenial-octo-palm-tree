@@ -169,8 +169,10 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "ansible" do |ansible|
-    ansible.vm.box = "bento/ubuntu-16.04"
+    ansible.vm.box = "hashicorp/bionic64"
+    #ansible.vm.provision "ansible_local" do |a|
     ansible.vm.provision "ansible" do |a|
+      #a.install_mode = 'pip'
       a.playbook = "ansible/playbook.yml"
     end
     ansible.vm.provider :virtualbox
