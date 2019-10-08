@@ -101,8 +101,8 @@ Vagrant.configure("2") do |config|
     config.vm.define "docker-#{i}"  do |docker|
       docker.vm.synced_folder "#{ENV['GOPATH']}/src/github.com/hashicorp/vagrant", "/dev/vagrant"
       #docker.vm.network :public_network, type: "dhcp"
-      docker.vm.network :private_network, ip: "172.20.128.#{i+1}", netmask: "16"
-      docker.vm.network :private_network, type: "dhcp", subnet: "2a02:6b8:b010:9020:1::/80"
+      #docker.vm.network :private_network, ip: "172.20.128.#{i+1}", netmask: "16"
+      #docker.vm.network :private_network, type: "dhcp", subnet: "2a02:6b8:b010:9020:1::/80"
       docker.vm.provider "docker" do |d|
         #d.compose = true
         #d.build_args = { "foo" => "bar" }
