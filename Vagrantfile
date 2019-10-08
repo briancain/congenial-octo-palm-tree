@@ -313,7 +313,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "opensuse" do |o|
-    o.vm.box = "generic/opensuse15"
+    o.vm.box = "bento/opensuse-leap-42"
     #o.vm.synced_folder ".", "/vagrant", type: "nfs"
     #o.vm.network :private_network, type: :dhcp
     #o.vm.network :private_network, ip: "fde4:8dba:82e1::c4"
