@@ -308,7 +308,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "opensuse" do |o|
-    o.vm.box = "bento/opensuse-leap-42"
+    o.vm.box = "bento/opensuse-leap-15"
     o.vm.provider :virtualbox
     #o.vm.synced_folder ".", "/vagrant", type: "nfs"
     #o.vm.network :private_network, type: :dhcp
