@@ -209,8 +209,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "rhel" do |r|
-    #r.vm.box = "generic/rhel8"
-    r.vm.box = "roboxes/rhel8"
+    r.vm.box = "generic/rhel8"
     r.vm.hostname = "redhat"
     r.vm.provider :virtualbox
   end
@@ -240,7 +239,6 @@ Vagrant.configure("2") do |config|
   config.vm.define "debian" do |d|
     d.vm.box = "bento/debian-10"
     #d.vm.box = "debian/stretch64"
-    #d.vm.box = "generic/debian9"
     d.vm.provider :virtualbox
     #d.vm.synced_folder ".", "/vagrant", disabled: true # disabled because stretch64 uses rsync
     #d.vm.network "private_network", ip: "10.10.0.191"
@@ -283,9 +281,6 @@ Vagrant.configure("2") do |config|
   # mount!!!
   #
   config.vm.define "freebsd" do |f|
-    #f.vm.box = "generic/freebsd11"
-    #f.vm.box = "generic/netbsd8"
-    #f.vm.box = "generic/dragonflybsd5"
     #f.vm.ignore_box_vagrantfile = true # for generic boxes
     f.vm.box = "bento/freebsd-11"
     #f.vm.box = "freebsd/FreeBSD-12.0-RELEASE"
