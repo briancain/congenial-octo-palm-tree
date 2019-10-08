@@ -104,6 +104,9 @@ Vagrant.configure("2") do |config|
       docker.vm.network :private_network, ip: "172.20.128.#{i+1}", netmask: "16"
       docker.vm.network :private_network, type: "dhcp", subnet: "2a02:6b8:b010:9020:1::/80"
       docker.vm.provider "docker" do |d|
+        #d.compose = true
+        #d.build_args = { "foo" => "bar" }
+        #d.build_args = ["foo","bar"]
         #d.image = "ubuntu"
         d.build_dir = "docker"
         #d.git_repo = "https://github.com/briancain/nginx-docker-test.git"
