@@ -6,6 +6,8 @@
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 
+VAGRANT_VERSION = "2.2.6"
+
 Vagrant.configure("2") do |config|
   config.vm.define "bork" do |b|
     b.vm.box = "bento/ubuntu-18.04"
@@ -83,10 +85,9 @@ Vagrant.configure("2") do |config|
       path: "scripts/linux/install-vbox.sh",
       args: virtualbox_version
 
-    version = "2.2.5"
     b.vm.provision "Vagrant", type: "shell",
       path: "scripts/linux/install-vagrant.sh",
-      args: version
+      args: VAGRANT_VERSION
 
     b.vm.provision "Debug", type: "shell", path: "scripts/linux/setup-debug-env.sh", run: "never"
 
@@ -94,7 +95,7 @@ Vagrant.configure("2") do |config|
 
     #b.vm.synced_folder "../vagrant-share", "/home/vagrant/.vagrant.d/gems/2.4.6/gems/vagrant-share-1.1.9"
 
-    #b.vm.synced_folder "#{ENV['GOPATH']}/src/github.com/hashicorp/vagrant", "/opt/vagrant/embedded/gems/#{version}/gems/vagrant-#{version}"
+    #b.vm.synced_folder "#{ENV['GOPATH']}/src/github.com/hashicorp/vagrant", "/opt/vagrant/embedded/gems/#{VAGRANT_VERSION}/gems/vagrant-#{VAGRANT_VERSION}"
   end
 
   (1..3).each do |i|
@@ -251,12 +252,11 @@ Vagrant.configure("2") do |config|
 
     d.vm.provision "Install", type: "shell", path: "scripts/linux/install-docker.sh"
 
-    version = "2.2.5"
     d.vm.provision "Vagrant", type: "shell",
       path: "scripts/linux/install-vagrant.sh",
-      args: version
+      args: VAGRANT_VERSION
 
-    #d.vm.synced_folder "#{ENV['GOPATH']}/src/github.com/hashicorp/vagrant", "/opt/vagrant/embedded/gems/#{version}/gems/vagrant-#{version}"
+    #d.vm.synced_folder "#{ENV['GOPATH']}/src/github.com/hashicorp/vagrant", "/opt/vagrant/embedded/gems/#{VAGRANT_VERSION}/gems/vagrant-#{VAGRANT_VERSION}"
 
     d.vm.provision "Debug", type: "shell", path: "scripts/linux/setup-debug-env.sh", run: "never"
 
@@ -349,8 +349,7 @@ Vagrant.configure("2") do |config|
     # run me with the `provision` command
     windows.vm.provision "shell", path: "scripts/windows/admin.ps1", run: "never"
 
-    version = "2.2.5"
-    #windows.vm.synced_folder "#{ENV['GOPATH']}/src/github.com/hashicorp/vagrant", "/hashicorp/vagrant/embedded/gems/#{version}/gems/vagrant-#{version}"
+    #windows.vm.synced_folder "#{ENV['GOPATH']}/src/github.com/hashicorp/vagrant", "/hashicorp/vagrant/embedded/gems/#{VAGRANT_VERSION}/gems/vagrant-#{VAGRANT_VERSION}"
   end
 
   config.vm.define "windows-hyperv" do |windows|
@@ -373,7 +372,6 @@ Vagrant.configure("2") do |config|
       source: "windows-sandbox/Vagrantfile",
       destination: "/Users/vagrant/test/Vagrantfile"
 
-    version = "2.2.5"
-    #windows.vm.synced_folder "#{ENV['GOPATH']}/src/github.com/hashicorp/vagrant", "/hashicorp/vagrant/embedded/gems/#{version}/gems/vagrant-#{version}"
+    #windows.vm.synced_folder "#{ENV['GOPATH']}/src/github.com/hashicorp/vagrant", "/hashicorp/vagrant/embedded/gems/#{VAGRANT_VERSION}/gems/vagrant-#{VAGRANT_VERSION}"
   end
 end
