@@ -204,12 +204,6 @@ Vagrant.configure("2") do |config|
     c.vm.provider :virtualbox
   end
 
-  config.vm.define "rhel" do |r|
-    r.vm.box = "generic/rhel8"
-    r.vm.hostname = "redhat"
-    r.vm.provider :virtualbox
-  end
-
   config.vm.define "arch" do |arch|
     arch.vm.provider :virtualbox
     arch.vm.box = "generic/arch"
