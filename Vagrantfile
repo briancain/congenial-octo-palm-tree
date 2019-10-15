@@ -200,7 +200,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "fedora" do |c|
-    c.vm.box = "generic/fedora28"
+    c.vm.box = "bento/fedora-30"
     c.vm.provider :virtualbox
   end
 
