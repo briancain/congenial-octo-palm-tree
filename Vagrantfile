@@ -50,14 +50,9 @@ Vagrant.configure("2") do |config|
   config.vm.define "hashicorp" do |h|
     #h.vm.box = "hashicorp/precise64"
     h.vm.box = "hashicorp/bionic64"
-    h.vm.hostname = "test.test"
+    #h.vm.hostname = "test.test"
     h.vm.provider :virtualbox
-    h.vm.provision "shell", inline:<<-SHELL
-    echo 'hello there'
-    touch file.txt
-    ls -lah
-    hostname -f
-    SHELL
+    #h.vm.network :public_network, bridge: "wlp4s0"
   end
 
   config.vm.define "vbox" do |b|
