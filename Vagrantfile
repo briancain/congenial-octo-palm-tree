@@ -270,7 +270,6 @@ Vagrant.configure("2") do |config|
   # mount!!!
   #
   config.vm.define "freebsd" do |f|
-    #f.vm.ignore_box_vagrantfile = true # for generic boxes
     f.vm.box = "bento/freebsd-11"
     #f.vm.box = "freebsd/FreeBSD-12.0-RELEASE"
     f.vm.provider :virtualbox
