@@ -15,6 +15,14 @@ Vagrant.configure("2") do |config|
       source: "linux-sandbox/Vagrantfile",
       destination: "/home/vagrant/test/Vagrantfile"
 
+    b.vm.disk :disk, size: 1000
+
+    b.vm.disk :disk do |d|
+      d.size = 10000
+      d.name = "bigger_disk"
+      d.primary = false
+    end
+
     # Start a web server locally to serve up box
     #b.vm.box = "hashicorp/precise64_custom"
     #b.vm.box_url = "http://localhost:8000/box.json"
