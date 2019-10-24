@@ -16,6 +16,11 @@ Vagrant.configure("2") do |config|
     h.vm.provider :virtualbox
   end
 
+  config.vm.define "centos" do |b|
+    b.vm.box = "bento/centos-7"
+    b.vm.provider :virtualbox
+  end
+
   config.vm.define "windows" do |w|
     w.vm.box = "StefanScherer/windows_10"
     w.vm.synced_folder ".", "/vagrant", disabled: true
