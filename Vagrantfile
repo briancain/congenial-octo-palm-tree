@@ -15,13 +15,16 @@ Vagrant.configure("2") do |config|
       source: "linux-sandbox/Vagrantfile",
       destination: "/home/vagrant/test/Vagrantfile"
 
-    b.vm.disk :disk, size: 1000
+    #b.vm.disk :disk, size: 1000,
+    #  virtualbox__diskoption: "1234", libvirt__otheroption: true
 
-    b.vm.disk :disk do |d|
-      d.size = 10000
-      d.name = "bigger_disk"
-      d.primary = false
-    end
+    #b.vm.disk :disk, size: 10000, name: "bigger_disk", primary: false,
+    #  virtualbox__diskoption: "1234"
+
+    # Or the hash syntax...
+    #b.vm.disk :disk, size: 10000, name: "bigger_disk", primary: false,
+    #  virtualbox: {diskoption: "1234", otheroption: true},
+    #  libvirt: {disktoption: "1234"}
 
     # Start a web server locally to serve up box
     #b.vm.box = "hashicorp/precise64_custom"
