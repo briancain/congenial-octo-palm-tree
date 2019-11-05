@@ -101,6 +101,47 @@ Vagrant.configure("2") do |config|
     #b.vm.synced_folder "#{ENV['GOPATH']}/src/github.com/hashicorp/vagrant", "/opt/vagrant/embedded/gems/#{VAGRANT_VERSION}/gems/vagrant-#{VAGRANT_VERSION}"
   end
 
+  config.vm.define "libvirt" do |b|
+    b.vm.box = "bento/ubuntu-18.04"
+
+    b.vm.provider :vmware_desktop do |v|
+      v.memory = 8048
+      v.cpus = 2
+      v.vmx['vhv.enable'] = 'TRUE'
+      v.vmx['vhv.allow'] = 'TRUE'
+    end
+
+    b.vm.provider :virtualbox do |v|
+      v.memory = 8048
+      v.cpus = 2
+      v.customize ["modifyvm", :id, "--nested-hw-virt", "on"]
+    end
+
+    b.vm.provision "file",
+      source: "libvirt-sandbox/Vagrantfile",
+      destination: "/home/vagrant/test/Vagrantfile"
+
+    virtualbox_version = "6.0"
+    b.vm.provision "VirtualBox", type: "shell",
+      path: "scripts/linux/install-vbox.sh",
+      args: virtualbox_version,
+      run: "never"
+
+    b.vm.provision "Libvirt", type: "shell",
+      path: "scripts/linux/install-libvirt.sh"
+
+    b.vm.provision "Vagrant", type: "shell",
+      path: "scripts/linux/install-vagrant.sh",
+      args: VAGRANT_VERSION
+
+    b.vm.provision "vagrant-libvirt plugin", type: "shell", privileged: false,
+      inline: "vagrant plugin install vagrant-libvirt"
+
+    b.vm.provision "Debug", type: "shell", path: "scripts/linux/setup-debug-env.sh", run: "never"
+
+    #b.vm.synced_folder "#{ENV['GOPATH']}/src/github.com/hashicorp/vagrant", "/opt/vagrant/embedded/gems/#{VAGRANT_VERSION}/gems/vagrant-#{VAGRANT_VERSION}"
+  end
+
   (1..3).each do |i|
     config.vm.define "docker-#{i}"  do |docker|
       docker.vm.synced_folder "#{ENV['GOPATH']}/src/github.com/hashicorp/vagrant", "/dev/vagrant"
