@@ -257,19 +257,16 @@ Vagrant.configure("2") do |config|
     SHELL
   end
 
-  (28..30).each do |i|
-    config.vm.define "fedora-#{i}" do |f|
-      f.vm.box = "bento/fedora-#{i}"
-      f.vm.provider :virtualbox
-      f.vm.synced_folder ".", "/vagrant", type: "nfs"
-      f.vm.network :private_network, type: "dhcp"
-    end
+  config.vm.define "fedora" do |f|
+    f.vm.box = "bento/fedora-30"
+    f.vm.provider :virtualbox
+    f.vm.synced_folder ".", "/vagrant", type: "nfs"
+    f.vm.network :private_network, type: "dhcp"
   end
 
   config.vm.define "arch" do |arch|
     arch.vm.provider :virtualbox
     arch.vm.box = "archlinux/archlinux"
-
     #arch.vm.synced_folder ".", "/vagrant", type: "virtualbox"
   end
 
