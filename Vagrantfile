@@ -279,10 +279,8 @@ Vagrant.configure("2") do |config|
     #a.vm.network "private_network", ip: "192.168.50.10"
     #a.vm.network "private_network", type: "dhcp"
 
-    a.vm.provision :shell, inline:<<-SHELL
-    echo "HELLO"
-    hostname -f
-    SHELL
+    #a.vm.provision :shell, inline:<<-SHELL
+    #SHELL
   end
 
   config.vm.define "debian" do |d|
