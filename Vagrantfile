@@ -37,7 +37,6 @@ Vagrant.configure("2") do |config|
 
     #b.vm.network :private_network, type: :dhcp
     #b.vm.network :private_network, ip: "fde4:8dba:82e1::c4"
-    #b.vm.network "private_network", ip: "192.168.33.99"
 
     #b.vm.provision :shell, inline:<<-SHELL
     #SHELL
