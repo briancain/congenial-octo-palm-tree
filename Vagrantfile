@@ -417,6 +417,8 @@ Vagrant.configure("2") do |config|
       source: "windows-sandbox/Vagrantfile",
       destination: "/Users/vagrant/test/Vagrantfile"
 
+    windows.vm.provision "shell", privileged: true, reboot: true, path: "scripts/windows/setupssh.ps1", run: "never"
+
     #windows.vm.synced_folder "#{ENV['GOPATH']}/src/github.com/hashicorp/vagrant", "/hashicorp/vagrant/embedded/gems/#{VAGRANT_VERSION}/gems/vagrant-#{VAGRANT_VERSION}"
   end
 end
