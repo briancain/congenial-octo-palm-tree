@@ -221,11 +221,16 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "ansible" do |ansible|
     ansible.vm.box = "hashicorp/bionic64"
-    #ansible.vm.provision "ansible_local" do |a|
-    ansible.vm.provision "ansible" do |a|
-      #a.install_mode = 'pip'
+    #ansible.vm.box = "archlinux/archlinux"
+    #ansible.vm.box = "bento/debian-10"
+    ansible.vm.provision "ansible_local" do |a|
+    #ansible.vm.provision "ansible" do |a|
+      a.install_mode = 'pip'
       a.playbook = "ansible/playbook.yml"
     end
+    #ansible.vm.box = "generic/freebsd11"
+    #ansible.vm.synced_folder ".", "/vagrant", disabled: false
+    #ansible.vm.network "private_network", ip: "192.168.55.99"
     ansible.vm.provider :virtualbox
   end
 
