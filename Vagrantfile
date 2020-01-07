@@ -203,6 +203,7 @@ Vagrant.configure("2") do |config|
 
     p.vm.provision :puppet do |p|
       p.module_path = ['puppet/modules', 'puppet/site']
+      p.manifests_path = 'puppet/manifests'
     end
 
     p.vm.provider :virtualbox
