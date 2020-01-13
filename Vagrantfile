@@ -26,6 +26,9 @@ Vagrant.configure("2") do |config|
     b.vm.disk :disk, size: "20GB", name: "provider_disk",
       virtualbox: disk_options, libvirt: disk_options
 
+    b.vm.disk :disk, size: "10GB", name: "smaller",
+      virtualbox: disk_options
+
     # Start a web server locally to serve up box
     #b.vm.box = "hashicorp/precise64_custom"
     #b.vm.box_url = "http://localhost:8000/box.json"
