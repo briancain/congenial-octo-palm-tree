@@ -15,7 +15,7 @@ Vagrant.configure("2") do |config|
       source: "linux-sandbox/Vagrantfile",
       destination: "/home/vagrant/test/Vagrantfile"
 
-    #b.vm.disk :disk, size: "128GB",
+    #b.vm.disk :disk, size: "150GB",
     b.vm.disk :disk, size: "64GB",
       virtualbox__diskoption: "1234", libvirt__otheroption: true, primary: true
 
