@@ -22,7 +22,7 @@ Vagrant.configure("2") do |config|
     # Or the hash syntax...
     disk_options = {diskoption: "1234", otheroption: true}
 
-    b.vm.disk :disk, size: "20GB", name: "provider_disk",
+    b.vm.disk :disk, size: "10GB", name: "provider_disk",
       virtualbox: disk_options, libvirt: disk_options
 
     b.vm.disk :disk, size: "5GB", name: "smaller",
