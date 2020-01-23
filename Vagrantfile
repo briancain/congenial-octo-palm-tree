@@ -25,8 +25,10 @@ Vagrant.configure("2") do |config|
     b.vm.disk :disk, size: "10GB", name: "provider_disk",
       virtualbox: disk_options, libvirt: disk_options
 
-    b.vm.disk :disk, size: "5GB", name: "smaller",
-      virtualbox: disk_options
+    (1..3).each do |i|
+      b.vm.disk :disk, size: "5GB", name: "smaller-disk-#{i}",
+        virtualbox: disk_options
+    end
 
     # Start a web server locally to serve up box
     #b.vm.box = "hashicorp/precise64_custom"
