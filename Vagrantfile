@@ -89,12 +89,14 @@ Vagrant.configure("2") do |config|
       source: "linux-sandbox/Vagrantfile",
       destination: "/home/vagrant/test/Vagrantfile"
 
-    virtualbox_version = "6.0"
+    virtualbox_version = "6.1"
     b.vm.provision "VirtualBox", type: "shell",
+      #run: "never",
       path: "scripts/linux/install-vbox.sh",
       args: virtualbox_version
 
     b.vm.provision "Vagrant", type: "shell",
+      #run: "never",
       path: "scripts/linux/install-vagrant.sh",
       args: VAGRANT_VERSION
 
