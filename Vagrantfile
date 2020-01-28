@@ -6,7 +6,7 @@
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 
-VAGRANT_VERSION = "2.2.6"
+VAGRANT_VERSION = "2.2.7"
 
 Vagrant.configure("2") do |config|
   config.vm.define "bork" do |b|
