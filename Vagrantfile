@@ -404,6 +404,11 @@ Vagrant.configure("2") do |config|
   config.vm.define "windows-hyperv" do |windows|
     windows.vm.box = "StefanScherer/windows_10" # hyper-v
 
+    #windows.vm.communicator = :winssh
+    #windows.ssh.username = "vagrant"
+    #windows.ssh.password = "vagrant"
+    #windows.winssh.shell = "powershell"
+
     windows.vm.provision "Info", type: "shell", path: "scripts/windows/info.ps1"
     windows.vm.provision "Setup", type: "shell", reboot: true, path: "scripts/windows/setuphyperv.ps1"
 
