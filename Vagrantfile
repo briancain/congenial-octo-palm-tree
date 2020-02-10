@@ -198,7 +198,8 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "puppet" do |p|
-    p.vm.box = "bento/ubuntu-18.04"
+    #p.vm.box = "bento/ubuntu-18.04"
+    p.vm.box = "hashicorp/bionic64"
 
     p.vm.provision "shell", run: "once", inline: <<-SHELL
     wget https://apt.puppet.com/puppet6-release-bionic.deb
