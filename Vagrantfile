@@ -15,21 +15,6 @@ Vagrant.configure("2") do |config|
       source: "linux-sandbox/Vagrantfile",
       destination: "/home/vagrant/test/Vagrantfile"
 
-    #b.vm.disk :disk, size: "150GB",
-    b.vm.disk :disk, size: "64GB",
-      virtualbox__diskoption: "1234", libvirt__otheroption: true, primary: true
-
-    # Or the hash syntax...
-    disk_options = {diskoption: "1234", otheroption: true}
-
-    b.vm.disk :disk, size: "10GB", name: "provider_disk",
-      virtualbox: disk_options, libvirt: disk_options
-
-    (1..3).each do |i|
-      b.vm.disk :disk, size: "5GB", name: "smaller-disk-#{i}",
-        virtualbox: disk_options
-    end
-
     # Start a web server locally to serve up box
     #b.vm.box = "hashicorp/precise64_custom"
     #b.vm.box_url = "http://localhost:8000/box.json"
