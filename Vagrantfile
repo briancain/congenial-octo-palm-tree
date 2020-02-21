@@ -252,8 +252,12 @@ Vagrant.configure("2") do |config|
   config.vm.define "fedora" do |f|
     f.vm.box = "bento/fedora-30"
     f.vm.provider :virtualbox
-    f.vm.synced_folder ".", "/vagrant", type: "nfs"
-    f.vm.network :private_network, type: "dhcp"
+    #f.vm.synced_folder ".", "/vagrant", disabled: true
+
+    f.vm.provider :vmware_desktop do |v|
+      v.vmx['vhv.enable'] = 'TRUE'
+      v.vmx['vhv.allow'] = 'TRUE'
+    end
   end
 
   config.vm.define "arch" do |arch|
