@@ -206,8 +206,19 @@ Vagrant.configure("2") do |config|
   config.vm.define "centos" do |centos|
     centos.vm.provider :virtualbox
     centos.vm.box = "bento/centos-8"
-    centos.vm.synced_folder ".", "/vagrant", type: "nfs"
-    centos.vm.network :private_network, type: "dhcp"
+    #centos.vm.synced_folder ".", "/vagrant", type: "nfs"
+    #centos.vm.network :private_network, type: "dhcp"
+  end
+
+  config.vm.define "fedora" do |f|
+    f.vm.box = "bento/fedora-31"
+    f.vm.provider :virtualbox
+    #f.vm.synced_folder ".", "/vagrant", disabled: true
+
+    f.vm.provider :vmware_desktop do |v|
+      v.vmx['vhv.enable'] = 'TRUE'
+      v.vmx['vhv.allow'] = 'TRUE'
+    end
   end
 
   config.vm.define "ansible" do |ansible|
@@ -245,17 +256,6 @@ Vagrant.configure("2") do |config|
     salt.vm.provision "shell", inline:<<-SHELL
     salt-call --version
     SHELL
-  end
-
-  config.vm.define "fedora" do |f|
-    f.vm.box = "bento/fedora-30"
-    f.vm.provider :virtualbox
-    #f.vm.synced_folder ".", "/vagrant", disabled: true
-
-    f.vm.provider :vmware_desktop do |v|
-      v.vmx['vhv.enable'] = 'TRUE'
-      v.vmx['vhv.allow'] = 'TRUE'
-    end
   end
 
   config.vm.define "arch" do |arch|
