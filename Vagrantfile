@@ -21,6 +21,7 @@ Vagrant.configure("2") do |config|
 
     #b.vm.network :private_network, type: :dhcp
     #b.vm.network :private_network, ip: "fde4:8dba:82e1::c4"
+    #b.vm.network "private_network", ip: "192.168.55.99"
 
     #b.vm.provision :shell, inline:<<-SHELL
     #SHELL
@@ -28,9 +29,6 @@ Vagrant.configure("2") do |config|
     #b.vm.synced_folder "scripts", "/vagrant"
     #b.vm.synced_folder "scripts", "/vagrant", type: "rsync",
     #  rsync__exclude: ["data/"]
-
-    #b.vm.synced_folder ".", "/dev-vagrant", type: "rsync"
-
     #  rsync__args: ["-avz", "--copy-links"]
 
     b.vm.provider :virtualbox do |vb|
