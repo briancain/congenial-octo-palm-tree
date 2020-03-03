@@ -219,6 +219,9 @@ Vagrant.configure("2") do |config|
       v.vmx['vhv.enable'] = 'TRUE'
       v.vmx['vhv.allow'] = 'TRUE'
     end
+
+    f.vm.provision "KVM", type: "shell", path: "scripts/linux/install-libvirt-fedora.sh"
+    f.vm.provision "vagrant-libvirt", type: "shell", path: "scripts/linux/vagrant-plugin-install-libvirt.sh"
   end
 
   config.vm.define "ansible" do |ansible|
