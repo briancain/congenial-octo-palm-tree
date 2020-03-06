@@ -26,7 +26,7 @@ Vagrant.configure("2") do |config|
     #b.vm.provision :shell, inline:<<-SHELL
     #SHELL
 
-    #b.vm.synced_folder "scripts", "/vagrant"
+    #b.vm.synced_folder ".", "/vagrant", nfs: true
     #b.vm.synced_folder "scripts", "/vagrant", type: "rsync",
     #  rsync__exclude: ["data/"]
     #  rsync__args: ["-avz", "--copy-links"]
