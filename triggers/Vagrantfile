@@ -72,4 +72,7 @@ Vagrant.configure("2") do |config|
   # Action triggers are allowed to run before or after an internal Vagrant action.
   # These are considered much more advanced, as there are a lot of different Varant
   # actions internally to Vagrant.
+  config.trigger.after :"Vagrant::Action::Builtin::GracefulHalt", type: :action do |t|
+    t.warn = "The Halt action has finished"
+  end
 end
