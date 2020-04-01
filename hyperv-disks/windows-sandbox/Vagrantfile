@@ -6,12 +6,12 @@
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 Vagrant.configure("2") do |config|
-  b.vm.disk :disk, size: "64GB", primary: true
+  config.vm.disk :disk, size: "64GB", primary: true
 
-  b.vm.disk :disk, size: "10GB", name: "provider_disk"
+  config.vm.disk :disk, size: "10GB", name: "provider_disk"
 
   (1..3).each do |i|
-    b.vm.disk :disk, size: "5GB", name: "smaller-disk-#{i}"
+    config.vm.disk :disk, size: "5GB", name: "smaller-disk-#{i}"
   end
 
   config.vm.define "ubuntu" do |b|
