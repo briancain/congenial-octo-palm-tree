@@ -217,6 +217,8 @@ Vagrant.configure("2") do |config|
     #f.vm.synced_folder ".", "/vagrant", disabled: true
 
     f.vm.provider :vmware_desktop do |v|
+      v.memory = 8048
+      v.cpus = 2
       v.vmx['vhv.enable'] = 'TRUE'
       v.vmx['vhv.allow'] = 'TRUE'
     end
