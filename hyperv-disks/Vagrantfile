@@ -41,6 +41,11 @@ Vagrant.configure("2") do |config|
       t.run = {path: "../scripts/linux/setup-vagrant-gem-dev.sh", args: VAGRANT_VERSION}
     end
 
+    windows.trigger.after :provision do |t|
+      t.info = "Time Last Synced"
+      t.run = {inline: "date"}
+    end
+
     windows.vm.provision "Vagrant Sync", type: :shell,
       run: "never",
       path: "../scripts/windows/copy-vagrant-gems.ps1",
