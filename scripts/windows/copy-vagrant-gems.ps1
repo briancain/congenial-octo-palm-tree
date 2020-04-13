@@ -1,7 +1,7 @@
 $vagrantversion=$args[0]
 $vagrantdevversion=$args[1]
 
-Write-Host "Vagrant version arg: $vagrantversion"
+Write-Host "Syncing Vagrant version '$vagrantdevversion' over installed version:  '$vagrantversion'"
 
 Copy-Item /Users/vagrant/vagrantdir/vagrant-$vagrantdevversion.dev.gem -Destination /Users/vagrant/Desktop
 
