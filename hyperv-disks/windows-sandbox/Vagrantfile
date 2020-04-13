@@ -14,11 +14,11 @@ Vagrant.configure("2") do |config|
     config.vm.disk :disk, size: "5GB", name: "smaller-disk-#{i}"
   end
 
-  config.vm.define "ubuntu" do |b|
-    b.vm.box = "bento/ubuntu-18.04"
-    b.vm.synced_folder ".", "/vagrant", disabled: true
-    b.vm.network :public_network, bridge: "Default Switch"
-  end
+  #config.vm.define "ubuntu" do |b|
+  #  b.vm.box = "bento/ubuntu-18.04"
+  #  b.vm.synced_folder ".", "/vagrant", disabled: true
+  #  b.vm.network :public_network, bridge: "Default Switch"
+  #end
 
   config.vm.define "hashicorp", primary: true do |h|
     h.vm.box = "hashicorp/bionic64"
