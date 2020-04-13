@@ -2,7 +2,9 @@
 
 VERSION=$1
 
-echo "${VERSION}"
+echo "Installed version to override: ${VERSION}"
+
+echo "Building current source version of Vagrant as a gem and copying to current Vagrant project dir..."
 
 rm -rf vagrant-*.gem vagrant-*
 cd ${GOPATH}/src/github.com/hashicorp/vagrant
