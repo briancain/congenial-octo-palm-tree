@@ -46,6 +46,11 @@ Vagrant.configure("2") do |config|
       t.run = {inline: "date"}
     end
 
+    windows.trigger.after :provision do |t|
+      t.info = "Cleaning up workspace"
+      t.run = {inline: "bash -c 'rm vagrant-*.gem'"}
+    end
+
     windows.vm.provision "Vagrant Sync", type: :shell,
       run: "never",
       path: "../scripts/windows/copy-vagrant-gems.ps1",
