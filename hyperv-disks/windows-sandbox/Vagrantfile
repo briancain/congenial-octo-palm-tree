@@ -6,6 +6,12 @@
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 Vagrant.configure("2") do |config|
+  # Define options here
+  # https://docs.microsoft.com/en-us/powershell/module/hyper-v/New-VHD?view=win10-ps
+  # https://docs.microsoft.com/en-us/powershell/module/hyper-v/add-vmharddiskdrive?view=win10-ps
+  #
+  hyperv_disk_options = {hyperv: {dynamic: true}}
+
   config.vm.disk :disk, size: "64GB", primary: true
 
   config.vm.disk :disk, size: "10GB", name: "provider_disk"
