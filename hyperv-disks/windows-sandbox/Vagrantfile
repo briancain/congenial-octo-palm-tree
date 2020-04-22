@@ -10,12 +10,12 @@ Vagrant.configure("2") do |config|
   # https://docs.microsoft.com/en-us/powershell/module/hyper-v/New-VHD?view=win10-ps
   # https://docs.microsoft.com/en-us/powershell/module/hyper-v/add-vmharddiskdrive?view=win10-ps
   #
-  hyperv_disk_options = {hyperv: {Fixed: true, LogicalSectorSizeBytes: "512MB"}}
+  hyperv_disk_options = {hyperv: {Fixed: true}}
   #hyperv_disk_options = {hyperv: {ControllerType: "SCSI", ControllerNumber: 0}}
 
   config.vm.disk :disk, size: "64GB", primary: true
 
-  config.vm.disk :disk, size: "5GB", name: "provider_disk",
+  config.vm.disk :disk, size: "10GB", name: "provider_disk",
     provider_config: hyperv_disk_options
 
   (1..1).each do |i|
