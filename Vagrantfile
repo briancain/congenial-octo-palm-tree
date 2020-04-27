@@ -205,8 +205,8 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "centos" do |centos|
     centos.vm.provider :virtualbox
-    #centos.vm.box = "bento/centos-8"
-    centos.vm.box = "bento/centos-7"
+    centos.vm.box = "bento/centos-8"
+    #centos.vm.box = "bento/centos-7"
     #centos.vm.synced_folder ".", "/vagrant", type: "nfs"
     #centos.vm.network :private_network, type: "dhcp"
   end
