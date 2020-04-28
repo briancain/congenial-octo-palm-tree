@@ -49,7 +49,20 @@ Vagrant.configure("2") do |config|
     h.vm.box = "hashicorp/bionic64"
     #h.vm.hostname = "test.test"
     h.vm.provider :virtualbox
-    #h.vm.network :public_network, bridge: "wlp4s0"
+  end
+
+  config.vm.define "vagrant-share" do |h|
+    h.vm.box = "hashicorp/bionic64"
+    h.vm.provider :virtualbox
+
+    h.vm.network "private_network", ip: "192.168.55.99"
+    h.vm.network "forwarded_port", guest: 80, host: 8080
+
+    h.vm.provision :shell, inline:<<-SHELL
+    sudo apt-get update
+    sudo apt-get install nginx -y
+    sudo service nginx start
+    SHELL
   end
 
   config.vm.define "vbox" do |b|
