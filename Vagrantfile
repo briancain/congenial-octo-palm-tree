@@ -381,12 +381,13 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "windows" do |windows|
-    windows.vm.box = "StefanScherer/windows_2016"
+    #windows.vm.box = "StefanScherer/windows_2016"
+    windows.vm.box = "StefanScherer/windows_10"
 
-    windows.winrm.username = 'vagrant\vagrant'
+    #windows.winrm.username = 'vagrant\vagrant'
 
     windows.vm.provision "Info", type: "shell", path: "scripts/windows/info.ps1"
-    windows.vm.provision "Setup", type: "shell", path: "scripts/windows/setup.ps1"
+    windows.vm.provision "Setup", type: "shell", reboot: true, path: "scripts/windows/setup.ps1"
 
     windows.vm.provider :vmware_desktop do |v|
       v.gui = true
@@ -407,6 +408,9 @@ Vagrant.configure("2") do |config|
 
     # run me with the `provision` command
     windows.vm.provision "shell", path: "scripts/windows/admin.ps1", run: "never"
+
+    windows.vm.provision "SSH", type: "shell", privileged: true, reboot: true,
+      path: "scripts/windows/setupssh.ps1", run: "never"
 
     #windows.vm.synced_folder "#{ENV['GOPATH']}/src/github.com/hashicorp/vagrant", "/hashicorp/vagrant/embedded/gems/#{VAGRANT_VERSION}/gems/vagrant-#{VAGRANT_VERSION}"
   end
