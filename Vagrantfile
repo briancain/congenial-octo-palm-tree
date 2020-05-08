@@ -314,6 +314,10 @@ Vagrant.configure("2") do |config|
 
     d.vm.provision "Install", type: "shell", path: "scripts/linux/install-docker.sh"
 
+    d.vm.provision "Sandbox", type: "file",
+      source: "linux-sandbox/Vagrantfile",
+      destination: "/home/vagrant/test/Vagrantfile"
+
     d.vm.provision "Vagrant", type: "shell",
       path: "scripts/linux/install-vagrant.sh",
       args: VAGRANT_VERSION
