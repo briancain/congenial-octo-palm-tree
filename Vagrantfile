@@ -237,7 +237,9 @@ Vagrant.configure("2") do |config|
     end
 
     f.vm.provision "KVM", type: "shell", path: "scripts/linux/install-libvirt-fedora.sh"
-    f.vm.provision "vagrant-libvirt", type: "shell", path: "scripts/linux/vagrant-plugin-install-libvirt.sh"
+    f.vm.provision "vagrant-libvirt", type: "shell",
+      path: "scripts/linux/vagrant-plugin-install-libvirt.sh",
+      args: VAGRANT_VERSION
   end
 
   config.vm.define "ansible" do |ansible|
