@@ -381,6 +381,7 @@ Vagrant.configure("2") do |config|
     o.vm.provider :virtualbox
     o.vm.hostname = "opensuse.local"
     o.vm.synced_folder ".", "/vagrant", disabled: true
+    o.vm.provision "shell", inline: "hostname -f"
     #o.vm.synced_folder ".", "/vagrant", type: "nfs"
     #o.vm.network :private_network, type: :dhcp
     #o.vm.network :private_network, ip: "fde4:8dba:82e1::c4"
