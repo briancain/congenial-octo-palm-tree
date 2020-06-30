@@ -375,7 +375,8 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "opensuse" do |o|
-    o.vm.box = "bento/opensuse-leap-15"
+    #o.vm.box = "bento/opensuse-leap-15"
+    #o.vm.box = "generic/opensuse15" # vmware
     #o.vm.box = "bento/opensuse-leap-42"
     #o.vm.box = "opensuse/openSUSE-Tumbleweed-Vagrant.x86_64"
     o.vm.provider :virtualbox
