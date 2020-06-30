@@ -378,8 +378,18 @@ Vagrant.configure("2") do |config|
     #o.vm.box = "bento/opensuse-leap-15"
     #o.vm.box = "generic/opensuse15" # vmware
     #o.vm.box = "bento/opensuse-leap-42"
-    #o.vm.box = "opensuse/openSUSE-Tumbleweed-Vagrant.x86_64"
-    o.vm.provider :virtualbox
+    o.vm.box = "opensuse/Tumbleweed.x86_64"
+    o.vm.provider :virtualbox do |v|
+      v.memory = 8048
+      v.cpus = 2
+      v.customize ["modifyvm", :id, "--nested-hw-virt", "on"]
+    end
+    o.vm.provider :vmware_desktop do |v|
+      v.memory = 8048
+      v.cpus = 2
+      v.vmx['vhv.enable'] = 'TRUE'
+      v.vmx['vhv.allow'] = 'TRUE'
+    end
     o.vm.hostname = "opensuse.local"
     o.vm.synced_folder ".", "/vagrant", disabled: true
     o.vm.provision "shell", inline: "hostname -f"
