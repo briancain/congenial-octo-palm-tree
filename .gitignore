@@ -15,4 +15,7 @@ setup_version
 *.lic
 *.deb
 *.rpm
+
+# Repos to ignore
 vagrant-installers
+atlas
