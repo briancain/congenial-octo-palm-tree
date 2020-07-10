@@ -49,6 +49,17 @@ Vagrant.configure("2") do |config|
     h.vm.box = "hashicorp/bionic64"
     #h.vm.hostname = "test.test"
     h.vm.provider :virtualbox
+
+    h.vm.provision "shell", run: "never", inline:<<-SHELL
+#!/usr/bin/env bash
+
+apt-get update
+apt-get install -y apache2
+if ! [ -L /var/www ]; then
+  rm -rf /var/www
+  ln -fs /vagrant /var/www
+fi
+    SHELL
   end
 
   config.vm.define "vagrant-share" do |h|
