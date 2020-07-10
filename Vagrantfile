@@ -434,6 +434,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "windows-hyperv" do |windows|
     windows.vm.box = "StefanScherer/windows_10" # hyper-v
+    windows.vm.box_version = "2020.04.15"
 
     #windows.vm.communicator = :winssh
     #windows.ssh.username = "vagrant"
