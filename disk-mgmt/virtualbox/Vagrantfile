@@ -7,6 +7,14 @@
 # you're doing.
 
 Vagrant.configure("2") do |config|
+  (1..2).each do |i|
+    config.vm.define "test-double-#{i}" do |b|
+      b.vm.box = "bento/ubuntu-18.04"
+      b.vm.provider :virtualbox
+      b.vm.disk :disk, size: '16GB', name: "storage"
+    end
+  end
+
   config.vm.define "disk" do |b|
     b.vm.box = "hashicorp/bionic64"
 
