@@ -6,6 +6,8 @@
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 
+ENV['VAGRANT_EXPERIMENTAL'] = "disks"
+
 Vagrant.configure("2") do |config|
   (1..2).each do |i|
     config.vm.define "test-double-#{i}" do |b|
